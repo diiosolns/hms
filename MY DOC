@@ -1,0 +1,101 @@
+USEFUL PHP ARTISAN COMMANDS
+-----------------------------
+# Start the local development server
+php artisan serve
+
+# Clear application cache
+php artisan cache:clear
+
+# Run database migrations
+php artisan migrate
+
+# Rollback the last database migration
+php artisan migrate:rollback
+
+# Create a new controller
+php artisan make:controller ControllerName
+
+# Create a new model
+php artisan make:model ModelName
+
+# Create a new migration
+php artisan make:migration create_table_name_table
+
+# List all available Artisan commands
+php artisan list
+
+# Show help for a specific command
+php artisan help command-name
+
+# Run database seeders
+php artisan db:seed
+
+# Clear and cache routes
+php artisan route:clear
+php artisan route:cache
+
+# Clear and cache config
+php artisan config:clear
+php artisan config:cache
+
+# Clear compiled views
+php artisan view:clear
+
+
+-------------------------------
+USEFUL  GIT COMMANDS
+-------------------------------
+# Initialize a new git repository
+git init
+
+# Check the status of your files
+git status
+
+# Add all changes to staging
+git add .
+
+# Add a specific file to staging
+git add filename
+
+# Commit staged changes with a message
+git commit -m "Your commit message"
+
+# View commit history
+git log
+
+# Create a new branch
+git branch branch-name
+
+# Switch to a branch
+git checkout branch-name
+
+# Create and switch to a new branch
+git checkout -b branch-name
+
+# Merge a branch into the current branch
+git merge branch-name
+
+# Push changes to remote repository
+git push origin branch-name
+
+# Pull latest changes from remote repository
+git pull origin branch-name
+
+# Clone a remote repository
+git clone repository-url
+
+# Remove a file from git and disk
+git rm filename
+
+# Remove a file from git but keep it locally
+git rm --cached filename
+
+# Show changes between commits, branches, etc.
+git diff
+
+# Stash changes for later
+git stash
+
+# Apply stashed changes
+git stash apply
+# ...existing
