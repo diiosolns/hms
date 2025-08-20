@@ -99,7 +99,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-grid">
-                                                    <input type="hidden" name="role" value="admin">
+                                                    <input type="hidden" name="role" value="owner">
                                                     <button class="btn btn-primary" type="submit">Sign up</button>
                                                 </div>
                                             </div>

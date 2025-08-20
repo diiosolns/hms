@@ -60,6 +60,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the hospitals for the user.
+     */
+    public function hospitals(): HasMany
+    {
+        return $this->hasMany(Hospital::class, 'owner_id');
+    }
+
+    /**
      * Define the inverse relationship to HospitalBranch.
      * A user belongs to one branch.
      *

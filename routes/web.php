@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BillingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +39,57 @@ Route::post('/password/reset', [AuthController::class, 'reset']);
 
 // Protected Routes for all authenticated users
 Route::middleware(['auth'])->group(function () {
+
+    Route::middleware(['auth', 'role:owner'])->prefix('owner')->name('owner.')->group(function () {
+        // Dashboard Route
+        Route::get('/dashboard', [OwnerController::class, 'dashboard'])->name('dashboard');
+
+        // Hospital Management Routes
+        Route::get('/hospitals', [OwnerController::class, 'manageHospitals'])->name('hospitals.manage');
+        Route::get('/hospitals/create', [OwnerController::class, 'createHospital'])->name('hospitals.create');
+        Route::post('/hospitals', [OwnerController::class, 'storeHospital'])->name('hospitals.store');
+        Route::get('/hospitals/{hospital}/edit', [OwnerController::class, 'editHospital'])->name('hospitals.edit');
+        Route::put('/hospitals/{hospital}', [OwnerController::class, 'updateHospital'])->name('hospitals.update');
+        Route::delete('/hospitals/{hospital}', [OwnerController::class, 'destroyHospital'])->name('hospitals.destroy');
+
+        // Branch Management Routes
+        Route::get('/branches', [OwnerController::class, 'manageBranches'])->name('branches.manage');
+        Route::get('/branches/create', [OwnerController::class, 'createBranch'])->name('branches.create');
+        Route::post('/branches', [OwnerController::class, 'storeBranch'])->name('branches.store');
+        Route::get('/branches/{branch}/edit', [OwnerController::class, 'editBranch'])->name('branches.edit');
+        Route::put('/branches/{branch}', [OwnerController::class, 'updateBranch'])->name('branches.update');
+        Route::delete('/branches/{branch}', [OwnerController::class, 'destroyBranch'])->name('branches.destroy');
+
+        // Employee Management Routes
+        Route::get('/employees', [OwnerController::class, 'manageEmployees'])->name('employees.manage');
+        Route::get('/employees/create', [OwnerController::class, 'createEmployee'])->name('employees.create');
+        Route::post('/employees', [OwnerController::class, 'storeEmployee'])->name('employees.store');
+        Route::get('/employees/{user}/edit', [OwnerController::class, 'editEmployee'])->name('employees.edit');
+        Route::put('/employees/{user}', [OwnerController::class, 'updateEmployee'])->name('employees.update');
+        Route::delete('/employees/{user}', [OwnerController::class, 'destroyEmployee'])->name('employees.destroy');
+        
+        // Billing Management Routes
+        Route::prefix('billing')->name('billing.')->group(function () {
+            Route::get('/', [BillingController::class, 'index'])->name('index');
+            Route::get('/create', [BillingController::class, 'create'])->name('create');
+            Route::post('/', [BillingController::class, 'store'])->name('store');
+            Route::get('/{invoice}', [BillingController::class, 'show'])->name('show');
+            Route::get('/{invoice}/edit', [BillingController::class, 'edit'])->name('edit');
+            Route::put('/{invoice}', [BillingController::class, 'update'])->name('update');
+            Route::delete('/{invoice}', [BillingController::class, 'destroy'])->name('destroy');
+        });
+
+        // Reporting Routes
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/', [ReportController::class, 'reportsDashboard'])->name('dashboard');
+            Route::get('/hospitals', [ReportController::class, 'hospitalsReport'])->name('hospitals');
+            Route::get('/employees', [ReportController::class, 'employeesReport'])->name('employees');
+            Route::get('/billing', [ReportController::class, 'billingReport'])->name('billing');
+            Route::get('/pharmacy', [ReportController::class, 'pharmacyReport'])->name('pharmacy');
+            Route::get('/patients', [ReportController::class, 'patientsReport'])->name('patients');
+        });
+    });
+
     // Admin Routes (Requires 'admin' role)
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -66,15 +121,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tests/completed', [LabController::class, 'completedTests'])->name('tests.completed');
         Route::get('/results/upload', [LabController::class, 'uploadResults'])->name('results.upload');
         Route::get('/patients', [LabController::class, 'patientTestHistory'])->name('patients');
-    });
-
-    // Owner Routes (Requires 'owner' role)
-    Route::middleware(['role:owner'])->prefix('owner')->name('owner.')->group(function () {
-        Route::get('/dashboard', [OwnerController::class, 'dashboard'])->name('dashboard');
-        Route::get('/users/manage', [OwnerController::class, 'manageUsers'])->name('users.manage');
-        Route::get('/hospitals/manage', [OwnerController::class, 'manageHospitals'])->name('hospitals.manage');
-        Route::get('/reports', [OwnerController::class, 'viewReports'])->name('reports.view');
-        Route::get('/settings', [OwnerController::class, 'systemSettings'])->name('settings');
     });
 
     // Pharmacist Routes (Requires 'pharmacist' role)

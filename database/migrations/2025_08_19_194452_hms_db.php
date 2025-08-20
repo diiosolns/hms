@@ -49,9 +49,25 @@ return new class extends Migration
             $table->enum('role', ['admin', 'owner', 'doctor', 'receptionist', 'pharmacist', 'lab_technician', 'nurse']);
             $table->string('phone', 15)->nullable();
             $table->string('address', 255)->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->rememberToken();
             $table->timestamps();
+        });
+
+         Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
         });
 
         // 2. Modified patients table to include a branch_id
@@ -210,5 +226,7 @@ return new class extends Migration
         Schema::dropIfExists('branches');
         Schema::dropIfExists('hospitals');
         Schema::dropIfExists('owners');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
     }
 };
