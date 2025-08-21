@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hospital;
 use App\Models\Branch;
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,8 +33,17 @@ class OwnerController extends Controller
         $totalHospitals = $hospitals->count();
         $totalBranches = Branch::whereIn('hospital_id', $hospitals->pluck('id'))->count();
 
+       // Get the total number of employees, excluding the 'owner' role
+        $totalEmployees = User::whereIn('hospital_id', $hospitals->pluck('id'))
+            ->where('role', '!=', 'owner')
+            ->count();
+
+        // Get the total number of patients
+        $totalPatients = Patient::whereIn('hospital_id', $hospitals->pluck('id'))
+            ->count();
+
         // Pass data to the dashboard view.
-        return view('owner.dashboard', compact('totalHospitals', 'totalBranches'));
+        return view('owner.dashboard', compact('totalHospitals', 'totalBranches', 'totalEmployees', 'totalPatients'));
     }
 
     //------------------------------------------------------------------------------------------------------------------

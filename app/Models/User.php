@@ -1,12 +1,13 @@
 <?php
 
-// app/Models/User.php
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
@@ -20,6 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'branch_id',
+        'hospital_id', // Added this field for employees and owners
         'first_name',
         'last_name',
         'email',
@@ -59,8 +61,12 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($value);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    // RELATIONSHIPS
+    //------------------------------------------------------------------------------------------------------------------
+
     /**
-     * Get the hospitals for the user.
+     * Get the hospitals for the user (as an owner).
      */
     public function hospitals(): HasMany
     {
@@ -71,9 +77,9 @@ class User extends Authenticatable
      * Define the inverse relationship to HospitalBranch.
      * A user belongs to one branch.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function branch()
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(HospitalBranch::class, 'branch_id');
     }
@@ -82,9 +88,9 @@ class User extends Authenticatable
      * Define the relationship for Appointments.
      * A user (doctor) can have many appointments.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function appointments()
+    public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class, 'doctor_id');
     }
@@ -93,9 +99,9 @@ class User extends Authenticatable
      * Define the relationship for Medical Records.
      * A user (doctor) can have many medical records.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function medicalRecords()
+    public function medicalRecords(): HasMany
     {
         return $this->hasMany(MedicalRecord::class, 'doctor_id');
     }
@@ -104,14 +110,14 @@ class User extends Authenticatable
      * Define the relationship for Lab Tests.
      * A user (doctor or technician) can be related to many lab tests.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function labTests()
+    public function labTests(): HasMany
     {
         return $this->hasMany(LabTest::class, 'ordering_doctor_id');
     }
 
-    public function performedLabTests()
+    public function performedLabTests(): HasMany
     {
         return $this->hasMany(LabTest::class, 'technician_id');
     }

@@ -36,6 +36,8 @@ Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->n
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AuthController::class, 'reset']);
 
+Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+Route::get('/settings', [AuthController::class, 'showAccountSettings'])->name('settings');
 
 // Protected Routes for all authenticated users
 Route::middleware(['auth'])->group(function () {
@@ -88,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/pharmacy', [ReportController::class, 'pharmacyReport'])->name('pharmacy');
             Route::get('/patients', [ReportController::class, 'patientsReport'])->name('patients');
         });
+
+        //Settings
+        Route::get('/settings', [OwnerController::class, 'manageHospitals'])->name('settings');
     });
 
     // Admin Routes (Requires 'admin' role)

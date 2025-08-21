@@ -490,38 +490,53 @@
                                         <a href="#" data-bs-toggle="dropdown">
                                             <div class="d-sm-none">
                                                 <div class="media media-md media-circle">
-                                                    <img src="./images/avatar/a.jpg" alt="" class="img-thumbnail">
+                                                    <img src="{{ asset('images/users/def.jpg') }}" alt="" class="img-thumbnail">
                                                 </div>
                                             </div>
                                             <div class="d-none d-sm-block">
                                                 <div class="media media-circle">
-                                                    <img src="./images/avatar/a.jpg" alt="" class="img-thumbnail">
+                                                    <img src="{{ asset('images/users/def.jpg') }}" alt="" class="img-thumbnail">
                                                 </div>
                                             </div>
                                         </a>
-                                        <div class="dropdown-menu dropdown-menu-md">
+                                       <div class="dropdown-menu dropdown-menu-md">
                                             <div class="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                                                 <div class="media-group">
-                                                    <div class="media media-xl media-middle media-circle"><img src="./images/avatar/a.jpg" alt="" class="img-thumbnail"></div>
+                                                    <div class="media media-xl media-middle media-circle"><img src="{{ asset('images/users/def.jpg') }}" alt="" class="img-thumbnail"></div>
                                                     <div class="media-text">
-                                                        <div class="lead-text">Wesley Burland</div>
-                                                        <span class="sub-text">Owner & Founder</span>
+                                                        {{-- Display the authenticated user's name dynamically --}}
+                                                        <div class="lead-text">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
+                                                        {{-- Display the authenticated user's role dynamically --}}
+                                                        <span class="sub-text">{{ ucfirst(Auth::user()->role) }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                                                 <ul class="link-list">
-                                                    <li><a href="./html/profile.html"><em class="icon ni ni-user"></em> <span>My Profile</span></a></li>
-                                                    <li><a href="./html/user-manage/user-cards.html"><em class="icon ni ni-contact"></em> <span>My Contacts</span></a></li>
-                                                    <li><a href="./html/profile-edit.html"><em class="icon ni ni-setting-alt"></em> <span>Account Settings</span></a></li>
+                                                     {{-- Common routes for all roles --}}
+                                                    <li><a href="{{ route('profile') }}"><em class="icon ni ni-user"></em> <span>My Profile</span></a></li>
+                                                    <li><a href="{{ route('settings') }}"><em class="icon ni ni-setting-alt"></em> <span>Account Settings</span></a></li>
                                                 </ul>
                                             </div>
                                             <div class="dropdown-content dropdown-content-x-lg py-3">
                                                 <ul class="link-list">
-                                                    <li><a href="#"><em class="icon ni ni-signout"></em> <span>Log Out</span></a></li>
+                                                    <li>
+                                                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                            <em class="icon ni ni-signout"></em> <span>Log Out</span>
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
+
+                                        {{-- This form is required for the logout functionality --}}
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+
+
+
+
                                     </li>
                                 </ul>
                             </div><!-- .nk-header-tools -->

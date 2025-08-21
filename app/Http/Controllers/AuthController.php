@@ -132,4 +132,15 @@ class AuthController extends Controller
         // This view is for showing the "reset password" form.
         return view('auth.reset');
     }
+
+    public function showProfile()
+    {
+
+    }
+
+    public function showAccountSettings()
+    {
+
+    }
+    
 }

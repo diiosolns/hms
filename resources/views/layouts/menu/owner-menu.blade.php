@@ -11,7 +11,7 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('owner.users.manage') }}" class="nk-menu-link">
+    <a href="{{ route('owner.employees.manage') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span>
         <span class="nk-menu-text">User Management</span>
     </a>
@@ -25,7 +25,7 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('owner.reports.view') }}" class="nk-menu-link">
+    <a href="{{ route('owner.reports.dashboard') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-trend-up"></em></span>
         <span class="nk-menu-text">System Reports</span>
     </a>
