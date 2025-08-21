@@ -11,39 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // New table for hospital owners
-        Schema::create('owners', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
-            $table->string('email', 100)->unique();
-            $table->string('password');
-            $table->timestamps();
-        });
-
-        // New table for individual hospitals, linked to an owner
-        Schema::create('hospitals', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('owner_id')->constrained('owners')->onDelete('cascade');
-            $table->string('name', 100);
-            $table->string('address', 255)->nullable();
-            $table->timestamps();
-        });
-
-        // New table for hospital branches, linked to a hospital
-        Schema::create('branches', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
-            $table->string('name', 100);
-            $table->string('address', 255)->nullable();
-            $table->timestamps();
-        });
 
         // 1. Modified users table to include a branch_id
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
-            $table->string('first_name', 50);
-            $table->string('last_name', 50);
+            $table->foreignId('branch_id')->nullable()->index();
+            //$table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
+            $table->string('first_name', 100);
+            $table->string('last_name', 100);
             $table->string('email', 100)->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'owner', 'doctor', 'receptionist', 'pharmacist', 'lab_technician', 'nurse']);
@@ -68,6 +43,26 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+        });
+
+        // New table for individual hospitals, linked to an owner
+        Schema::create('hospitals', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->string('name', 100);
+            $table->string('contact_number', 20);
+            $table->string('address', 255)->nullable();
+            $table->timestamps();
+        });
+
+        // New table for hospital branches, linked to a hospital
+        Schema::create('branches', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->string('name', 100);
+            $table->string('contact_number', 20);
+            $table->string('address', 255)->nullable();
+            $table->timestamps();
         });
 
         // 2. Modified patients table to include a branch_id
@@ -225,7 +220,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('branches');
         Schema::dropIfExists('hospitals');
-        Schema::dropIfExists('owners');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

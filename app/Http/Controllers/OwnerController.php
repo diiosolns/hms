@@ -68,16 +68,24 @@ class OwnerController extends Controller
      */
     public function storeHospital(Request $request)
     {
-        // Validate the incoming request data.
+        // Validate the incoming request data, including contact_number.
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'contact_number' => 'required|string|max:20',
         ]);
 
-        // Create a new hospital associated with the authenticated owner.
-        // Assuming a `user_id` foreign key on the `hospitals` table.
-        Auth::user()->hospitals()->create($validated);
+        // Get the authenticated user's ID
+        $ownerId = Auth::id();
+
+        // Create a new hospital and associate it with the authenticated owner's ID
+        // using the validated data.
+        Hospital::create([
+            'name' => $validated['name'],
+            'address' => $validated['address'],
+            'contact_number' => $validated['contact_number'],
+            'owner_id' => $ownerId,
+        ]);
 
         return redirect()->route('owner.hospitals.manage')->with('success', 'Hospital created successfully!');
     }

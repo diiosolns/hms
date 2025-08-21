@@ -747,6 +747,9 @@
         </ul>
     </div>
 </div>
+<script src="{{ asset('assets//js/data-tables/data-tables.js') }}"></script>
 <script src="{{ asset('assets/js/charts/analytics-chart.js') }}"></script>
+
+
 
 </html>
