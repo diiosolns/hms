@@ -18,29 +18,43 @@ class OwnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function dashboard()
+     public function dashboard()
     {
         // Get the authenticated owner.
         $owner = Auth::user();
 
-        //dd($owner);
+        // Ensure the user is an owner before proceeding.
+        if ($owner->role !== 'owner') {
+            // Redirect or return an error if the user is not an owner.
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
 
-        // Get the hospitals belonging to the owner.
-        // Assuming a relationship like $owner->hospitals() exists.
+        // Get the hospitals belonging to the owner using the ownedHospitals relationship.
         $hospitals = $owner->hospitals;
 
-        // Count total hospitals and branches for dashboard statistics.
-        $totalHospitals = $hospitals->count();
-        $totalBranches = Branch::whereIn('hospital_id', $hospitals->pluck('id'))->count();
+        // Get the IDs of the hospitals for the queries.
+        $hospitalIds = $hospitals->pluck('id');
 
-       // Get the total number of employees, excluding the 'owner' role
-        $totalEmployees = User::whereIn('hospital_id', $hospitals->pluck('id'))
+        // Count total hospitals.
+        $totalHospitals = $hospitals->count();
+
+        // Get all branches associated with the owner's hospitals.
+        // We use a "whereIn" query on the `hospital_id` to get the branches efficiently.
+        $branches = Branch::whereIn('hospital_id', $hospitalIds)->get();
+
+        // Get the IDs of the branches for the other queries.
+        $branchIds = $branches->pluck('id');
+
+        // Count total branches.
+        $totalBranches = $branches->count();
+
+        // Get the total number of employees, excluding the 'owner' role, within these branches.
+        $totalEmployees = User::whereIn('branch_id', $branchIds)
             ->where('role', '!=', 'owner')
             ->count();
 
-        // Get the total number of patients
-        $totalPatients = Patient::whereIn('hospital_id', $hospitals->pluck('id'))
-            ->count();
+        // Get the total number of patients associated with the owner's hospitals.
+        $totalPatients = Patient::whereIn('branch_id', $hospitalIds)->count();
 
         // Pass data to the dashboard view.
         return view('owner.dashboard', compact('totalHospitals', 'totalBranches', 'totalEmployees', 'totalPatients'));
@@ -99,6 +113,8 @@ class OwnerController extends Controller
     {
         // Fetch all hospitals belonging to the authenticated owner.
         $hospitals = Auth::user()->hospitals;
+
+        //dd(Auth::user());
 
         return view('owner.hospitals.manage', compact('hospitals'));
     }
@@ -208,7 +224,7 @@ class OwnerController extends Controller
             'contact_number' => $validated['contact_number'],
         ]);
 
-        return redirect()->route('owner.branches.manage')->with('success', 'Branch created successfully!');
+        return redirect()->route('owner.hospitals.manage')->with('success', 'Branch created successfully!');
     }
 
     /**

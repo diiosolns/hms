@@ -21,7 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'branch_id',
-        'hospital_id', // Added this field for employees and owners
+        'hospital_id',
         'first_name',
         'last_name',
         'email',
@@ -66,22 +66,31 @@ class User extends Authenticatable
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Get the hospitals for the user (as an owner).
+     * Get the hospitals for the user.
+     * A user belongs to a single hospital.
      */
-    public function hospitals(): HasMany
+    public function hospital(): BelongsTo
     {
-        return $this->hasMany(Hospital::class, 'owner_id');
+        return $this->belongsTo(Hospital::class, 'hospital_id');
     }
 
     /**
-     * Define the inverse relationship to HospitalBranch.
-     * A user belongs to one branch.
+     * Get the branch for the user.
+     * A user belongs to a single branch.
      *
      * @return BelongsTo
      */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(HospitalBranch::class, 'branch_id');
+    }
+
+    /**
+     * Get the hospitals for the user (as an owner).
+     */
+    public function hospitals(): HasMany
+    {
+        return $this->hasMany(Hospital::class, 'owner_id');
     }
 
     /**
