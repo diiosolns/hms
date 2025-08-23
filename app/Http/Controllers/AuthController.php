@@ -89,6 +89,7 @@ class AuthController extends Controller
             'role' => $request->role,
             'phone' => $request->phone,
             'address' => $request->address,
+            'hospital_id' => $request->hospital_id,
             'branch_id' => $request->branch_id,
         ]);
 
@@ -133,9 +134,13 @@ class AuthController extends Controller
         return view('auth.reset');
     }
 
-    public function showProfile()
+    public function showProfile($id)
     {
+        // Find the user by ID. If not found, it will automatically throw a 404 exception.
+        $user = User::findOrFail($id);
 
+        // Pass the user data to the profile view.
+        return view('auth.profile', compact('user'));
     }
 
     public function showAccountSettings()

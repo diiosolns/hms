@@ -3,8 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\NurseTriageAssessmentController;
+use App\Http\Controllers\NurseController;
+
 
 
 /*
@@ -36,7 +41,7 @@ Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->n
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AuthController::class, 'reset']);
 
-Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+Route::get('/profile/{id}', [AuthController::class, 'showProfile'])->name('profile');
 Route::get('/settings', [AuthController::class, 'showAccountSettings'])->name('settings');
 
 // Protected Routes for all authenticated users
@@ -134,9 +139,35 @@ Route::middleware(['auth'])->group(function () {
         // Add other pharmacist routes here
     });
 
+
+
+
+
     // Receptionist Routes (Requires 'receptionist' role)
     Route::middleware(['role:receptionist'])->prefix('receptionist')->name('receptionist.')->group(function () {
         Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])->name('dashboard');
         // Add other receptionist routes here
     });
+
+    //Can be accessed by many-users
+    Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
+    Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show');
+    Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
+    Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
+    Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
+
+    
+    Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
+    Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
+    Route::get('/billing/create', [ReceptionistController::class, 'createBilling'])->name('billing.create');
+
+    //Nurse Triage Assessments
+    Route::resource('nurse-triage-assessments', NurseTriageAssessmentController::class);
+    //Route::put('nurse-triage-assessments/{id}', [NurseTriageAssessmentController::class, 'update'])
+    //->name('nurse-triage-assessments.update');
+
+
+
 });

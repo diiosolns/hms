@@ -15,6 +15,7 @@ class Prescription extends Model
      * @var array
      */
     protected $fillable = [
+        'patient_id',
         'medical_record_id',
         'drug_name',
         'dosage',

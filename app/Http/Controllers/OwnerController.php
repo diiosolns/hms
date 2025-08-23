@@ -328,7 +328,7 @@ class OwnerController extends Controller
         $hospitals = Auth::user()->hospitals()->with('branches')->get();
 
         // Define the available roles for employees.
-        $roles = ['doctor', 'nurse', 'receptionist', 'admin'];
+        $roles = ['doctor', 'nurse', 'receptionist', 'admin', 'pharmacist', 'lab_technician'];
 
         return view('owner.employees.create', compact('hospitals', 'roles'));
     }
@@ -343,10 +343,12 @@ class OwnerController extends Controller
     {
         // Validate the incoming request data.
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20',
             'password' => 'required|string|min:8',
-            'role' => ['required', 'string', Rule::in(['doctor', 'nurse', 'receptionist', 'admin'])],
+            'role' => ['required', 'string', Rule::in(['doctor', 'nurse', 'receptionist', 'admin', 'pharmacist','lab_technician'])],
             'hospital_id' => 'required|exists:hospitals,id',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
@@ -359,9 +361,12 @@ class OwnerController extends Controller
 
         // Create a new User record for the employee.
         User::create([
-            'name' => $validated['name'],
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'phone' => $validated['phone'],
+            //'password' => Hash::make($validated['password']),
+            'password' => $request->password, // Mutator will handle hashing
             'role' => $validated['role'],
             'hospital_id' => $validated['hospital_id'],
             'branch_id' => $validated['branch_id'] ?? null,
@@ -379,10 +384,22 @@ class OwnerController extends Controller
     public function manageEmployees(Request $request)
     {
         // Get the IDs of all hospitals owned by the authenticated user.
+        // Get all hospitals under the current authenticated user's ownership.
+        $hospitals = Auth::user()->hospitals;
+
+        // We use the correct relationship name 'ownedHospitals'.
         $hospitalIds = Auth::user()->hospitals->pluck('id');
 
-        // Start building the query to fetch employees within the owner's hospitals.
-        $query = User::whereIn('hospital_id', $hospitalIds);
+        // Get all branches belonging to those hospitals.
+        $branches = Branch::whereIn('hospital_id', $hospitalIds)->get();
+
+        // Get the IDs of all branches belonging to those hospitals.
+        $branchIds = Branch::whereIn('hospital_id', $hospitalIds)->pluck('id');
+
+        // Start building the query to fetch employees within the owner's branches.
+        // We now filter by branch_id, which is the correct column on the users table.
+        $query = User::whereIn('branch_id', $branchIds)
+                    ->where('role', '!=', 'owner'); // Exclude the owner from the list
 
         // Check for a search query and apply it.
         $search = $request->query('search');
@@ -393,17 +410,30 @@ class OwnerController extends Controller
             });
         }
 
-        // Check for a role filter and apply it.
+        // Check for role, hospital, or branch filters and apply them.
         $roleFilter = $request->query('role');
         if ($roleFilter && $roleFilter !== 'all') {
             $query->where('role', $roleFilter);
         }
 
-        // Fetch all employees belonging to those hospitals or branches.
-        $employees = $query->with('hospital', 'branch')->get();
+        $hospitalFilter = $request->query('hospital_id');
+        if ($hospitalFilter) {
+            // Get branch IDs for the selected hospital
+            $filteredBranchIds = Branch::where('hospital_id', $hospitalFilter)->pluck('id');
+            $query->whereIn('branch_id', $filteredBranchIds);
+        }
 
-        // Pass the employees and current filter values to the view.
-        return view('owner.employees.manage', compact('employees', 'search', 'roleFilter'));
+        $branchFilter = $request->query('branch_id');
+        if ($branchFilter) {
+            $query->where('branch_id', $branchFilter);
+        }
+
+    //dd($query);
+        // Fetch the employees with pagination. It is good practice for large datasets.
+        $employees = $query->with('hospital', 'branch')->paginate(10); // Adjust pagination as needed
+
+        // Pass the employees and any current filters to the view.
+        return view('owner.employees.manage', compact('employees', 'search', 'roleFilter', 'hospitalFilter', 'branchFilter','hospitals', 'branches'));
     }
 
     /**
@@ -471,7 +501,7 @@ class OwnerController extends Controller
     public function destroyEmployee(User $user)
     {
         // Authorization check: Ensure the owner can delete this employee.
-        $hospitalIds = Auth::user()->hospitals->pluck('id');
+        $hospitalIds = Auth::user()->hospitals->pluck('id')->toArray();
         if (!in_array($user->hospital_id, $hospitalIds)) {
              abort(403, 'Unauthorized action.');
         }

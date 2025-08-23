@@ -9,6 +9,8 @@ class HospitalBranch extends Model
 {
     use HasFactory;
 
+    protected $table = 'branches';
+
     /**
      * The attributes that are mass assignable.
      *

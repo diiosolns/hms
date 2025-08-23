@@ -18,13 +18,15 @@ class Patient extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'patient_id',
         'date_of_birth',
         'gender',
         'phone',
         'email',
         'address',
         'emergency_contact_name',
-        'emergency_contact_contact',
+        'emergency_contact_phone',
+        'pay_method',
     ];
 
     /**
@@ -36,6 +38,14 @@ class Patient extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    /**
+     * A patient can have many nurse triage assessments.
+     */
+    public function nurseTriageAssessments()
+    {
+        return $this->hasMany(NurseTriageAssessment::class);
     }
 
     /**
@@ -59,4 +69,39 @@ class Patient extends Model
     {
         return $this->hasMany(LabTest::class);
     }
+
+    /**
+     * Define the relationship for prescription.
+     * A patient can have many prescription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prescription()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    /**
+     * Define the relationship with Branch.
+     * A patient belongs to a branch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * Define the relationship with Hospital.
+     * A patient belongs to a hospital.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hospital()
+    {
+        return $this->belongsTo(Hospital::class);
+    }
+
+
 }

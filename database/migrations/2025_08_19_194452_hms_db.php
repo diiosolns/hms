@@ -15,6 +15,7 @@ return new class extends Migration
         // 1. Modified users table to include a branch_id
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('hospital_id')->nullable()->index();
             $table->foreignId('branch_id')->nullable()->index();
             //$table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
             $table->string('first_name', 100);
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('address', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->enum('room')->nullable()->default('R001');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -79,6 +81,7 @@ return new class extends Migration
             $table->string('address', 255)->nullable();
             $table->string('emergency_contact_name', 100)->nullable();
             $table->string('emergency_contact_phone', 15)->nullable();
+            $table->enum('pay_method', ['Cash', 'Insurance'])->nullable()->default('Cash');
             $table->timestamps();
         });
 
@@ -110,6 +113,7 @@ return new class extends Migration
         // 5. Table for prescriptions
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('medical_record_id')->constrained('medical_records')->onDelete('cascade');
             $table->string('drug_name', 100);
             $table->string('dosage', 50);
@@ -151,6 +155,7 @@ return new class extends Migration
         // 8. Modified lab tests table to use a foreign key
         Schema::create('lab_tests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('medical_record_id')->constrained('medical_records')->onDelete('cascade');
             $table->foreignId('test_catalog_id')->constrained('lab_test_catalogs')->onDelete('cascade');
             $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');

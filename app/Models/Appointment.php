@@ -9,11 +9,6 @@ class Appointment extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'patient_id',
         'doctor_id',
@@ -23,11 +18,13 @@ class Appointment extends Model
         'status',
     ];
 
+    protected $casts = [
+        'appointment_date' => 'date',
+        'appointment_time' => 'datetime:H:i', // optional, Laravel 10+ supports time casts
+    ];
+
     /**
-     * Define the inverse relationship to Patient.
-     * An appointment belongs to one patient.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Appointment belongs to a patient
      */
     public function patient()
     {
@@ -35,10 +32,7 @@ class Appointment extends Model
     }
 
     /**
-     * Define the inverse relationship to User (Doctor).
-     * An appointment belongs to one doctor.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Appointment belongs to a doctor (user)
      */
     public function doctor()
     {
@@ -46,6 +40,14 @@ class Appointment extends Model
     }
 
     /**
+     * Appointment can have many nurse triage assessments
+     */
+    public function nurseTriageAssessments()
+    {
+        return $this->hasMany(NurseTriageAssessment::class);
+    }
+
+     /**
      * Define the relationship for Medical Records.
      * An appointment can have one medical record.
      *

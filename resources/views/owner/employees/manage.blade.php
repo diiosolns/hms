@@ -11,8 +11,8 @@
                                 <h2 class="nk-block-title">Users List</h2>
                                 <nav>
                                     <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                        <li class="breadcrumb-item"><a href="#">User Manage</a></li>
+                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="{{ route('owner.employees.manage') }}">User Manage</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Users</li>
                                     </ol>
                                 </nav>
@@ -33,12 +33,11 @@
                     <div class="nk-block mb-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Filter Users</h5>
-                                <form action="{{ route('users.index') }}" method="GET">
+                                <h5 class="card-title g-3 mb-3">Filter Users</h5>
+                                <form action="{{ route('owner.employees.manage') }}" method="GET">
                                     <div class="row g-3">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="hospital_id" class="form-label">Hospital</label>
                                                 <select class="form-select" id="hospital_id" name="hospital_id">
                                                     <option value="">All Hospitals</option>
                                                     @foreach ($hospitals as $hospital)
@@ -49,9 +48,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="branch_id" class="form-label">Branch</label>
                                                 <select class="form-select" id="branch_id" name="branch_id">
                                                     <option value="">All Branches</option>
                                                     @foreach ($branches as $branch)
@@ -62,24 +60,29 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="role" class="form-label">Role</label>
                                                 <select class="form-select" id="role" name="role">
                                                     <option value="">All Roles</option>
+                                                    <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                                     <option value="doctor" {{ request('role') == 'doctor' ? 'selected' : '' }}>Doctor</option>
+                                                    <option value="lab_technician" {{ request('role') == 'lab_technician' ? 'selected' : '' }}>Lab Technician</option>
                                                     <option value="nurse" {{ request('role') == 'nurse' ? 'selected' : '' }}>Nurse</option>
+                                                    <option value="pharmacist" {{ request('role') == 'pharmacist' ? 'selected' : '' }}>Pharmacist</option>
                                                     <option value="receptionist" {{ request('role') == 'receptionist' ? 'selected' : '' }}>Receptionist</option>
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row g-3 mt-3">
-                                        <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">Filter</button>
-                                            <a href="{{ route('users.index') }}" class="btn btn-light">Clear Filters</a>
+                                        <div class="col-md-2 d-grid">
+                                            <button type="submit" class="btn btn-soft btn-primary"><span>Filter</span><em class="icon ni ni-arrow-right"></em> </button>
                                         </div>
                                     </div>
+                                    <!-- <div class="row g-3 mt-3">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Filter</button>
+                                            <a href="{{ route('owner.employees.manage') }}" class="btn btn-light">Clear Filters</a>
+                                        </div>
+                                    </div> -->
                                 </form>
                             </div>
                         </div>
@@ -101,20 +104,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($users as $user)
+                                        @forelse ($employees as $user)
                                             <tr>
                                                 <td class="tb-col">
                                                     <div class="media-group">
-                                                        <div class="media media-md media-middle media-circle">
-                                                            <img src="{{ asset('images/avatar/a.jpg') }}" alt="user" onerror="this.src='https://placehold.co/100x100/E9ECEF/000000?text=A'">
-                                                        </div>
+                                                        <a href="{{ route('profile', ['id' => $user->id]) }}" class="media media-md media-middle media-circle" >
+                                                            <div class="media media-md media-middle media-circle" >
+                                                                    <img src="{{ asset('images/users/def.jpg') }}" alt="user" onerror="this.src='https://placehold.co/100x100/E9ECEF/000000?text=A'">
+                                                            </div>
+                                                        </a>
                                                         <div class="media-text">
-                                                            <a href="#" class="title">{{ $user->name }}</a>
+                                                            <a href="{{ route('profile', ['id' => $user->id]) }}" class="title">{{ $user->name }}</a>
                                                             <span class="small text">{{ $user->email }}</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="tb-col">{{ $user->role }}</td>
+                                                <td class="tb-col">{{ ucfirst($user->role) }}</td>
                                                 <td class="tb-col">
                                                     @if ($user->hospital)
                                                         {{ $user->hospital->name }}
@@ -153,7 +158,7 @@
                                                                         </a>
                                                                     </li>
                                                                     <li>
-                                                                        <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: none;">
+                                                                        <form id="delete-form-{{ $user->id }}" action="{{ route('owner.employees.destroy', $user->id) }}" method="POST" style="display: none;">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                         </form>
@@ -177,9 +182,9 @@
                             </div>
                         </div><!-- .card -->
                     </div><!-- .nk-block -->
-                    @if ($users->hasPages())
+                    @if ($employees->hasPages())
                         <div class="d-flex justify-content-center mt-4">
-                            {{ $users->links() }}
+                            {{ $employees->links() }}
                         </div>
                     @endif
                 </div>
@@ -192,52 +197,67 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <h5 class="modal-title" id="addUserModalLabel">Add User / Employee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="user-form" action="{{ route('users.store') }}" method="POST">
+                <form id="user-form" action="{{ route('owner.employees.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="_method" id="form-method" value="POST">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-0">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" required>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter last name" required>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="xyz@example.com" required>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="07XX XXX XXX" required>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="">Select user role</option>
+                                    <option value="receptionist">Receptionist</option>
+                                    <option value="pharmacist">Pharmacist</option>
+                                    <option value="lab_technician">Lab Technician</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="nurse">Nurse</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="modal_hospital_id" class="form-label">Hospital</label>
+                                <select class="form-select" id="modal_hospital_id" name="hospital_id" required>
+                                    <option value="">Select a Hospital</option>
+                                    @foreach ($hospitals as $hospital)
+                                        <option value="{{ $hospital->id }}">{{ $hospital->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="modal_branch_id" class="form-label">Branch</label>
+                                <select class="form-select" id="modal_branch_id" name="branch_id" required>
+                                    <option value="">Select a Branch</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" autocomplete="new-password">
+                                <!-- <small class="form-text text-muted">Leave blank to keep current password when editing.</small> -->
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" autocomplete="new-password">
-                            <small class="form-text text-muted">Leave blank to keep current password when editing.</small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="form-select" id="role" name="role" required>
-                                <option value="doctor">Doctor</option>
-                                <option value="nurse">Nurse</option>
-                                <option value="receptionist">Receptionist</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_hospital_id" class="form-label">Hospital</label>
-                            <select class="form-select" id="modal_hospital_id" name="hospital_id" required>
-                                <option value="">Select a Hospital</option>
-                                @foreach ($hospitals as $hospital)
-                                    <option value="{{ $hospital->id }}">{{ $hospital->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_branch_id" class="form-label">Branch</label>
-                            <select class="form-select" id="modal_branch_id" name="branch_id" required>
-                                <option value="">Select a Branch</option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -261,10 +281,12 @@
                 // If the "Add User" button is clicked, reset the form.
                 if (button.hasClass('btn-primary')) {
                     modal.find('.modal-title').text('Add User');
-                    modal.find('#user-form').attr('action', '{{ route('users.store') }}');
+                    modal.find('#user-form').attr('action', '{{ route('owner.employees.store') }}');
                     modal.find('#form-method').val('POST');
-                    modal.find('#name').val('');
+                    modal.find('#first_name').val('');
+                    modal.find('#last_name').val('');
                     modal.find('#email').val('');
+                    modal.find('#phone').val('');
                     modal.find('#password').prop('required', true).closest('.mb-3').show();
                     modal.find('#modal_hospital_id').val('');
                     modal.find('#modal_branch_id').val('');
@@ -276,8 +298,10 @@
             // Handle edit button click to populate the modal
             $('.edit-user').on('click', function() {
                 var userId = $(this).data('id');
-                var userName = $(this).data('name');
+                var userFirstName = $(this).data('first_name');
+                var userLastName = $(this).data('last_name');
                 var userEmail = $(this).data('email');
+                var userPhone = $(this).data('phone');
                 var userRole = $(this).data('role');
                 var userHospitalId = $(this).data('hospital_id');
                 var userBranchId = $(this).data('branch_id');
@@ -291,8 +315,10 @@
                 modal.find('#modal-submit-btn').text('Update User');
 
                 // Populate form fields with user data
-                modal.find('#name').val(userName);
+                modal.find('#first_name').val(userFirstName);
+                modal.find('#last_name').val(userLastName);
                 modal.find('#email').val(userEmail);
+                modal.find('#phone').val(userPhone);
                 modal.find('#role').val(userRole);
                 modal.find('#modal_hospital_id').val(userHospitalId);
                 modal.find('#modal_branch_id').val(userBranchId);

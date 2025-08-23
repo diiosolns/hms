@@ -223,7 +223,7 @@
                                                                 <a href="./html/user-manage/user-cards.html" class="nk-nav-link"> Users Cards </a>
                                                             </li>
                                                             <li class="nk-nav-item">
-                                                                <a href="./html/user-manage/user-profile.html" class="nk-nav-link"> Users Profile </a>
+                                                                <a href="{{ route('profile', ['id' => Auth::user()->id]) }}" class="nk-nav-link"> Users Profile </a>
                                                             </li>
                                                             <li class="nk-nav-item">
                                                                 <a href="./html/user-manage/user-edit.html" class="nk-nav-link"> Users Edit </a>
@@ -514,7 +514,7 @@
                                             <div class="dropdown-content dropdown-content-x-lg py-3 border-bottom border-light">
                                                 <ul class="link-list">
                                                      {{-- Common routes for all roles --}}
-                                                    <li><a href="{{ route('profile') }}"><em class="icon ni ni-user"></em> <span>My Profile</span></a></li>
+                                                    <li><a href="{{ route('profile', ['id' => Auth::user()->id]) }}"><em class="icon ni ni-user"></em> <span>My Profile</span></a></li>
                                                     <li><a href="{{ route('settings') }}"><em class="icon ni ni-setting-alt"></em> <span>Account Settings</span></a></li>
                                                 </ul>
                                             </div>

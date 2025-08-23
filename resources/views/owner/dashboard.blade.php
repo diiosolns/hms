@@ -18,7 +18,7 @@
                                             <div class="d-flex flex-column flex-sm-row-reverse align-items-sm-center justify-content-sm-between">
                                                 <div class="nk-chart-project-active js-pureknob" data-readonly="true" data-size="110" data-angle-offset="0.4" data-angle-start="1" data-angle-end="1" data-value="73" data-track-width="0.15"></div>
                                                 <div class="card-title mb-0 mt-4 mt-sm-0">
-                                                    <h5 class="title mb-3 mb-xl-5">Hospitals</h5>
+                                                    <h5 class="title mb-3 mb-xl-5">Hospitals &  Branches</h5>
                                                     <div class="amount h1">{{ $totalHospitals }}</div>
                                                     <div class="d-flex align-items-center smaller flex-wrap">
                                                         <div class="change up">
@@ -62,7 +62,7 @@
                     </div><!-- .row -->
 
                     {{-- Row for new cards --}}
-                    <div class="row g-gs mt-4">
+                    <div class="row g-gs mt-2">
                         {{-- Card for Total Employees --}}
                         <div class="col-md-6">
                             <a href="{{ route('owner.employees.manage') }}">
@@ -98,7 +98,7 @@
                                             <span class="knob-title small text-light">Patients</span>
                                         </div>
                                         <div class="card-title mb-0 mt-4 mt-sm-0">
-                                            <h5 class="title mb-3 mb-xl-5">Total Patients</h5>
+                                            <h5 class="title mb-3 mb-xl-5">Patients</h5>
                                             <div class="amount h1">{{ $totalPatients }}</div>
                                             <div class="d-flex align-items-center smaller flex-wrap">
                                                 <div class="change up">

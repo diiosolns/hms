@@ -94,7 +94,7 @@
                                         @endif
                                         @foreach ($hospital->branches as $branch)
                                         <div class="col-12">
-                                            <div class="card card-sm">
+                                            <div class="card text-bg-light card-sm">
                                                 <div class="card-body">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div class="card-title-group align-items-start">
