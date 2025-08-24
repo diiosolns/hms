@@ -112,11 +112,15 @@
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="title fw-medium w-40 d-inline-block">Doctor:</span>
-                                                                <span class="text">{{ $patient->patient_id }}</span>
+                                                                <span class="text">{{ $patient->doctor?->first_name ?? 'Not assigned' }} {{ $patient->doctor?->last_name ?? '' }}</span>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <span class="title fw-medium w-40 d-inline-block">Status:</span>
+                                                                <span class="badge bg-primary">{{ $patient->status }}</span>
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="title fw-medium w-40 d-inline-block">Room:</span>
-                                                                <span class="text">{{ $patient->patient_id }}</span>
+                                                                <span class="text">{{ $patient->doctor?->room ?? 'N/A' }}</span>
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="title fw-medium w-40 d-inline-block">Date of Birth:</span>
@@ -159,7 +163,7 @@
                                                             <div class="card-body flex-grow-0 py-2">
                                                                 <div class="card-title-group">
                                                                     <div class="card-title">
-                                                                        <h4 class="bio-block-title">Nurse Triage Assessments</h4>
+                                                                        <h4 class="bio-block-title">Nurse Vitals</h4>
                                                                     </div>
                                                                     <div class="card-tools">
                                                                         <div class="dropdown">

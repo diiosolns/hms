@@ -139,14 +139,21 @@ Route::middleware(['auth'])->group(function () {
         // Add other pharmacist routes here
     });
 
-
-
-
-
     // Receptionist Routes (Requires 'receptionist' role)
     Route::middleware(['role:receptionist'])->prefix('receptionist')->name('receptionist.')->group(function () {
         Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])->name('dashboard');
         // Add other receptionist routes here
+    });
+
+    Route::prefix('nurse')->name('nurse.')->middleware(['auth', 'role:nurse'])->group(function () {
+        Route::get('/dashboard', [NurseController::class, 'dashboard'])->name('dashboard');
+        Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+        Route::get('/vitals', [PatientController::class, 'index'])->name('vitals.log');
+        Route::post('/vitals', [PatientController::class, 'store'])->name('vitals.store');
+        Route::get('/appointments', [NurseController::class, 'createAppointment'])->name('appointments');
+        Route::post('/appointments', [NurseController::class, 'storeAppointment'])->name('appointments.store');
+        Route::get('/medication', [NurseController::class, 'createMedication'])->name('medication.log');
+        Route::post('/medication', [NurseController::class, 'storeMedication'])->name('medication.store');
     });
 
     //Can be accessed by many-users

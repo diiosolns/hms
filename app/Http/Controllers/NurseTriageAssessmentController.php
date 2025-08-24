@@ -100,6 +100,11 @@ class NurseTriageAssessmentController extends Controller
             $validated       // Data to insert/update
         );
 
+         // Update patient status to "Doctor"
+        $patient = Patient::findOrFail($assessment->patient_id);
+        $patient->status = 'Doctor';
+        $patient->save();
+
         return redirect()
             ->route('patients.show', $assessment->patient_id)
             ->with('success', 'Nurse Triage Assessment saved successfully.');

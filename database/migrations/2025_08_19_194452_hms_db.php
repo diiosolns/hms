@@ -71,6 +71,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
+            $table->foreignId('doctor_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('patient_id', 20)->unique();
             $table->string('first_name', 50);
             $table->string('last_name', 50);
@@ -82,6 +83,7 @@ return new class extends Migration
             $table->string('emergency_contact_name', 100)->nullable();
             $table->string('emergency_contact_phone', 15)->nullable();
             $table->enum('pay_method', ['Cash', 'Insurance'])->nullable()->default('Cash');
+            $table->enum('status', ['Reception', 'Nurse', 'Doctor', 'Laboratory', 'Pharmacy', 'Closed', 'Discharged', 'Cancelled'])->nullable()->default('Reception');
             $table->timestamps();
         });
 

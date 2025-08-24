@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Patient;
 use App\Models\Appointment;
 use App\Models\NurseTriageAssessment;
@@ -24,13 +25,22 @@ class PatientController extends Controller
         // Start with a base query on the Patient model
         $query = Patient::query()->where('branch_id', Auth::user()->branch_id);
 
+        // Apply role-based filtering
+        $user = Auth::user();
+        if ($user->role === 'nurse') {
+            $query->where('status', 'Nurse');
+        } else if ($user->role === 'doctor') {
+            $query->where('status', 'Doctor');
+        } else if ($user->role === 'lab_technician') {
+            $query->where('status', 'Laboratory');
+        } else if ($user->role === 'pharmacist') {
+            $query->where('status', 'Pharmacy');
+        }
+
         // Check for a search query from the request
         if ($request->filled('search')) {
-            // Get the search term and normalize it
             $searchTerm = strtolower($request->search);
 
-            // Apply a global search across multiple columns
-            // We use `where` with a closure to group the OR conditions
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('first_name', 'like', "%{$searchTerm}%")
                   ->orWhere('last_name', 'like', "%{$searchTerm}%")
@@ -38,21 +48,20 @@ class PatientController extends Controller
             });
         }
 
-        // Apply filtering based on a specific field and value
-        // Example: Filter by a specific field like `status`
+        // Apply filtering based on specific field & value
         if ($request->filled('filter_field') && $request->filled('filter_value')) {
             $query->where($request->filter_field, $request->filter_value);
         }
 
-        // Order the results from newest to oldest based on the created_at timestamp
-        $patients = $query->latest('created_at')->paginate(10); // Paginate the results for performance
+        // Order newest to oldest
+        $patients = $query->latest('created_at')->paginate(10);
 
-        // Return the view with the patients and the current request's search and filter parameters
         return view('patients.index', [
             'patients' => $patients,
             'searchTerm' => $request->search,
         ]);
     }
+
 
     /**
      * Show the form for creating a new patient.
@@ -109,6 +118,10 @@ class PatientController extends Controller
         if ($request->has('avoid_nurse') && $request->avoid_nurse === 'yes') {
             // Do not create nurse Assessment
         } else {
+            //Update Patient status
+            $patient->status = "Nurse";
+            $patient->save();
+
             NurseTriageAssessment::create([
                 'patient_id' => $patient->id,
                 'appointment_id' => $appointment->id,
@@ -147,10 +160,16 @@ class PatientController extends Controller
             'nurseTriageAssessments', 
             'medicalRecords', 
             'labTests',
-            'prescription'
+            'prescription',
+            'doctor'
         ])->findOrFail($id);
 
-        return view('patients.show', compact('patient'));
+        $doctors = User::with('pending_patients')
+               ->where('role', 'Doctor')
+               ->where('branch_id', Auth::user()->branch_id)
+               ->get();
+
+        return view('patients.show', compact('patient', 'doctors'));
     }
 
     /**

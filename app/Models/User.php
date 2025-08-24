@@ -131,4 +131,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(LabTest::class, 'technician_id');
     }
+
+     /**
+     * Get all patients assigned to this doctor
+     */
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'doctor_id');
+    }
+
+    public function pending_patients()
+    {
+        return $this->hasMany(Patient::class, 'doctor_id')
+                    ->whereNotIn('status', ['Closed', 'Discharged', 'Cancelled']);
+    }
+
+
 }

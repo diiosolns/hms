@@ -79,10 +79,10 @@
                                                     <td class="tb-col">{{ $patient->pay_method ?? 'N/A' }}</td>
                                                     <td class="tb-col ">{{ $patient->created_at->format('Y/m/d') }}</td>
                                                     <td class="tb-col">
-                                                        @if ($patient->status == 'active')
-                                                            <span class="badge text-bg-success-soft">Active</span>
+                                                        @if ($patient->status == 'Closed')
+                                                            <span class="badge text-bg-success-soft">{{ $patient->status }}</span>
                                                         @else
-                                                            <span class="badge text-bg-warning-soft">Pending</span>
+                                                            <span class="badge text-bg-warning-soft">{{ $patient->status }}</span>
                                                         @endif
                                                     </td>
                                                     <td class="tb-col tb-col-end">

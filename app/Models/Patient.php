@@ -103,5 +103,16 @@ class Patient extends Model
         return $this->belongsTo(Hospital::class);
     }
 
+    /**
+     * Define the relationship with Users.
+     * doctor_id → the foreign key on the patients table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
+    }
+
 
 }

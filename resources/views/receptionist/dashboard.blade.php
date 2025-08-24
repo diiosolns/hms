@@ -80,192 +80,105 @@
 
 
 
+                    <!-- PENDING PATIENTS -->
                     <div class="row g-gs mt-4">
-                        <div class="col-xxl-6">
-                                        <div class="card h-100">
-                                            <div class="card-body flex-grow-0 py-2">
-                                                <div class="card-title-group">
-                                                    <div class="card-title">
-                                                        <h4 class="title">Pending Partients</h4>
-                                                    </div>
-                                                    <div class="card-tools">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <li>
-                                                                    <div class="dropdown-header pt-2 pb-0">
-                                                                        <h6 class="mb-0">Options</h6>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <hr class="dropdown-divider">
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" class="dropdown-item">Low to high</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" class="dropdown-item">High to low</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div><!-- dropdown -->
-                                                    </div>
-                                                </div><!-- .card-title-group -->
-                                            </div><!-- .card-body -->
-                                            <div class="table-responsive">
-                                                <table class="table table-middle mb-0">
-                                                    <thead class="table-light table-head-sm">
-                                                        <tr>
-                                                            <th class="tb-col">
-                                                                <span class="overline-title">products</span>
-                                                            </th>
-                                                            <th class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="overline-title">price</span>
-                                                            </th>
-                                                            <th class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="overline-title">orders</span>
-                                                            </th>
-                                                            <th class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="overline-title">stock</span>
-                                                            </th>
-                                                            <th class="tb-col tb-col-end">
-                                                                <span class="overline-title">amount</span>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="tb-col">
-                                                                <div class="media-group">
-                                                                    <div class="media media-md flex-shrink-0 media-middle media-circle">
-                                                                        <img src="./images/product/a.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="media-text">
-                                                                        <span class="title">Nike v22 Running</span>
-                                                                        <span class="text smaller">28 Jul 2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">$130.20</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">38</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">436</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end">
-                                                                <span class="small">$14,945</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="tb-col">
-                                                                <div class="media-group">
-                                                                    <div class="media media-md flex-shrink-0 media-middle media-circle">
-                                                                        <img src="./images/product/b.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="media-text">
-                                                                        <span class="title">Business Kit (Mug)</span>
-                                                                        <span class="text smaller">16 Oct 2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">$18.35</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">12</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="badge text-bg-danger-soft">Out of Stock</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end">
-                                                                <span class="small">$7,458</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="tb-col">
-                                                                <div class="media-group">
-                                                                    <div class="media media-md flex-shrink-0 media-middle media-circle">
-                                                                        <img src="./images/product/c.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="media-text">
-                                                                        <span class="title">Borosil Paper Cup</span>
-                                                                        <span class="text smaller">21 Feb 2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">$328.00</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">120</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">867</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end">
-                                                                <span class="small">$7,806</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="tb-col">
-                                                                <div class="media-group">
-                                                                    <div class="media media-md flex-shrink-0 media-middle media-circle">
-                                                                        <img src="./images/product/d.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="media-text">
-                                                                        <span class="title">Mountain Trip Kit</span>
-                                                                        <span class="text smaller">14 Jun 2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">$130.20</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">184</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">226</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end">
-                                                                <span class="small">$17,945</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="tb-col">
-                                                                <div class="media-group">
-                                                                    <div class="media media-md flex-shrink-0 media-middle media-circle">
-                                                                        <img src="./images/product/e.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="media-text">
-                                                                        <span class="title">One Seater Sofa</span>
-                                                                        <span class="text smaller">28 Jul 2022</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">$130.20</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="small">50</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end tb-col-sm">
-                                                                <span class="badge text-bg-warning-soft">Low Stock</span>
-                                                            </td>
-                                                            <td class="tb-col tb-col-end">
-                                                                <span class="small">$14,945</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div><!-- .card -->
-                                    </div>
+                        <div class="col-xxl-12">
+                            <div class="card h-100">
+                                <div class="card-body flex-grow-0 py-2">
+                                    <div class="card-title-group">
+                                        <div class="card-title">
+                                            <h4 class="title">Pending Patients</h4>
+                                        </div>
+                                        <div class="card-tools">
+                                            <div class="dropdown">
+                                                <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-more-v"></em>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                    <li>
+                                                        <div class="dropdown-header pt-2 pb-0">
+                                                            <h6 class="mb-0">Options</h6>
+                                                        </div>
+                                                    </li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a href="#" class="dropdown-item">Sort A-Z</a></li>
+                                                    <li><a href="#" class="dropdown-item">Sort Z-A</a></li>
+                                                </ul>
+                                            </div><!-- dropdown -->
+                                        </div>
+                                    </div><!-- .card-title-group -->
+                                </div><!-- .card-body -->
+
+                                <div class="table-responsive">
+                                    <table class="table table-middle mb-0">
+                                        <thead class="table-light table-head-md">
+                                            <tr>
+                                                <th class="tb-col">
+                                                    <span class="overline-title">Name</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end tb-col-sm">
+                                                    <span class="overline-title">Phone</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end tb-col-sm">
+                                                    <span class="overline-title">DOB</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Status</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Actions</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($patients as $patient)
+                                                <tr>
+                                                    <td class="tb-col">
+                                                        <div class="media-group">
+                                                            <div class="media media-md flex-shrink-0 media-middle media-circle text-bg-info-soft">
+                                                                <span class="smaller">
+                                                                    {{ strtoupper(substr($patient->first_name,0,1)) }}{{ strtoupper(substr($patient->last_name,0,1)) }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="media-text">
+                                                                <span class="title">{{ $patient->first_name }} {{ $patient->last_name }}</span>
+                                                                <span class="text smaller">Created {{ $patient->created_at->format('M d, Y h:i A') }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="small">{{ $patient->phone ?? 'N/A' }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="small">
+                                                            {{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">No patients found.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div><!-- .table-responsive -->
+
+                                <div class="card-footer text-center">
+                                    {{ $patients->links('pagination::bootstrap-5') }}
+                                </div>
+                            </div><!-- .card -->
+                        </div>
                     </div>
+                    <!-- END PENDING PATIENTS -->
 
 
 
