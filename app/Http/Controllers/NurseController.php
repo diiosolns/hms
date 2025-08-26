@@ -11,9 +11,14 @@ class NurseController extends Controller
     //
     public function dashboard()
     {
-        $patients = Patient::where('status', 'Nurse')
+        /*$patients = Patient::where('status', 'Nurse')
             ->where('branch_id', Auth::user()->branch_id)
-            ->paginate(10);
+            ->paginate(10);*/
+
+        $patients = Patient::where('branch_id', Auth::user()->branch_id)
+            ->whereHas('nurseTriageAssessments', function ($query) {
+                $query->where('status', 'Pending');
+            })->paginate(10);
 
         return view('nurse.dashboard', compact('patients'));
     }

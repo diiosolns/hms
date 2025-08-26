@@ -164,7 +164,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
     Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
     Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
-
+    Route::patch('/patients/assign/{doctor}', [PatientController::class, 'assignDoctor'])->name('patients.assign');
     
     Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
     Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');

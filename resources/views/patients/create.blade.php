@@ -243,6 +243,7 @@
                                                         <!-- Submit -->
                                                         <div class="col-lg-12">
                                                             <input type="hidden" name="patient_id" value="{{ 'PNT' . now()->format('YmdHis') . rand(100,999) }}">
+                                                            <input type="hidden" name="doctor_id" value="{{ Auth::id() }}">
                                                             <button class="btn btn-primary" type="submit">Save Details</button>
                                                         </div>
                                                     </div>

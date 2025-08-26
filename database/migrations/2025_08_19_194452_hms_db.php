@@ -203,6 +203,7 @@ return new class extends Migration
             $table->decimal('height_cm', 6, 2)->nullable();
             $table->text('chief_complaint')->nullable();
             $table->text('notes')->nullable();
+            $table->enum('status', ['Pending', 'Updated', 'Cancelled'])->default('Pending');
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class NurseTriageAssessment extends Model
         'height_cm',
         'chief_complaint',
         'notes',
+        'status',
     ];
 
     /**

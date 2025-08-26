@@ -92,6 +92,7 @@ class NurseTriageAssessmentController extends Controller
             'height_cm' => 'nullable|numeric',
             'chief_complaint' => 'nullable|string',
             'notes' => 'nullable|string',
+            'status' => 'nullable|string',
         ]);
 
         // Update if exists, otherwise create

@@ -19,6 +19,7 @@ class Patient extends Model
         'first_name',
         'last_name',
         'patient_id',
+        'doctor_id',
         'date_of_birth',
         'gender',
         'phone',
@@ -27,6 +28,7 @@ class Patient extends Model
         'emergency_contact_name',
         'emergency_contact_phone',
         'pay_method',
+        'status',
     ];
 
     /**

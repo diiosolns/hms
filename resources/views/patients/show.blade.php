@@ -84,12 +84,34 @@
                                         </div>
                                         <div class="gap-col">
                                             <ul class="d-flex gap g-2">
-                                                <li class="d-none d-md-block">
-                                                    <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#assignDoctorModal" ><em class="icon ni ni-plus-medi"></em><span>Assign a Doctor</span></a>
-                                                </li>
-                                                <li class="d-md-none">
-                                                    <a href="#" class="btn btn-soft btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#assignDoctorModal" ><em class="icon ni ni-plus-medi"></em></a>
-                                                </li>
+                                                {{-- If user is receptionist, show Assign Doctor button --}}
+                                                @if(Auth::user()->role === 'receptionist')
+                                                    <li class="d-none d-md-block">
+                                                        <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#assignDoctorModal">
+                                                            <em class="icon ni ni-plus-medi"></em>
+                                                            <span>Assign a Doctor</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="d-md-none">
+                                                        <a href="#" class="btn btn-soft btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#assignDoctorModal">
+                                                            <em class="icon ni ni-plus-medi"></em>
+                                                        </a>
+                                                    </li>
+                                                {{-- If user is nurse, show Vital buttons --}}
+                                                @elseif(Auth::user()->role === 'nurse')
+                                                    <li class="d-none d-md-block">
+                                                        <a href="#" class="btn btn-soft btn-success" data-bs-toggle="modal" data-bs-target="#updateNurseTriageModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                            <span>Update Vitals</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="d-md-none">
+                                                        <a href="#" class="btn btn-soft btn-success btn-icon" data-bs-toggle="modal" data-bs-target="#updateNurseTriageModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                        </a>
+                                                    </li>
+                                                @endif
+
                                             </ul>
                                         </div>
                                     </div><!-- .nk-block-head-between -->
@@ -420,8 +442,9 @@
                 </div>
 
                 <div class="modal-footer">
+                    <input type="hidden" name="status" value="Updated">
                     <button type="button" class="btn btn-md btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-md btn-primary">Update Assessment</button>
+                    <button type="submit" class="btn btn-md btn-primary">Update Vitals</button>
                 </div>
             </form>
         </div>
@@ -439,15 +462,60 @@
                 <h5 class="modal-title" id="updateNurseTriageModalLabel">Assign a Doctor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
-                <p>
-                    Display doctor, room, number of peding patients
-                </p>
+                <!-- BRANCH DOCTORS WITH PENDING PATIENTS -->
+                <table class="table table-middle mb-0">
+                    <thead class="table-light table-head-md">
+                        <tr>
+                            <th class="tb-col"><span class="overline-title">Doctor</span></th>
+                            <th class="tb-col tb-col-end tb-col-sm"><span class="overline-title">Phone</span></th>
+                            <th class="tb-col tb-col-end"><span class="overline-title">Pending Patients</span></th>
+                            <th class="tb-col tb-col-end"><span class="overline-title">Actions</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($doctors as $doctor)
+                        <tr>
+                            <td class="tb-col">
+                                <div class="media-group">
+                                    <div class="media media-md flex-shrink-0 media-middle media-circle text-bg-info-soft">
+                                        <span class="smaller">
+                                            {{ strtoupper(substr($doctor->first_name,0,1)) }}{{ strtoupper(substr($doctor->last_name,0,1)) }}
+                                        </span>
+                                    </div>
+                                    <div class="media-text">
+                                        <span class="title">{{ $doctor->first_name }} {{ $doctor->last_name }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="tb-col tb-col-end tb-col-sm">
+                                <span class="small">{{ $doctor->phone ?? 'N/A' }}</span>
+                            </td>
+                            <td class="tb-col tb-col-end">
+                                <span class="badge bg-warning">{{ $doctor->patients()->whereNotIn('status', ['Closed', 'Cancelled'])->count() }}</span>
+                            </td>
+                            <td>
+                                <form action="{{ route('patients.assign', $doctor->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        Assign
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No doctors found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <!-- END BRANCH DOCTORS -->
             </div>
-
-            <div class="modal-footer">
-                
+            <div class="modal-footer text-center">
+                {{ $doctors->links('pagination::bootstrap-5') }}
             </div>
             
         </div>

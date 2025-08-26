@@ -83,6 +83,7 @@ class PatientController extends Controller
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
+            'doctor_id' => 'required|integer|exists:users,id',
             'patient_id' => 'required|string',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -167,10 +168,28 @@ class PatientController extends Controller
         $doctors = User::with('pending_patients')
                ->where('role', 'Doctor')
                ->where('branch_id', Auth::user()->branch_id)
-               ->get();
+               ->paginate(20);
 
         return view('patients.show', compact('patient', 'doctors'));
     }
+
+
+    public function assignDoctor(Request $request, User $doctor)
+    {
+        $patientId = $request->input('patient_id');
+
+        $patient = Patient::findOrFail($patientId);
+
+        $patient->update([
+            'doctor_id' => $doctor->id,
+            'status' => 'Doctor',
+        ]);
+
+        //dd($update );
+
+        return redirect()->back()->with('success', 'Patient assigned to Dr. '.$doctor->first_name.' successfully.');
+    }
+
 
     /**
      * Show the form for editing the specified patient.
