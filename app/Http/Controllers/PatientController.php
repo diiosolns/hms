@@ -31,10 +31,13 @@ class PatientController extends Controller
             $query->where('status', 'Nurse');
         } else if ($user->role === 'doctor') {
             $query->where('status', 'Doctor');
+            $query->where('doctor_id', Auth::id());
         } else if ($user->role === 'lab_technician') {
             $query->where('status', 'Laboratory');
+            $query->where('doctor_id', Auth::id());
         } else if ($user->role === 'pharmacist') {
             $query->where('status', 'Pharmacy');
+            $query->where('doctor_id', Auth::id());
         }
 
         // Check for a search query from the request

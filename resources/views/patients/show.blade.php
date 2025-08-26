@@ -110,6 +110,32 @@
                                                             <em class="icon ni ni-activity"></em>
                                                         </a>
                                                     </li>
+
+                                                {{-- If user is doctor, show Vital buttons --}}
+                                                @elseif(Auth::user()->role === 'doctor')
+                                                    <li class="d-none d-md-block">
+                                                        <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#labTestsModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                            <span>Lab Tests</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="d-md-none">
+                                                        <a href="#" class="btn btn-soft btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#labTestsModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="d-none d-md-block">
+                                                        <a href="#" class="btn btn-soft btn-success" data-bs-toggle="modal" data-bs-target="#prescriptionsModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                            <span>Presscriptions</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="d-md-none">
+                                                        <a href="#" class="btn btn-soft btn-success btn-icon" data-bs-toggle="modal" data-bs-target="#prescriptionsModal">
+                                                            <em class="icon ni ni-activity"></em>
+                                                        </a>
+                                                    </li>
                                                 @endif
 
                                             </ul>

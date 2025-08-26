@@ -36,9 +36,9 @@
                                     <a href="{{ route('patients.index') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
-                                            <h5 class="title mb-3">Log Vitals</h5>
+                                            <h5 class="title mb-3">My Patients</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Update Triage Assessments.</span>
+                                                <span class="text-light">Manage medical records.</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->

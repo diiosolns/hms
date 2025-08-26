@@ -12,14 +12,32 @@
                                             <h2 class="nk-block-title">Patient List</h2>
                                                 <nav>
                                                     <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                                        @if(Auth::user()->role === 'receptionist')
                                                         <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'nurse')
+                                                        <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'doctor')
+                                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'pharmacist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'lab_technician')
+                                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'admin')
+                                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'owner')
+                                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                                        @endif
+
+                                                        @if(Auth::user()->role === 'receptionist')
                                                         <li class="breadcrumb-item"><a href="{{ route('patients.create') }}">Add new parient</a></li>
+                                                        @endif
                                                         <li class="breadcrumb-item active" aria-current="page">Manage patients</li>
                                                     </ol>
                                                 </nav>
                                         </div>
                                         <div class="nk-block-head-content">
                                             <ul class="d-flex">
+                                                @if(Auth::user()->role === 'receptionist')
                                                 <li>
                                                     <a href="{{ route('patients.create') }}" class="btn btn-md d-md-none btn-primary" >
                                                         <em class="icon ni ni-plus"></em>
@@ -32,6 +50,10 @@
                                                         <span>Add Patient</span>
                                                     </a>
                                                 </li>
+
+                                                @elseif(Auth::user()->role === 'doctor')
+
+                                                @endif
                                             </ul>
                                         </div>
                                     </div><!-- .nk-block-head-between -->
@@ -86,6 +108,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="tb-col tb-col-end">
+                                                        @if(Auth::user()->role === 'receptionist')
                                                         <div class="dropdown">
                                                             <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
                                                                 <em class="icon ni ni-more-v"></em>
@@ -116,7 +139,17 @@
                                                                 </div>
                                                             </div>
                                                         </div><!-- dropdown -->
+                                                        @elseif(Auth::user()->role === 'nurse')
+                                                            <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
+                                                                View
+                                                            </a>
+                                                        @elseif(Auth::user()->role === 'doctor')
+                                                            <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
+                                                                View
+                                                            </a>
+                                                        @endif
                                                     </td>
+
                                                 </tr>
                                                 @empty
                                                     <tr>

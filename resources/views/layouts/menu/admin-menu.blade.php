@@ -1,5 +1,5 @@
 <li class="nk-menu-item">
-    <a href="{{ route('dashboard') }}" class="nk-menu-link">
+    <a href="{{ route('admin.dashboard') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-dashboard"></em></span>
         <span class="nk-menu-text">Dashboard</span>
     </a>

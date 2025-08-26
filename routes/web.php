@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ReportController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\NurseTriageAssessmentController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\LabController;
+use App\Http\Controllers\PharmacistController;
 
 
 /*
@@ -109,9 +112,8 @@ Route::middleware(['auth'])->group(function () {
     // Doctor Routes (Requires 'doctor' role)
     Route::middleware(['role:doctor'])->prefix('doctor')->name('doctor.')->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('dashboard');
-        Route::get('/patients', [DoctorController::class, 'patients'])->name('patients');
+        Route::get('/patients', [PatientController::class, 'index'])->name('patients');
         Route::get('/appointments', [DoctorController::class, 'appointments'])->name('appointments');
-        
         Route::get('/lab-results', [DoctorController::class, 'labResults'])->name('lab_results');
         Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
         // Add other doctor routes here
@@ -127,7 +129,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Lab Technician Routes (Requires 'lab_technician' role)
-    Route::middleware(['role:lab_technician'])->prefix('lab')->name('lab.')->group(function () {
+    Route::middleware(['role:lab_technician'])->prefix('lab_technician')->name('lab_technician.')->group(function () {
         Route::get('/dashboard', [LabController::class, 'dashboard'])->name('dashboard');
         Route::get('/tests/pending', [LabController::class, 'pendingTests'])->name('tests.pending');
         Route::get('/tests/completed', [LabController::class, 'completedTests'])->name('tests.completed');
@@ -138,7 +140,9 @@ Route::middleware(['auth'])->group(function () {
     // Pharmacist Routes (Requires 'pharmacist' role)
     Route::middleware(['role:pharmacist'])->prefix('pharmacist')->name('pharmacist.')->group(function () {
         Route::get('/dashboard', [PharmacistController::class, 'dashboard'])->name('dashboard');
-        // Add other pharmacist routes here
+        Route::get('/inventory', [PharmacistController::class, 'dashboard'])->name('inventory');
+        Route::get('/prescriptions', [PharmacistController::class, 'dashboard'])->name('prescriptions');
+        Route::get('/billing', [PharmacistController::class, 'dashboard'])->name('billing');
     });
 
     // Receptionist Routes (Requires 'receptionist' role)
