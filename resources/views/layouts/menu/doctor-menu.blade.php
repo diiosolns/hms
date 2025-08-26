@@ -10,21 +10,21 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('patients.my') }}" class="nk-menu-link">
+    <a href="{{ route('doctor.patients') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-folder"></em></span>
         <span class="nk-menu-text">My Patients</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('appointments.my') }}" class="nk-menu-link">
+    <a href="{{ route('doctor.appointments') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-calendar"></em></span>
         <span class="nk-menu-text">My Appointments</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab.results') }}" class="nk-menu-link">
+    <a href="{{ route('doctor.lab_results') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-lab"></em></span>
         <span class="nk-menu-text">Lab Results</span>
     </a>

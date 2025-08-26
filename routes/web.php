@@ -9,7 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\NurseTriageAssessmentController;
 use App\Http\Controllers\NurseController;
-
+use App\Http\Controllers\DoctorController;
 
 
 /*
@@ -111,6 +111,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('dashboard');
         Route::get('/patients', [DoctorController::class, 'patients'])->name('patients');
         Route::get('/appointments', [DoctorController::class, 'appointments'])->name('appointments');
+        
+        Route::get('/lab-results', [DoctorController::class, 'labResults'])->name('lab_results');
         Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
         // Add other doctor routes here
     });
