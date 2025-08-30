@@ -103,11 +103,38 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/settings', [OwnerController::class, 'manageHospitals'])->name('settings');
     });
 
+
+
+
+
+
+
+
     // Admin Routes (Requires 'admin' role)
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        // Add other admin routes here (e.g., user management, system reports)
+        // User Management (full CRUD)
+        Route::resource('users', UserController::class);
+        Route::resource('patients', PatientController::class);
+        Route::resource('appointments', AppointmentController::class);
+
+        Route::get('billing', [BillingController::class, 'index'])->name('billing.index');
+        Route::get('pharmacy', [PharmacyController::class, 'index'])->name('pharmacy.index');
+        Route::get('lab', [LabController::class, 'index'])->name('lab.index');
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     });
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Doctor Routes (Requires 'doctor' role)
     Route::middleware(['role:doctor'])->prefix('doctor')->name('doctor.')->group(function () {

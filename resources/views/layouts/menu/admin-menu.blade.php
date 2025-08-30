@@ -15,8 +15,8 @@
         <span class="nk-menu-text">User Management</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('users.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Users</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('users.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New User</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.users.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Users</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.users.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New User</span></a></li>
     </ul>
 </li>
 
@@ -26,8 +26,8 @@
         <span class="nk-menu-text">Patient Management</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('patients.index') }}" class="nk-menu-link"><span class="nk-menu-text">Patient List</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('patients.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New Patient</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.patients.index') }}" class="nk-menu-link"><span class="nk-menu-text">Patient List</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.patients.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New Patient</span></a></li>
     </ul>
 </li>
 
@@ -37,34 +37,34 @@
         <span class="nk-menu-text">Appointments</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Appointments</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Schedule Appointment</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Appointments</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Schedule Appointment</span></a></li>
     </ul>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('billing.index') }}" class="nk-menu-link">
+    <a href="{{ route('admin.billing.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-coins"></em></span>
         <span class="nk-menu-text">Billing</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('pharmacy.index') }}" class="nk-menu-link">
+    <a href="{{ route('admin.pharmacy.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-capsule-fill"></em></span>
         <span class="nk-menu-text">Pharmacy</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab.index') }}" class="nk-menu-link">
+    <a href="{{ route('admin.lab.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-lab"></em></span>
         <span class="nk-menu-text">Laboratory</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('reports.index') }}" class="nk-menu-link">
+    <a href="{{ route('admin.reports.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
         <span class="nk-menu-text">Reports</span>
     </a>

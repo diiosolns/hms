@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('address', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->enum('room')->nullable()->default('R001');
+            $table->string('room', 20)->nullable()->default('R001');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -99,36 +99,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 4. Table for medical records and visit details
-        Schema::create('medical_records', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
-            $table->date('visit_date');
-            $table->text('chief_complaint')->nullable();
-            $table->text('diagnosis')->nullable();
-            $table->text('treatment_plan')->nullable();
-            $table->text('notes')->nullable();
-            $table->timestamps();
-        });
-
-        // 5. Table for prescriptions
-        Schema::create('prescriptions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('medical_record_id')->constrained('medical_records')->onDelete('cascade');
-            $table->string('drug_name', 100);
-            $table->string('dosage', 50);
-            $table->string('frequency', 50)->nullable();
-            $table->string('duration', 50)->nullable();
-            $table->text('instructions')->nullable();
-            $table->timestamps();
-        });
-
         // 6. Table for billing invoices
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users'); // receptionist who created invoice
+            $table->string('invoice_number')->unique();
             $table->date('invoice_date');
             $table->decimal('total_amount', 10, 2);
             $table->enum('status', ['Paid', 'Pending', 'Cancelled'])->default('Pending');
@@ -146,34 +122,120 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // New table for a predefined list of lab test names
-        Schema::create('lab_test_catalogs', function (Blueprint $table) {
+        Schema::create('lab_tests', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100)->unique();
-            $table->string('description', 255)->nullable();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->string('code')->unique(); // e.g., CBC001
+            $table->string('name');           // e.g., Complete Blood Count
+            $table->string('category')->nullable(); // Hematology, Biochemistry, etc.
+            $table->text('description')->nullable();
+            $table->string('sample_type')->nullable(); // Blood, Urine, etc.
+            $table->string('method')->nullable();      // e.g., ELISA, PCR
+            $table->string('normal_range')->nullable();
+            $table->string('unit')->nullable();
+            $table->decimal('price', 10, 2)->default(0);
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
 
-        // 8. Modified lab tests table to use a foreign key
-        Schema::create('lab_tests', function (Blueprint $table) {
+        Schema::create('lab_requests', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade'); 
+            $table->foreignId('requested_by')->constrained('users')->onDelete('cascade'); // Doctor/Nurse
+            $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');
+            $table->timestamp('requested_at')->useCurrent();
+            $table->timestamps();
+        });
+
+        Schema::create('lab_request_tests', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('lab_request_id')->constrained()->onDelete('cascade');
+            $table->foreignId('lab_test_id')->constrained('lab_tests')->onDelete('cascade');
+            $table->enum('status', ['Pending', 'Completed'])->default('Pending');
+            $table->string('result')->nullable();
+            $table->string('unit')->nullable();             // e.g., g/dL
+            $table->string('reference_range')->nullable();  // e.g., 4.5–11 × 10^9/L
+            $table->foreignId('performed_by')->nullable()->constrained('users')->onDelete('set null'); // Lab tech
+            $table->timestamp('completed_at')->nullable();
+            $table->string('attachment')->nullable(); // store file path or filename
+            $table->timestamps();
+        });
+
+        Schema::create('pharmacy_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->string('code')->unique(); // e.g. PARA500
+            $table->string('name'); // Generic name (Paracetamol)
+            $table->string('brand_name')->nullable(); // Brand name (Panadol)
+            $table->string('category')->nullable(); // Antibiotic, Analgesic
+            $table->string('form')->nullable(); // Tablet, Syrup, Injection
+            $table->string('strength')->nullable(); // 500mg, 250mg/5ml
+            $table->string('unit')->default('Tablet'); // Tablet, Bottle, Vial
+            $table->decimal('price', 10, 2)->default(0); // Unit price
+            $table->integer('reorder_level')->default(10); // Minimum stock before alert
+            $table->boolean('status')->default(true); // Active/Inactive
+            $table->date('expiry_date')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('pharmacy_stock', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->foreignId('pharmacy_item_id')->constrained('pharmacy_items')->onDelete('cascade');
+            $table->enum('type', ['in', 'out', 'adjustment']); // Stock in, out, or adjustment
+            $table->integer('quantity');
+            $table->integer('balance')->default(0); // Running balance
+            $table->string('batch_no')->nullable();
+            $table->date('expiry_date')->nullable();
+            $table->string('reference')->nullable(); // Purchase Order, Prescription ID
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Who made the transaction
+            $table->timestamps();
+        });
+
+        // 4. Table for medical records and visit details
+        Schema::create('medical_records', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
+            $table->date('visit_date');
+            $table->text('chief_complaint')->nullable();
+            $table->text('diagnosis')->nullable();
+            $table->text('treatment_plan')->nullable();
+            $table->text('notes')->nullable();
+            $table->enum('status', ['Pending', 'Dispensed', 'Cancelled'])->default('Pending');
+            $table->timestamps();
+        });
+
+        // 5. Table for prescriptions
+        Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('medical_record_id')->constrained('medical_records')->onDelete('cascade');
-            $table->foreignId('test_catalog_id')->constrained('lab_test_catalogs')->onDelete('cascade');
-            $table->enum('status', ['Pending', 'In Progress', 'Completed'])->default('Pending');
-            $table->text('results')->nullable();
-            $table->string('results_file_path', 255)->nullable();
+            $table->foreignId('pharmacy_items_id')->constrained('pharmacy_items')->onDelete('cascade');
+            $table->string('drug_name', 100);
+            $table->string('dosage', 50);
+            $table->string('frequency', 50)->nullable();
+            $table->string('duration', 50)->nullable();
+            $table->integer('quantity'); // Total qty prescribed
+            $table->integer('dispensed_qty')->default(0); // What pharmacist dispensed
+            $table->text('instructions')->nullable();
             $table->timestamps();
         });
 
-        // 9. Table for pharmacy inventory
-        Schema::create('inventory', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
-            $table->string('drug_name', 100)->unique();
-            $table->integer('stock_quantity');
-            $table->decimal('unit_price', 10, 2);
-            $table->date('expiry_date')->nullable();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->string('code')->unique();   // e.g., CON_GEN, LAB_CBC
+            $table->string('name');             // e.g., "General Consultation"
+            $table->string('category');         // e.g., Consultation, Laboratory, Pharmacy
+            $table->decimal('fee', 10, 2);      // service cost
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
 
@@ -230,5 +292,28 @@ return new class extends Migration
         Schema::dropIfExists('hospitals');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+
+/*
+        Schema::dropIfExists('nurse_triage_assessments');
+        Schema::dropIfExists('ward_and_beds');
+        Schema::dropIfExists('services');
+        Schema::dropIfExists('prescriptions');
+        Schema::dropIfExists('medical_records');
+        Schema::dropIfExists('pharmacy_stock');
+        Schema::dropIfExists('pharmacy_items');
+        Schema::dropIfExists('lab_request_tests');
+        Schema::dropIfExists('lab_requests');
+        Schema::dropIfExists('lab_tests');
+        Schema::dropIfExists('invoice_items');
+        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('patients');
+        Schema::dropIfExists('branches');
+        Schema::dropIfExists('hospitals');
+        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');*/
+
+
     }
 };
