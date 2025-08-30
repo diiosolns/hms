@@ -101,9 +101,8 @@ class PatientController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
         $service = Service::findOrFail($request->service_id);
-        dd($service);
+        
         // Validate the incoming request data
         $validatedData = $request->validate([
             'hospital_id' => 'nullable|integer|exists:hospitals,id',
@@ -134,6 +133,8 @@ class PatientController extends Controller
         // Step 3: Create default appointment for this patient
         $service = Service::findOrFail($request->service_id);
         $appointment = Appointment::create([
+            'hospital_id' => $request->hospital_id,
+            'branch_id' => $request->branch_id,
             'patient_id' => $patient->id,
             'doctor_id' => Auth::user()->id, // assign logged-in user as doctor, adjust as needed
             'service_id' => $request->service_id,
@@ -211,17 +212,26 @@ class PatientController extends Controller
             'appointments', 
             'nurseTriageAssessments', 
             'medicalRecords', 
-            'LabRequest',
-            'prescription',
-            'doctor'
+            'LabRequests',
+            'prescriptions',
+            'doctor',
+            'appointments',
+            'invoices',
+            'pendingInvoices'
         ])->findOrFail($id);
+
+        // Total of all invoices
+        $totalInvoices = $patient->invoices->sum('total_amount');
+
+        // Total of pending invoices
+        $totalPendingInvoices = $patient->pendingInvoices->sum('total_amount');
 
         $doctors = User::with('pending_patients')
                ->where('role', 'Doctor')
                ->where('branch_id', Auth::user()->branch_id)
                ->paginate(20);
 
-        return view('patients.show', compact('patient', 'doctors'));
+        return view('patients.show', compact('patient', 'doctors', 'totalInvoices', 'totalPendingInvoices'));
     }
 
 

@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Patient.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +9,6 @@ class Patient extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'hospital_id',
         'branch_id',
@@ -34,14 +28,27 @@ class Patient extends Model
     ];
 
     /**
-     * Define the relationship for Appointments.
      * A patient can have many appointments.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    /**
+     * A patient can have many invoices.
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    /**
+     * A patient can have many pending invoices.
+     */
+    public function pendingInvoices()
+    {
+        return $this->hasMany(Invoice::class)->where('status', 'Pending');
     }
 
     /**
@@ -53,10 +60,7 @@ class Patient extends Model
     }
 
     /**
-     * Define the relationship for Medical Records.
      * A patient can have many medical records.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function medicalRecords()
     {
@@ -64,32 +68,23 @@ class Patient extends Model
     }
 
     /**
-     * Define the relationship for Lab Tests.
-     * A patient can have many lab tests.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * A patient can have many lab requests.
      */
-    public function LabRequest()
+    public function labRequests()
     {
         return $this->hasMany(LabRequest::class);
     }
 
     /**
-     * Define the relationship for prescription.
-     * A patient can have many prescription.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * A patient can have many prescriptions.
      */
-    public function prescription()
+    public function prescriptions()
     {
         return $this->hasMany(Prescription::class);
     }
 
     /**
-     * Define the relationship with Branch.
      * A patient belongs to a branch.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function branch()
     {
@@ -97,10 +92,7 @@ class Patient extends Model
     }
 
     /**
-     * Define the relationship with Hospital.
      * A patient belongs to a hospital.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hospital()
     {
@@ -108,15 +100,10 @@ class Patient extends Model
     }
 
     /**
-     * Define the relationship with Users.
-     * doctor_id → the foreign key on the patients table.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A patient is assigned to a doctor (user).
      */
     public function doctor()
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
-
-
 }

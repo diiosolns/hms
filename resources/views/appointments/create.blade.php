@@ -83,7 +83,7 @@
                                         <div class="form-group">
                                             <label class="form-label">Service</label>
                                             <div class="form-control-wrap">
-                                                <select class="js-select" data-search="true" data-sort="false">
+                                                <select class="js-select @error('service_id') is-invalid @enderror" name="service_id" id="service_id" data-search="true" data-sort="false">
                                                     <option value="1">Select Service (Optional)</option>
                                                     @foreach($services as $service)
                                                     <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>

@@ -17,6 +17,7 @@ use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PharmacyItemController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -219,6 +220,8 @@ Route::middleware(['auth'])->group(function () {
     //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
     //Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
     Route::resource('appointments', AppointmentController::class);
+    Route::resource('invoices', InvoiceController::class);
+    
     Route::get('/billing/create', [ReceptionistController::class, 'createBilling'])->name('billing.create');
 
     //Nurse Triage Assessments
