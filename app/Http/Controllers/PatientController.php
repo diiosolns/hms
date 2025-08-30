@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Patient;
+use App\Models\Service;
 use App\Models\Appointment;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\NurseTriageAssessment;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -73,7 +76,21 @@ class PatientController extends Controller
      */
     public function create(): View
     {
-        return view('patients.create');
+        $user = Auth::user();
+
+        // Get doctors for the same hospital and branch
+        $doctors = User::where('role', 'doctor')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active services
+        $services = Service::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        return view('patients.create', compact( 'doctors', 'services'));
     }
 
     /**
@@ -84,8 +101,13 @@ class PatientController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
+        $service = Service::findOrFail($request->service_id);
+        dd($service);
         // Validate the incoming request data
         $validatedData = $request->validate([
+            'hospital_id' => 'nullable|integer|exists:hospitals,id',
+            'branch_id' => 'nullable|integer|exists:branches,id',
             'doctor_id' => 'required|integer|exists:users,id',
             'patient_id' => 'required|string',
             'first_name' => 'required|string|max:255',
@@ -98,6 +120,7 @@ class PatientController extends Controller
             'emergency_contact_name' => 'nullable|string',
             'emergency_contact_phone' => 'nullable|string',
             'pay_method' => 'nullable|string',
+            'service_id' => 'nullable|integer|exists:services,id',
         ]);
 
         // Step 1: Create the patient
@@ -109,13 +132,38 @@ class PatientController extends Controller
         $patient->save();
 
         // Step 3: Create default appointment for this patient
+        $service = Service::findOrFail($request->service_id);
         $appointment = Appointment::create([
             'patient_id' => $patient->id,
             'doctor_id' => Auth::user()->id, // assign logged-in user as doctor, adjust as needed
+            'service_id' => $request->service_id,
             'appointment_date' => now()->toDateString(),
             'appointment_time' => now()->toTimeString(),
-            'reason' => 'Initial appointment',
+            'reason' => $service->name,
             'status' => 'Scheduled',
+        ]);
+
+        // Step 4: Create an invoice
+        $service = Service::findOrFail($request->service_id);
+        $invoice = Invoice::create([
+            'patient_id'   => $patient->id,
+            'user_id'      => Auth::user()->id,
+            'invoice_number' => 'INV' . uniqid(), // temporary unique value
+            'invoice_date' => now()->toDateString(),
+            'total_amount' => $service->fee,
+            'status'       => 'Pending',
+        ]);
+
+        $invoiceNumber = 'INV' . str_pad($invoice->id, 8, '0', STR_PAD_LEFT);
+        $invoice->update(['invoice_number' => $invoiceNumber]);
+
+        // step 5: Add Invoice items
+        $invoiceitem = invoiceitem::create([
+            'invoice_id' => $invoice->id,
+            'description' => $service->name,
+            'quantity' => 1,
+            'unit_price' => $service->fee,
+            'total' => $service->fee,
         ]);
 
         // Step 4: Create nurse triage assessment with NULL results
@@ -163,7 +211,7 @@ class PatientController extends Controller
             'appointments', 
             'nurseTriageAssessments', 
             'medicalRecords', 
-            'labTests',
+            'LabRequest',
             'prescription',
             'doctor'
         ])->findOrFail($id);

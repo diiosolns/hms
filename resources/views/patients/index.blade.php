@@ -108,7 +108,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="tb-col tb-col-end">
-                                                        @if(Auth::user()->role === 'receptionist')
+                                                        @if(Auth::user()->role === 'receptionist' || Auth::user()->role === 'admin')
                                                         <div class="dropdown">
                                                             <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
                                                                 <em class="icon ni ni-more-v"></em>

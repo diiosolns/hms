@@ -85,7 +85,7 @@
                                         <div class="gap-col">
                                             <ul class="d-flex gap g-2">
                                                 {{-- If user is receptionist, show Assign Doctor button --}}
-                                                @if(Auth::user()->role === 'receptionist' || Auth::user()->role === 'admin' )
+                                                @if(Auth::user()->role === 'receptionist')
                                                     <li class="d-none d-md-block">
                                                         <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#assignDoctorModal">
                                                             <em class="icon ni ni-plus-medi"></em>
@@ -494,7 +494,7 @@
                     <thead class="table-light table-head-md">
                         <tr>
                             <th class="tb-col"><span class="overline-title">Doctor</span></th>
-                            <th class="tb-col tb-col-end tb-col-sm"><span class="overline-title">Room</span></th>
+                            <th class="tb-col tb-col-end tb-col-sm"><span class="overline-title">Phone</span></th>
                             <th class="tb-col tb-col-end"><span class="overline-title">Pending Patients</span></th>
                             <th class="tb-col tb-col-end"><span class="overline-title">Actions</span></th>
                         </tr>
@@ -515,7 +515,7 @@
                                 </div>
                             </td>
                             <td class="tb-col tb-col-end tb-col-sm">
-                                <span class="small">{{ $doctor->room ?? 'N/A' }}</span>
+                                <span class="small">{{ $doctor->phone ?? 'N/A' }}</span>
                             </td>
                             <td class="tb-col tb-col-end">
                                 <span class="badge bg-warning">{{ $doctor->patients()->whereNotIn('status', ['Closed', 'Cancelled'])->count() }}</span>

@@ -12,8 +12,11 @@ use App\Http\Controllers\NurseTriageAssessmentController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\LabController;
+use App\Http\Controllers\LabTestController;
 use App\Http\Controllers\PharmacistController;
-
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\PharmacyItemController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,14 +116,27 @@ Route::middleware(['auth'])->group(function () {
     // Admin Routes (Requires 'admin' role)
     Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        
+        // Employee Management Routes
+        Route::get('/employees', [AdminController::class, 'manageEmployees'])->name('employees.manage');
+        Route::get('/employees/create', [AdminController::class, 'createEmployee'])->name('employees.create');
+        Route::post('/employees', [AdminController::class, 'storeEmployee'])->name('employees.store');
+        Route::get('/employees/{user}/edit', [AdminController::class, 'editEmployee'])->name('employees.edit');
+        Route::put('/employees/{user}', [AdminController::class, 'updateEmployee'])->name('employees.update');
+        Route::delete('/employees/{user}', [AdminController::class, 'destroyEmployee'])->name('employees.destroy');
+        
+        Route::resource('lab', LabTestController::class);
+        Route::resource('pharmacy', PharmacyItemController::class);
+        Route::resource('appointments', AppointmentController::class);
         // User Management (full CRUD)
-        Route::resource('users', UserController::class);
+        //Route::resource('users', UserController::class);
         Route::resource('patients', PatientController::class);
         Route::resource('appointments', AppointmentController::class);
+        Route::resource('services', ServiceController::class);
 
         Route::get('billing', [BillingController::class, 'index'])->name('billing.index');
-        Route::get('pharmacy', [PharmacyController::class, 'index'])->name('pharmacy.index');
-        Route::get('lab', [LabController::class, 'index'])->name('lab.index');
+        //Route::get('pharmacy', [PharmacyController::class, 'index'])->name('pharmacy.index');
+        //Route::get('lab', [LabController::class, 'index'])->name('lab.index');
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
     });
 
@@ -175,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
     // Receptionist Routes (Requires 'receptionist' role)
     Route::middleware(['role:receptionist'])->prefix('receptionist')->name('receptionist.')->group(function () {
         Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])->name('dashboard');
+        Route::resource('appointments', AppointmentController::class);
         // Add other receptionist routes here
     });
 
@@ -199,8 +216,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
     Route::patch('/patients/assign/{doctor}', [PatientController::class, 'assignDoctor'])->name('patients.assign');
     
-    Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
-    Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
+    //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
+    //Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
+    Route::resource('appointments', AppointmentController::class);
     Route::get('/billing/create', [ReceptionistController::class, 'createBilling'])->name('billing.create');
 
     //Nurse Triage Assessments

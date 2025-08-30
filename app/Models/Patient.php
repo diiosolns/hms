@@ -16,6 +16,8 @@ class Patient extends Model
      * @var array
      */
     protected $fillable = [
+        'hospital_id',
+        'branch_id',
         'first_name',
         'last_name',
         'patient_id',
@@ -67,9 +69,9 @@ class Patient extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function labTests()
+    public function LabRequest()
     {
-        return $this->hasMany(LabTest::class);
+        return $this->hasMany(LabRequest::class);
     }
 
     /**

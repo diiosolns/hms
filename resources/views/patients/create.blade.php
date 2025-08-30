@@ -13,7 +13,21 @@
                                                 <h2 class="nk-block-title">Patient Registration Form</h2>
                                                     <nav>
                                                         <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                                            @if(Auth::user()->role === 'receptionist')
                                                             <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'nurse')
+                                                            <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'doctor')
+                                                            <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'pharmacist')
+                                                            <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'lab_technician')
+                                                            <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'admin')
+                                                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                                            @elseif(Auth::user()->role === 'owner')
+                                                            <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                                            @endif
                                                             <li class="breadcrumb-item"><a href="{{ route('patients.index') }}">Manage Patients</a></li>
                                                             <li class="breadcrumb-item active" aria-current="page">Add patient</li>
                                                         </ol>
@@ -228,9 +242,27 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- Service -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Service</label>
+                                                                <div class="form-control-wrap">
+                                                                    <select class="js-select" data-search="true" data-sort="false">
+                                                                        <option value="1">Select Service (Optional)</option>
+                                                                        @foreach($services as $service)
+                                                                        <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            @error('service_id')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
                                                         <!-- Avoid Nurse Switch -->
                                                         <div class="col-lg-12 g-4">
-                                                            <div class="form-check form-switch form-check-xl g-2">
+                                                            <div class="form-check form-switch form-check-lg g-2">
                                                               <input class="form-check-input" type="checkbox" name="avoid_nurse" value="yes" id="flexSwitchDefault">
                                                               <label class="form-check-label" for="flexSwitchDefault">
                                                                 Avoid Nurse
@@ -238,12 +270,15 @@
                                                               </label>
                                                             </div>
                                                         </div>
-                                                        
 
+                                                        <!-- Hidden hospital & branch -->
+                                                        <input type="hidden" name="hospital_id" value="{{ auth()->user()->hospital_id }}">
+                                                        <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
+                                                        <input type="hidden" name="patient_id" value="{{ 'PNT' . now()->format('YmdHis') . rand(100,999) }}">
+                                                        <input type="hidden" name="doctor_id" value="{{ Auth::id() }}">
+                                                        
                                                         <!-- Submit -->
                                                         <div class="col-lg-12">
-                                                            <input type="hidden" name="patient_id" value="{{ 'PNT' . now()->format('YmdHis') . rand(100,999) }}">
-                                                            <input type="hidden" name="doctor_id" value="{{ Auth::id() }}">
                                                             <button class="btn btn-primary" type="submit">Save Details</button>
                                                         </div>
                                                     </div>

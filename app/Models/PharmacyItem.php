@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LabTest extends Model
+class PharmacyItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'lab_tests';
+    protected $table = 'pharmacy_items';
 
     /**
      * The attributes that are mass assignable.
@@ -19,18 +19,19 @@ class LabTest extends Model
         'branch_id',
         'code',
         'name',
+        'brand_name',
         'category',
-        'description',
-        'sample_type',
-        'method',
-        'normal_range',
+        'form',
+        'strength',
         'unit',
         'price',
+        'reorder_level',
         'status',
+        'expiry_date',
     ];
 
     /**
-     * Relationship: LabTest belongs to a Hospital
+     * Relationship: PharmacyItem belongs to a Hospital
      */
     public function hospital()
     {
@@ -38,7 +39,7 @@ class LabTest extends Model
     }
 
     /**
-     * Relationship: LabTest belongs to a Branch
+     * Relationship: PharmacyItem belongs to a Branch
      */
     public function branch()
     {
@@ -46,10 +47,18 @@ class LabTest extends Model
     }
 
     /**
-     * Relationship: LabTest has many LabRequestTests
+     * Relationship: PharmacyItem has many stock records
      */
-    public function labRequestTests()
+    public function stock()
     {
-        return $this->hasMany(LabRequestTest::class);
+        return $this->hasMany(PharmacyStock::class);
+    }
+
+    /**
+     * Relationship: PharmacyItem has many prescriptions
+     */
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class, 'pharmacy_items_id');
     }
 }

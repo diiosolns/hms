@@ -70,6 +70,7 @@ return new class extends Migration
         // 2. Modified patients table to include a branch_id
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('hospital_id')->nullable()->constrained('hospitals')->onDelete('set null');
             $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('set null');
             $table->foreignId('doctor_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('patient_id', 20)->unique();
@@ -90,14 +91,18 @@ return new class extends Migration
         // 3. Table for appointments
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('service_id')->nullable()->constrained('services')->onDelete('set null'); // NEW
             $table->date('appointment_date');
             $table->time('appointment_time');
             $table->text('reason')->nullable();
             $table->enum('status', ['Scheduled', 'Completed', 'Cancelled'])->default('Scheduled');
             $table->timestamps();
         });
+
 
         // 6. Table for billing invoices
         Schema::create('invoices', function (Blueprint $table) {

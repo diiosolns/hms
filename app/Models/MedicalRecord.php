@@ -9,26 +9,24 @@ class MedicalRecord extends Model
 {
     use HasFactory;
 
+    protected $table = 'medical_records';
+
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
      */
     protected $fillable = [
         'patient_id',
         'doctor_id',
-        'appointment_id',
+        'visit_date',
         'chief_complaint',
         'diagnosis',
         'treatment_plan',
         'notes',
+        'status',
     ];
 
     /**
-     * Define the inverse relationship to Patient.
-     * A medical record belongs to one patient.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Relationship: MedicalRecord belongs to a Patient
      */
     public function patient()
     {
@@ -36,10 +34,7 @@ class MedicalRecord extends Model
     }
 
     /**
-     * Define the inverse relationship to User (Doctor).
-     * A medical record belongs to one doctor.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Relationship: MedicalRecord belongs to a Doctor (User)
      */
     public function doctor()
     {
@@ -47,21 +42,7 @@ class MedicalRecord extends Model
     }
 
     /**
-     * Define the inverse relationship to Appointment.
-     * A medical record belongs to one appointment.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function appointment()
-    {
-        return $this->belongsTo(Appointment::class);
-    }
-
-    /**
-     * Define the relationship to Prescriptions.
-     * A medical record can have many prescriptions.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Relationship: MedicalRecord has many Prescriptions
      */
     public function prescriptions()
     {

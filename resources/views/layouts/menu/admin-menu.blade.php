@@ -15,14 +15,14 @@
         <span class="nk-menu-text">User Management</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('admin.users.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Users</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('admin.users.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New User</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.employees.manage') }}" class="nk-menu-link"><span class="nk-menu-text">All Users</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.employees.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add New User</span></a></li>
     </ul>
 </li>
 
 <li class="nk-menu-item has-sub">
     <a href="#" class="nk-menu-link nk-menu-toggle">
-        <span class="nk-menu-icon"><em class="icon ni ni-pencil-alt"></em></span>
+        <span class="nk-menu-icon"><em class="icon ni ni-user-list"></em></span>
         <span class="nk-menu-text">Patient Management</span>
     </a>
     <ul class="nk-menu-sub">
@@ -58,8 +58,16 @@
 
 <li class="nk-menu-item">
     <a href="{{ route('admin.lab.index') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-lab"></em></span>
+        <span class="nk-menu-icon"><em class="icon ni ni-filter"></em></span>
         <span class="nk-menu-text">Laboratory</span>
+    </a>
+</li>
+
+
+<li class="nk-menu-item">
+    <a href="{{ route('admin.services.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-account-setting"></em></span>
+        <span class="nk-menu-text">Services</span>
     </a>
 </li>
 
