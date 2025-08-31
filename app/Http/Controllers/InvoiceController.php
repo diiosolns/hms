@@ -66,10 +66,12 @@ class InvoiceController extends Controller
     /**
      * Display the specified invoice.
      */
-    public function show(Invoice $invoice)
+    public function show($id)
     {
-        $invoice->load(['patient', 'user', 'items']);
-        return view('patients.invoices.show', compact('invoice'));
+        $invoice = Invoice::with(['patient', 'user', 'items'])
+            ->findOrFail($id);
+
+        return view('patients.invoice', compact('invoice'));
     }
 
     /**
@@ -111,4 +113,48 @@ class InvoiceController extends Controller
         $invoice->delete();
         return redirect()->route('patients.invoices.index')->with('success', 'Invoice deleted successfully.');
     }
+
+
+
+    public function removeItem($invoiceId, $itemId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);
+        $item = $invoice->items()->where('id', $itemId)->firstOrFail();
+
+        $item->delete();
+
+        // Recalculate total
+        $invoice->total_amount = $invoice->items()->sum('total');
+        $invoice->save();
+
+        return redirect()->back()->with('success', 'Invoice item removed successfully.');
+    }
+
+    public function clearBill($invoiceId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);
+
+        $invoice->status = 'Paid';
+        //$invoice->paid_at = now();
+        $invoice->save();
+
+        return redirect()->back()->with('success', 'Bill cleared successfully.');
+    }
+
+    public function cancel($invoiceId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);
+
+        $invoice->status = 'Cancelled';
+        $invoice->save();
+
+        return redirect()->back()->with('success', 'Invoice cancelled successfully.');
+    }
+
+
+
+
+
+
+
 }

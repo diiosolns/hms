@@ -216,11 +216,18 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
     Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
     Route::patch('/patients/assign/{doctor}', [PatientController::class, 'assignDoctor'])->name('patients.assign');
+    Route::get('/patients/direct-lab/{id}', [PatientController::class, 'directLab'])->name('patients.direct.lab');
+    Route::get('/patients/direct-pharmacy/{id}', [PatientController::class, 'directPharmacy'])->name('patients.direct.pharmacy');
     
     //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
     //Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
     Route::resource('appointments', AppointmentController::class);
     Route::resource('invoices', InvoiceController::class);
+    Route::prefix('invoices')->name('invoices.')->group(function () {
+        Route::delete('{invoice}/remove-item/{item}', [InvoiceController::class, 'removeItem'])->name('removeItem');
+        Route::post('{invoice}/clear-bill', [InvoiceController::class, 'clearBill'])->name('clearBill');
+        Route::post('{invoice}/cancel', [InvoiceController::class, 'cancel'])->name('cancel');
+    });
     
     Route::get('/billing/create', [ReceptionistController::class, 'createBilling'])->name('billing.create');
 

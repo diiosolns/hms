@@ -77,7 +77,7 @@
 
 
 
-                    <!-- PATIENTS PENDING VITALS -->
+                    <!-- PATIENTS PENDING  -->
                     <div class="row g-gs mt-4">
                         <div class="col-xxl-12">
                             <div class="card h-100">
@@ -175,7 +175,7 @@
                             </div><!-- .card -->
                         </div>
                     </div>
-                    <!-- END PATIENTS PENDING VITALS -->
+                    <!-- END PATIENTS PENDING -->
 
 
 

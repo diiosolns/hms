@@ -40,12 +40,12 @@
                                                         <a href="#">
                                                             <div class="box-dotted py-2">
                                                                 <div class="d-flex align-items-center">
-                                                                    <div class="h1 mb-0 text-danger">{{ number_format($totalPendingInvoices, 0) }}</div>
+                                                                    <div class="h1 mb-0 text-danger">{{ number_format($totalPendingInvoices, 0) }} <span class="small">TZS</span> </div>
                                                                     <span class="change up ms-1 small">
                                                                         <em class="icon ni ni-arrow-down"></em>
                                                                     </span>
                                                                 </div>
-                                                                <div class="smaller">Total: {{ number_format($totalInvoices, 2) }} TZS</div>
+                                                                <div class="smaller">Total: {{ number_format($totalInvoices, 0) }} TZS</div>
                                                             </div>
                                                         </a>
                                                     </div>
@@ -57,8 +57,8 @@
                                                                     <em class="icon ni ni-arrow-up"></em>
                                                                 </span>
                                                             </div>
-                                                            <div class="smaller"><a href="">Laboratory</a></div>
-                                                            <div class="smaller"><a href="">Pharmacy</a></div>
+                                                            <div class="smaller mt-3 mb-3"><a href="{{ route('patients.direct.lab', $patient->id) }}">Laboratory</a></div>
+                                                            <div class="smaller "><a href="{{ route('patients.direct.pharmacy', $patient->id) }}">Pharmacy</a></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -379,6 +379,117 @@
                                             </div><!-- .card-content -->
                                         </div><!-- .card-row -->
                                     </div><!-- .card -->
+
+
+
+
+
+
+                                    <!-- PATIENT INVOICES  -->
+                    
+                            <div class="card h-100 mt-4">
+                                <div class="card-body flex-grow-0 py-2">
+                                    <div class="card-title-group">
+                                        <div class="card-title">
+                                            <h4 class="title">Invoices</h4>
+                                        </div>
+                                        <div class="card-tools">
+                                            <div class="dropdown">
+                                                <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-more-v"></em>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                    <li>
+                                                        <div class="dropdown-header pt-2 pb-0">
+                                                            <h6 class="mb-0">Options</h6>
+                                                        </div>
+                                                    </li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a href="#" class="dropdown-item">Sort A-Z</a></li>
+                                                    <li><a href="#" class="dropdown-item">Sort Z-A</a></li>
+                                                </ul>
+                                            </div><!-- dropdown -->
+                                        </div>
+                                    </div><!-- .card-title-group -->
+                                </div><!-- .card-body -->
+
+                                <div class="table-responsive">
+                                    <table class="table table-middle mb-0">
+                                        <thead class="table-light table-head-md">
+                                            <tr>
+                                                <th class="tb-col">
+                                                    <span class="overline-title">Invoice No.</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end tb-col-sm">
+                                                    <span class="overline-title">Invoice Date</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end tb-col-sm">
+                                                    <span class="overline-title">Amount (TZS)</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Status</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Actions</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($patient->invoices as $inv)
+                                                <tr>
+                                                    <td class="tb-col ">
+                                                        <span class="small">{{ $inv->invoice_number ?? 'N/A' }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="small">
+                                                            {{ $inv->invoice_date ? \Carbon\Carbon::parse($inv->invoice_date)->format('M d, Y') : 'N/A' }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="small">{{ number_format($inv->total_amount, 0) }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        @if ($inv->status == 'Paid')
+                                                            <span class="badge text-bg-success-soft">{{ $inv->status }}</span>
+                                                        @else
+                                                            <span class="badge text-bg-warning-soft">{{ $inv->status }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <a href="{{ route('invoices.show', $inv->id) }}" class="btn btn-sm btn-outline-primary">
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">No invoice found.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div><!-- .table-responsive -->
+                                <div class="card-footer text-center text-primary">
+                                    Make sure all bills are cleared before going to next step.
+                                </div>
+                            </div><!-- .card -->
+                    <!-- END PATIENT INVOICES -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 </div><!-- .tab-pane -->
                             </div><!-- .tab-content -->
                         </div><!-- .nk-block -->
@@ -392,6 +503,29 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+
 
 
 

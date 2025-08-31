@@ -251,6 +251,51 @@ class PatientController extends Controller
         return redirect()->back()->with('success', 'Patient assigned to Dr. '.$doctor->first_name.' successfully.');
     }
 
+    public function directLab($id)
+    {
+        $user = Auth::user();
+        $labtech = User::where('role', 'lab_technician')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->first();
+
+        $patient = Patient::findOrFail($id);
+
+        // If no pharmacist found, assign doctor_id to logged in user
+        $assignedUserId = $labtech ? $labtech->id : $user->id;
+
+        $patient->update([
+            'doctor_id' => $assignedUserId,
+            'status' => 'Laboratory',
+        ]);
+
+        return redirect()->back()->with('success', 'Patient assigned to Laboratory successfully.');
+    }
+
+    public function directPharmacy($id)
+    {
+        $user = Auth::user();
+
+        // Try to get pharmacist
+        $pharmacist = User::where('role', 'pharmacist')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->first();
+
+        $patient = Patient::findOrFail($id);
+
+        // If no pharmacist found, assign doctor_id to logged in user
+        $assignedUserId = $pharmacist ? $pharmacist->id : $user->id;
+
+        $patient->update([
+            'doctor_id' => $assignedUserId,
+            'status' => 'Pharmacy',
+        ]);
+
+        return redirect()->back()->with('success', 'Patient assigned to Pharmacy successfully.');
+    }
+
+
 
     /**
      * Show the form for editing the specified patient.
@@ -260,8 +305,23 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient): View
     {
-        return view('patients.edit', compact('patient'));
+        $user = Auth::user();
+
+        // Get doctors for the same hospital and branch
+        $doctors = User::where('role', 'doctor')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active services
+        $services = Service::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        return view('patients.edit', compact( 'doctors', 'services'));
     }
+
 
     /**
      * Update the specified patient in storage.

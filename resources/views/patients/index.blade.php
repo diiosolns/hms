@@ -104,7 +104,7 @@
                                                         @if ($patient->status == 'Closed')
                                                             <span class="badge text-bg-success-soft">{{ $patient->status }}</span>
                                                         @else
-                                                            <span class="badge text-bg-warning-soft">{{ $patient->status }}</span>
+                                                            <span class="badge text-bg-primary-soft">{{ $patient->status }}</span>
                                                         @endif
                                                     </td>
                                                     <td class="tb-col tb-col-end">
