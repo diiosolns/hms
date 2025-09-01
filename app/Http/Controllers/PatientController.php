@@ -303,9 +303,11 @@ class PatientController extends Controller
      * @param Patient $patient
      * @return View
      */
-    public function edit(Patient $patient): View
+    public function edit($id): View
     {
         $user = Auth::user();
+
+        $patient = Patient::findOrFail($id);
 
         // Get doctors for the same hospital and branch
         $doctors = User::where('role', 'doctor')
@@ -319,7 +321,7 @@ class PatientController extends Controller
             ->where('branch_id', $user->branch_id)
             ->get();
 
-        return view('patients.edit', compact( 'doctors', 'services'));
+        return view('patients.edit', compact( 'patient', 'doctors', 'services'));
     }
 
 
@@ -330,25 +332,95 @@ class PatientController extends Controller
      * @param Patient $patient
      * @return RedirectResponse
      */
-    public function update(Request $request, Patient $patient): RedirectResponse
+    public function update(Request $request, $id): RedirectResponse
     {
-        // Validate the incoming request data
+        // Validate all editable fields
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'phone' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
+            'first_name'              => 'required|string|max:50',
+            'last_name'               => 'required|string|max:50',
+            'date_of_birth'           => 'nullable|date',
+            'gender'                  => 'nullable|in:Male,Female,Other',
+            'phone'                   => 'nullable|string|max:15',
+            'email'                   => 'nullable|email|max:100',
+            'address'                 => 'nullable|string|max:255',
+            'emergency_contact_name'  => 'nullable|string|max:100',
+            'emergency_contact_phone' => 'nullable|string|max:15',
+            'pay_method'              => 'nullable|in:Cash,Insurance',
+            'status'                  => 'nullable|in:Reception,Nurse,Doctor,Laboratory,Pharmacy,Closed,Discharged,Cancelled',
         ]);
 
-        // Update the patient record with the new data
+        // Find patient
+        $patient = Patient::findOrFail($id);
+
+        // Update with validated data
         $patient->update($validatedData);
 
-        // Redirect with a success message
+
+        // Step 4: Create an invoice
+        $service = Service::findOrFail($request->service_id);
+        // Create or update invoice
+        $invoice = Invoice::updateOrCreate(
+            [
+                'patient_id' => $patient->id,
+                'status'     => 'Pending',
+            ],
+            [
+                'user_id'        => Auth::id(),
+                'invoice_number' => 'INV' . uniqid(),
+                'invoice_date'   => now()->toDateString(),
+                'total_amount'   => $service->fee,
+            ]
+        );
+
+        $invoiceNumber = 'INV' . str_pad($invoice->id, 8, '0', STR_PAD_LEFT);
+        $invoice->update(['invoice_number' => $invoiceNumber]);
+
+        // Create or update the item (example: using service_id to match)
+        $invoice->items()->updateOrCreate(
+            ['description' => $service->name], // condition
+            [
+                'quantity'   => 1,
+                'unit_price' => $service->fee,
+                'total'      => $service->fee,
+            ]
+        );
+
+        // Step 4: Create nurse triage assessment with NULL results
+       if ($request->has('avoid_nurse') && $request->avoid_nurse === 'yes') {
+            // delete if avoid_nurse is yes
+            NurseTriageAssessment::where('patient_id', $patient->id)
+                ->where('status', 'Pending')
+                ->delete();
+        } else {
+            //Update Patient status
+            $patient->status = "Nurse";
+            $patient->update();
+            // update or create
+            NurseTriageAssessment::updateOrCreate(
+                [
+                    'patient_id' => $patient->id,
+                    'status' => 'Pending', 
+                ],
+                [
+                    'nurse_id' => Auth::user()->id,
+                    'body_temperature' => null,
+                    'blood_pressure_systolic' => null,
+                    'blood_pressure_diastolic' => null,
+                    'heart_rate' => null,
+                    'respiratory_rate' => null,
+                    'weight_kg' => null,
+                    'height_cm' => null,
+                    'chief_complaint' => null,
+                    'notes' => null,
+                ]
+            );
+        }
+
+        // Redirect back
         return redirect()->route('patients.index')
                          ->with('success', 'Patient record updated successfully.');
     }
+
 
     /**
      * Remove the specified patient from storage.

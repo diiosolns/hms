@@ -81,7 +81,7 @@
                                                     <div class="bio-block">
                                                         <h4 class="bio-block-title">About Me</h4>
                                                         {{-- Display dynamic bio or a placeholder --}}
-                                                        <p>Hey, I'm <b>{{ $user->first_name }} {{ $user->last_name }}</b>, <br> I am a <b>{{ ucwords($user->role) }}</b> at <i>{{ $user->branch->name ?? 'N/A' }}</i> hospital branch, under the <i>{{ $user->hospital->name ?? 'N/A' }}</i> Hospital.</p>
+                                                        <p>Hey, I'm {{ $user->first_name }} {{ $user->last_name }}, <br> I am a {{ ucwords($user->role) }} at {{ $user->branch->name ?? 'N/A' }} hospital branch, under the <i>{{ $user->hospital->name ?? 'N/A' }}</i> Hospital.</p>
                                                         <p>My passion lies in providing the best possible care for our community. I'm excited to be a part of this team and look forward to contributing to our shared mission.</p>
                                                     </div><!-- .bio-block -->
                                                 </div><!-- .card-body -->

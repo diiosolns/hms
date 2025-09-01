@@ -100,6 +100,11 @@
                                                                         </a>
                                                                     </li>
                                                                     <li>
+                                                                        <a href="{{ route('profile', ['id' => $user->id]) }}" class="edit-user" >
+                                                                            <em class="icon ni ni-eye"></em><span>View Details</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
                                                                         <form id="delete-form-{{ $user->id }}" action="{{ route('admin.employees.destroy', $user->id) }}" method="POST" style="display: none;">
                                                                             @csrf
                                                                             @method('DELETE')
