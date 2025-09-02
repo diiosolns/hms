@@ -160,8 +160,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/appointments', [DoctorController::class, 'appointments'])->name('appointments');
         Route::get('/lab-results', [DoctorController::class, 'labResults'])->name('lab_results');
         Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
-        // Add other doctor routes here
+
+        // 🔹 Doctor Patient Management
+        Route::get('/patient/{id}/edit', [DoctorController::class, 'edit'])->name('patient.edit');
+
+        // 🔹 Update Prescriptions
+        Route::post('/patient/{id}/prescriptions', [DoctorController::class, 'updatePrescriptions'])->name('patient.prescriptions.update');
+
+        // 🔹 Update Lab Tests
+        Route::post('/patient/{id}/lab-tests', [DoctorController::class, 'updateLabTests'])->name('patient.labtests.update');
+
+        // 🔹 Update Medical Records
+        Route::post('/patient/{id}/records', [DoctorController::class, 'updateMedicalRecords'])->name('patient.records.update');
     });
+
 
     // Nurse Routes (Requires 'nurse' role)
     Route::middleware(['role:nurse'])->prefix('nurse')->name('nurse.')->group(function () {

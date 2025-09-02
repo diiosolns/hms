@@ -25,7 +25,7 @@
 
 <li class="nk-menu-item">
     <a href="{{ route('doctor.lab_results') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-lab"></em></span>
+        <span class="nk-menu-icon"><em class="icon ni ni-activity"></em></span>
         <span class="nk-menu-text">Lab Results</span>
     </a>
 </li>

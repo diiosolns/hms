@@ -88,6 +88,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('services', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
+            $table->string('code')->unique();   // e.g., CON_GEN, LAB_CBC
+            $table->string('name');             // e.g., "General Consultation"
+            $table->string('category');         // e.g., Consultation, Laboratory, Pharmacy
+            $table->decimal('fee', 10, 2);      // service cost
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->timestamps();
+        });
+
         // 3. Table for appointments
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
@@ -232,17 +244,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('services', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-            $table->string('code')->unique();   // e.g., CON_GEN, LAB_CBC
-            $table->string('name');             // e.g., "General Consultation"
-            $table->string('category');         // e.g., Consultation, Laboratory, Pharmacy
-            $table->decimal('fee', 10, 2);      // service cost
-            $table->enum('status', ['Active', 'Inactive'])->default('Active');
-            $table->timestamps();
-        });
+        
 
         // 10. Table for inpatient ward and bed assignments
         Schema::create('ward_and_beds', function (Blueprint $table) {
@@ -281,7 +283,7 @@ return new class extends Migration
     public function down(): void
     {
         // Drop tables in reverse order to respect foreign key constraints
-        Schema::dropIfExists('lab_tests');
+        /*Schema::dropIfExists('lab_tests');
         Schema::dropIfExists('lab_test_catalogs');
         Schema::dropIfExists('nurse_triage_assessments');
         Schema::dropIfExists('ward_and_beds');
@@ -296,9 +298,9 @@ return new class extends Migration
         Schema::dropIfExists('branches');
         Schema::dropIfExists('hospitals');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessions');*/
 
-/*
+
         Schema::dropIfExists('nurse_triage_assessments');
         Schema::dropIfExists('ward_and_beds');
         Schema::dropIfExists('services');
@@ -317,7 +319,7 @@ return new class extends Migration
         Schema::dropIfExists('hospitals');
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('users');*/
+        Schema::dropIfExists('users');
 
 
     }

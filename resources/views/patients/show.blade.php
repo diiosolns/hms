@@ -115,11 +115,12 @@
                                                 {{-- If user is doctor, show Vital buttons --}}
                                                 @elseif(Auth::user()->role === 'doctor')
                                                     <li class="d-none d-md-block">
-                                                        <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#labTestsModal">
+                                                        <a href="{{ route('doctor.patient.edit', $patient->id) }}" class="btn btn-soft btn-primary">
                                                             <em class="icon ni ni-activity"></em>
                                                             <span>Lab Tests</span>
                                                         </a>
                                                     </li>
+
                                                     <li class="d-md-none">
                                                         <a href="#" class="btn btn-soft btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#labTestsModal">
                                                             <em class="icon ni ni-activity"></em>
