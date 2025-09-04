@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Patient;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MedicalRecord;
+use App\Models\LabRequest;
+use App\Models\LabRequestTest;
+use App\Models\Prescription;
 
 class DoctorController extends Controller
 {
@@ -46,50 +50,82 @@ class DoctorController extends Controller
 
 
     //====================================
-    public function edit($patientId)
+     public function updateDiagnosis(Request $request, $patientId)
     {
-        $patient = Patient::with(['prescriptions', 'labRequests', 'medicalRecords'])
-            ->findOrFail($patientId);
-
-        return view('doctor.edit', compact('patient'));
-    }
-
-    public function updatePrescriptions(Request $request, $patientId)
-    {
-        $patient = Patient::findOrFail($patientId);
-
-        // Simple example: save prescription text
-        $patient->prescriptions()->create([
-            'doctor_id' => Auth::id(),
-            'notes'     => $request->prescription_notes,
+        $request->validate([
+            'diagnosis' => 'required|string|max:2000',
         ]);
 
-        return redirect()->back()->with('success', 'Prescription updated.');
+        $record = MedicalRecord::updateOrCreate(
+            [
+                'patient_id' => $patientId,
+                'doctor_id' => Auth::id(),
+                'visit_date' => now()->toDateString(),
+            ],
+            [
+                'diagnosis' => $request->diagnosis,
+            ]
+        );
+
+        return back()->with('success', 'Diagnosis updated successfully.');
     }
 
-    public function updateLabTests(Request $request, $patientId)
+    public function storeLabTests(Request $request, $patientId)
     {
-        $patient = Patient::findOrFail($patientId);
-
-        $patient->labRequests()->create([
-            'doctor_id' => Auth::id(),
-            'test_name' => $request->test_name,
-            'status'    => 'Pending',
+        $request->validate([
+            'lab_tests' => 'required|array',
+            'lab_tests.*' => 'exists:lab_tests,id',
         ]);
 
-        return redirect()->back()->with('success', 'Lab test ordered.');
+        $labRequest = LabRequest::create([
+            'patient_id' => $patientId,
+            'doctor_id' => Auth::id(),
+            'status' => 'Pending',
+        ]);
+
+        foreach ($request->lab_tests as $testId) {
+            LabRequestTest::create([
+                'lab_request_id' => $labRequest->id,
+                'lab_test_id' => $testId,
+                'status' => 'Pending',
+            ]);
+        }
+
+        return back()->with('success', 'Lab tests requested successfully.');
     }
 
-    public function updateMedicalRecords(Request $request, $patientId)
+    public function storePrescriptions(Request $request, $patientId)
     {
-        $patient = Patient::findOrFail($patientId);
-
-        $patient->medicalRecords()->create([
-            'doctor_id' => Auth::id(),
-            'notes'     => $request->record_notes,
+        $request->validate([
+            'prescriptions' => 'required|array',
+            'prescriptions.*.pharmacy_items_id' => 'required|exists:pharmacy_items,id',
+            'prescriptions.*.dosage' => 'required|string|max:100',
+            'prescriptions.*.quantity' => 'required|integer|min:1',
         ]);
 
-        return redirect()->back()->with('success', 'Medical record updated.');
+        $record = MedicalRecord::updateOrCreate(
+            [
+                'patient_id' => $patientId,
+                'doctor_id' => Auth::id(),
+                'visit_date' => now()->toDateString(),
+            ]
+        );
+
+        foreach ($request->prescriptions as $p) {
+            Prescription::create([
+                'patient_id' => $patientId,
+                'medical_record_id' => $record->id,
+                'pharmacy_items_id' => $p['pharmacy_items_id'],
+                'drug_name' => PharmacyItem::find($p['pharmacy_items_id'])->drug_name,
+                'dosage' => $p['dosage'],
+                'frequency' => $p['frequency'] ?? null,
+                'duration' => $p['duration'] ?? null,
+                'quantity' => $p['quantity'],
+                'instructions' => $p['instructions'] ?? null,
+            ]);
+        }
+
+        return back()->with('success', 'Prescriptions added successfully.');
     }
 
 

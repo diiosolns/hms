@@ -194,7 +194,7 @@ return new class extends Migration
             $table->string('unit')->default('Tablet'); // Tablet, Bottle, Vial
             $table->decimal('price', 10, 2)->default(0); // Unit price
             $table->integer('reorder_level')->default(10); // Minimum stock before alert
-            $table->boolean('status')->default(true); // Active/Inactive
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->date('expiry_date')->nullable();
             $table->timestamps();
         });

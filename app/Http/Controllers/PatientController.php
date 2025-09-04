@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MedicalRecord;
+use App\Models\LabRequest;
+use App\Models\LabRequestTest;
+use App\Models\Prescription;
+use App\Models\LabTest;
+use App\Models\PharmacyItem;
 
 
 class PatientController extends Controller
@@ -206,6 +212,8 @@ class PatientController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
+        
         // Find patient by id or fail with 404
         $patient = Patient::with([
             'branch', 
@@ -217,7 +225,8 @@ class PatientController extends Controller
             'doctor',
             'appointments',
             'invoices',
-            'pendingInvoices'
+            'pendingInvoices',
+            'labRequestTests'
         ])->findOrFail($id);
 
         // Total of all invoices
@@ -231,7 +240,26 @@ class PatientController extends Controller
                ->where('branch_id', Auth::user()->branch_id)
                ->paginate(20);
 
-        return view('patients.show', compact('patient', 'doctors', 'totalInvoices', 'totalPendingInvoices'));
+        // Get active services
+        $services = Service::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active availableTests
+        $availableTests = LabTest::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active pharmacyItems
+        $pharmacyItems = PharmacyItem::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+
+        return view('patients.show', compact('patient', 'doctors', 'totalInvoices', 'totalPendingInvoices', 'services', 'availableTests', 'pharmacyItems'));
     }
 
 

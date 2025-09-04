@@ -69,17 +69,17 @@
                             <div class="nk-block-head-between gap g-2 mt-4">
                                         <div class="gap-col">
                                             <ul class="nav nav-pills nav-pills-border gap g-3" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" aria-selected="true" role="tab"> Overview </button>
+                                                <li class="nav-item" >
+                                                    <button class="nav-link @if(Auth::user()->role === 'receptionist') active @endif " data-bs-toggle="tab" data-bs-target="#tab-1" type="button" aria-selected="true" role="tab"> Overview </button>
                                                 </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" type="button" aria-selected="false" tabindex="-1" role="tab"> Doctor </button>
+                                                <li class="nav-item" >
+                                                    <button  class="nav-link @if(Auth::user()->role === 'doctor') active @endif " data-bs-toggle="pill" data-bs-target="#pills-doctor" type="button"> Doctor </button>
                                                 </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" type="button" aria-selected="false" tabindex="-1" role="tab"> Laboratory </button>
+                                                <li class="nav-item" >
+                                                    <button  class="nav-link @if(Auth::user()->role === 'lab_technician') active @endif " data-bs-toggle="pill" data-bs-target="#pills-lab" type="button"> Laboratory </button>
                                                 </li>
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link" type="button" aria-selected="false" tabindex="-1" role="tab"> Pharmacy </button>
+                                                <li class="nav-item" >
+                                                    <button  class="nav-link @if(Auth::user()->role === 'pharmacy') active @endif " data-bs-toggle="pill" data-bs-target="#pills-pharmacy" type="button"> Pharmacy </button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -115,7 +115,7 @@
                                                 {{-- If user is doctor, show Vital buttons --}}
                                                 @elseif(Auth::user()->role === 'doctor')
                                                     <li class="d-none d-md-block">
-                                                        <a href="{{ route('doctor.patient.edit', $patient->id) }}" class="btn btn-soft btn-primary">
+                                                        <a href="" class="btn btn-soft btn-primary">
                                                             <em class="icon ni ni-activity"></em>
                                                             <span>Lab Tests</span>
                                                         </a>
@@ -148,7 +148,7 @@
                         
                         <div class="nk-block">
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane show active" id="tab-1" tabindex="0" role="tabpanel">
+                                <div class="tab-pane @if(Auth::user()->role === 'receptionist') show active @endif " id="tab-1" tabindex="0" role="tabpanel">
                                     <div class="card card-gutter-md">
                                         <div class="card-row card-row-lg col-sep col-sep-lg">
                                             <div class="card-aside">
@@ -388,110 +388,286 @@
 
                                     <!-- PATIENT INVOICES  -->
                     
-                            <div class="card h-100 mt-4">
-                                <div class="card-body flex-grow-0 py-2">
-                                    <div class="card-title-group">
-                                        <div class="card-title">
-                                            <h4 class="title">Invoices</h4>
-                                        </div>
-                                        <div class="card-tools">
-                                            <div class="dropdown">
-                                                <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                    <em class="icon ni ni-more-v"></em>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                    <li>
-                                                        <div class="dropdown-header pt-2 pb-0">
-                                                            <h6 class="mb-0">Options</h6>
-                                                        </div>
-                                                    </li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li><a href="#" class="dropdown-item">Sort A-Z</a></li>
-                                                    <li><a href="#" class="dropdown-item">Sort Z-A</a></li>
-                                                </ul>
-                                            </div><!-- dropdown -->
-                                        </div>
-                                    </div><!-- .card-title-group -->
-                                </div><!-- .card-body -->
+                                <div class="card h-100 mt-4">
+                                    <div class="card-body flex-grow-0 py-2">
+                                        <div class="card-title-group">
+                                            <div class="card-title">
+                                                <h4 class="title">Invoices</h4>
+                                            </div>
+                                            <div class="card-tools">
+                                                <div class="dropdown">
+                                                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+                                                        <em class="icon ni ni-more-v"></em>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                        <li>
+                                                            <div class="dropdown-header pt-2 pb-0">
+                                                                <h6 class="mb-0">Options</h6>
+                                                            </div>
+                                                        </li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><a href="#" class="dropdown-item">Sort A-Z</a></li>
+                                                        <li><a href="#" class="dropdown-item">Sort Z-A</a></li>
+                                                    </ul>
+                                                </div><!-- dropdown -->
+                                            </div>
+                                        </div><!-- .card-title-group -->
+                                    </div><!-- .card-body -->
 
-                                <div class="table-responsive">
-                                    <table class="table table-middle mb-0">
-                                        <thead class="table-light table-head-md">
-                                            <tr>
-                                                <th class="tb-col">
-                                                    <span class="overline-title">Invoice No.</span>
-                                                </th>
-                                                <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">Invoice Date</span>
-                                                </th>
-                                                <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">Amount (TZS)</span>
-                                                </th>
-                                                <th class="tb-col tb-col-end">
-                                                    <span class="overline-title">Status</span>
-                                                </th>
-                                                <th class="tb-col tb-col-end">
-                                                    <span class="overline-title">Actions</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse($patient->invoices as $inv)
+                                    <div class="table-responsive">
+                                        <table class="table table-middle mb-0">
+                                            <thead class="table-light table-head-md">
                                                 <tr>
-                                                    <td class="tb-col ">
-                                                        <span class="small">{{ $inv->invoice_number ?? 'N/A' }}</span>
-                                                    </td>
-                                                    <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">
-                                                            {{ $inv->invoice_date ? \Carbon\Carbon::parse($inv->invoice_date)->format('M d, Y') : 'N/A' }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">{{ number_format($inv->total_amount, 0) }}</span>
-                                                    </td>
-                                                    <td class="tb-col tb-col-end">
-                                                        @if ($inv->status == 'Paid')
-                                                            <span class="badge text-bg-success-soft">{{ $inv->status }}</span>
-                                                        @else
-                                                            <span class="badge text-bg-warning-soft">{{ $inv->status }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <a href="{{ route('invoices.show', $inv->id) }}" class="btn btn-sm btn-outline-primary">
-                                                            View
-                                                        </a>
-                                                    </td>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Invoice No.</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="overline-title">Invoice Date</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="overline-title">Amount (TZS)</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-end">
+                                                        <span class="overline-title">Status</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-end">
+                                                        <span class="overline-title">Actions</span>
+                                                    </th>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="5" class="text-center text-muted">No invoice found.</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-                                </div><!-- .table-responsive -->
-                                <div class="card-footer text-center text-primary">
-                                    Make sure all bills are cleared before going to next step.
-                                </div>
-                            </div><!-- .card -->
-                    <!-- END PATIENT INVOICES -->
-
-
-
-
-
-
-
-
-
-
-
+                                            </thead>
+                                            <tbody>
+                                                @forelse($patient->invoices as $inv)
+                                                    <tr>
+                                                        <td class="tb-col ">
+                                                            <span class="small">{{ $inv->invoice_number ?? 'N/A' }}</span>
+                                                        </td>
+                                                        <td class="tb-col tb-col-end tb-col-sm">
+                                                            <span class="small">
+                                                                {{ $inv->invoice_date ? \Carbon\Carbon::parse($inv->invoice_date)->format('M d, Y') : 'N/A' }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="tb-col tb-col-end tb-col-sm">
+                                                            <span class="small">{{ number_format($inv->total_amount, 0) }}</span>
+                                                        </td>
+                                                        <td class="tb-col tb-col-end">
+                                                            @if ($inv->status == 'Paid')
+                                                                <span class="badge text-bg-success-soft">{{ $inv->status }}</span>
+                                                            @else
+                                                                <span class="badge text-bg-warning-soft">{{ $inv->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="tb-col tb-col-end">
+                                                            <a href="{{ route('invoices.show', $inv->id) }}" class="btn btn-sm btn-outline-primary">
+                                                                View
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">No invoice found.</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div><!-- .table-responsive -->
+                                    <div class="card-footer text-center text-primary">
+                                        Make sure all bills are cleared before going to next step.
+                                    </div>
+                                </div><!-- .card -->
+                                <!-- END PATIENT INVOICES -->
 
 
 
 
 
                                 </div><!-- .tab-pane -->
+
+
+
+
+
+                                <!-- DOCTOR TAB -->
+                                <div class="tab-pane @if(Auth::user()->role === 'doctor') show active @endif  " id="pills-doctor" role="doctor">
+                                    
+                                    <!-- Diagnosis Card  & Treatment Plan card-->
+                                    <div class="card border-light mb-0">
+                                      <div class="card-header">Diagnosis & Treatment Plan</div>
+                                      <div class="card-body text-light">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <h5 class="card-title">Chief Complaint</h5>
+                                                <p class="card-text">
+                                                    {{ $latestRecord->chief_complaint ?? 'No complain yet.' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <h5 class="card-title">Diagnosis</h5>
+                                                <p class="card-text">
+                                                    {{ $latestRecord->diagnosis ?? 'No diagnosis yet.' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <h5 class="card-title">Treatment Plan</h5>
+                                                <p class="card-text">
+                                                    {{ $latestRecord->treatment_plan ?? 'No plan yet.' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <h5 class="card-title">Remarks</h5>
+                                                <p class="card-text">
+                                                    {{ $latestRecord->notes ?? 'NIL' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mt-3">
+                                            <a href="#" class="btn btn-soft btn-primary" data-bs-toggle="modal" data-bs-target="#diagnosisModal">
+                                                <em class="icon ni ni-edit"></em> <span>Add / Update</span>
+                                            </a>
+                                        </div>
+                                      </div>
+                                    </div>
+
+
+
+                                    <div class="card h-100 mt-3">
+                                            <div class="col-sep">
+                                                <div class="card-body py-2">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h4 class="title mb-0">Diagnosis & Treatment Plan</h4>
+                                                        </div>
+                                                        <div class="card-tools">
+                                                            <a href="#" class="btn btn-sm btn-soft btn-primary">Add / Update</a>
+                                                        </div>
+                                                    </div><!-- .card-title-group -->
+                                                </div><!-- .card-body -->
+                                                <div class="card-body">
+                                                    <div class="nk-timeline nk-timeline-center">
+                                                        <ul class="nk-timeline-list">
+                                                            <li class="nk-timeline-item">
+                                                                <div class="nk-timeline-item-inner">
+                                                                    <div class="nk-timeline-symbol">
+                                                                        <div class="media media-md media-middle media-circle">
+                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="nk-timeline-content">
+                                                                        <p class="small"><strong>Chief Complaint</strong> </p>
+                                                                        <span class="smaller time">{{ $latestRecord->status ?? 'Status' }}</span>
+                                                                        <p class="small">{{ $latestRecord->chief_complaint ?? 'No complain yet.' }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="nk-timeline-item">
+                                                                <div class="nk-timeline-item-inner">
+                                                                    <div class="nk-timeline-symbol">
+                                                                        <div class="media media-md media-middle media-circle">
+                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="nk-timeline-content">
+                                                                        <p class="small"><strong>Diagnosis</strong></p>
+                                                                        <span class="smaller time">{{ $latestRecord->status ?? 'Status' }}</span>
+                                                                        <p class="small">{{ $latestRecord->diagnosis ?? 'No diagnosis yet.' }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="nk-timeline-item">
+                                                                <div class="nk-timeline-item-inner">
+                                                                    <div class="nk-timeline-symbol">
+                                                                        <div class="media media-md media-middle media-circle">
+                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="nk-timeline-content">
+                                                                        <p class="small"><strong>Treatment Plan</strong></p>
+                                                                        <span class="smaller time">{{ $latestRecord->status ?? 'Status' }}</span>
+                                                                        <p class="small">{{ $latestRecord->treatment_plan ?? 'No plan yet.' }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div><!-- .nk-timeline -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                     
+                                       
+
+                                        <!-- Lab Tests Card -->
+                                        <div class="col-md-4">
+                                            <div class="card card-bordered h-100">
+                                                <div class="card-inner">
+                                                    <h6 class="title">Lab Tests</h6>
+                                                    <ul class="list-unstyled">
+                                                        @forelse($patient->labRequestTests as $test)
+                                                            <li>✅ {{ $test->labTest->name }} ({{ $test->status }})</li>
+                                                        @empty
+                                                            <li class="text-muted">No lab tests requested.</li>
+                                                        @endforelse
+                                                    </ul>
+                                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#labTestModal">
+                                                        <em class="icon ni ni-plus"></em> Request Test
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Prescriptions Card -->
+                                        <div class="col-md-4">
+                                            <div class="card card-bordered h-100">
+                                                <div class="card-inner">
+                                                    <h6 class="title">Prescriptions</h6>
+                                                    <ul class="list-unstyled">
+                                                        @forelse($patient->prescriptions as $prescription)
+                                                            <li>💊 {{ $prescription->drug_name }} - {{ $prescription->dosage }}</li>
+                                                        @empty
+                                                            <li class="text-muted">No prescriptions yet.</li>
+                                                        @endforelse
+                                                    </ul>
+                                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#prescriptionModal">
+                                                        <em class="icon ni ni-plus"></em> Add Prescription
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                </div><!-- .doctor tab-pane -->
+
+
+
+
+                                <!-- LABORATORY TAB -->
+                                <div class="tab-pane @if(Auth::user()->role === 'lab_technician') show active @endif  " id="pills-lab" role="lab">
+                                    <h1>Lab Test</h1>
+                                </div><!-- .lab tab-pane -->
+
+
+
+
+
+
+                                <!-- PHARMACY TAB -->
+                                <div class="tab-pane @if(Auth::user()->role === 'pharmacy') show active @endif  " id="pills-pharmacy" role="pharmacy">
+                                    <h1>Phar</h1>
+                                </div><!-- .pharmacy tab-pane -->
+
+
+
+
+
+
+
+
+
+
+
                             </div><!-- .tab-content -->
                         </div><!-- .nk-block -->
                     @else
@@ -684,5 +860,149 @@
     </div>
 </div>
 <!-- END ASSIGN A DOCTOR MODAL -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Diagnosis Modal -->
+<div class="modal fade" id="diagnosisModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form action="{{ route('doctor.medical-records.updateDiagnosis', $patient->id) }}" method="POST">
+        @csrf
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Diagnosis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" name="diagnosis" rows="4">{{ $latestRecord->diagnosis ?? '' }}</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Lab Test Modal -->
+<div class="modal fade" id="labTestModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form action="{{ route('doctor.lab-tests.store', $patient->id) }}" method="POST">
+        @csrf
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request Lab Tests</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <select name="lab_tests[]" class="form-select" multiple required>
+                    @foreach($availableTests as $test)
+                        <option value="{{ $test->id }}">{{ $test->name }}</option>
+                    @endforeach
+                </select>
+                <small class="text-muted">Hold CTRL (or CMD) to select multiple tests.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Request</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Prescription Modal -->
+<div class="modal fade" id="prescriptionModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <form action="{{ route('doctor.prescriptions.store', $patient->id) }}" method="POST">
+        @csrf
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Prescription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="prescription-list">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <select name="prescriptions[0][pharmacy_items_id]" class="form-select" required>
+                                @foreach($pharmacyItems as $item)
+                                    <option value="{{ $item->id }}">{{ $item->drug_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="prescriptions[0][dosage]" class="form-control" placeholder="Dosage" required>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="prescriptions[0][frequency]" class="form-control" placeholder="Frequency">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="prescriptions[0][duration]" class="form-control" placeholder="Duration">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" name="prescriptions[0][quantity]" class="form-control" placeholder="Qty" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addPrescriptionRow()">+ Add More</button>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save Prescriptions</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let prescriptionIndex = 1;
+function addPrescriptionRow() {
+    let container = document.getElementById('prescription-list');
+    let row = `
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <select name="prescriptions[${prescriptionIndex}][pharmacy_items_id]" class="form-select" required>
+                    @foreach($pharmacyItems as $item)
+                        <option value="{{ $item->id }}">{{ $item->drug_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="prescriptions[${prescriptionIndex}][dosage]" class="form-control" placeholder="Dosage" required>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="prescriptions[${prescriptionIndex}][frequency]" class="form-control" placeholder="Frequency">
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="prescriptions[${prescriptionIndex}][duration]" class="form-control" placeholder="Duration">
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="prescriptions[${prescriptionIndex}][quantity]" class="form-control" placeholder="Qty" required>
+            </div>
+        </div>`;
+    container.insertAdjacentHTML('beforeend', row);
+    prescriptionIndex++;
+}
+</script>
+
+
+
+
+
+
 
 @endsection

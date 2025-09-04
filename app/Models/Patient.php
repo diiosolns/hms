@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Patient extends Model
 {
@@ -73,6 +75,24 @@ class Patient extends Model
     public function labRequests()
     {
         return $this->hasMany(LabRequest::class);
+    }
+
+    public function labRequestTests(): HasManyThrough
+    {
+        // The first argument is the final model you wish to access (LabRequestTest)
+        // The second argument is the intermediate model (LabRequest)
+        // The third is the foreign key on the intermediate model (lab_requests table)
+        // The fourth is the foreign key on the final model (lab_request_tests table)
+        // The fifth is the local key on the patient model (patients table)
+        // The sixth is the local key on the intermediate model (lab_requests table)
+        return $this->hasManyThrough(
+            LabRequestTest::class,
+            LabRequest::class,
+            'patient_id', // Foreign key on lab_requests table...
+            'lab_request_id', // Foreign key on lab_request_tests table...
+            'id', // Local key on the patients table...
+            'id' // Local key on the lab_requests table...
+        );
     }
 
     /**

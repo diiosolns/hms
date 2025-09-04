@@ -161,19 +161,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/lab-results', [DoctorController::class, 'labResults'])->name('lab_results');
         Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
 
-        // 🔹 Doctor Patient Management
-        Route::get('/patient/{id}/edit', [DoctorController::class, 'edit'])->name('patient.edit');
+        // Medical Record & Inputs
+        Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
 
-        // 🔹 Update Prescriptions
-        Route::post('/patient/{id}/prescriptions', [DoctorController::class, 'updatePrescriptions'])->name('patient.prescriptions.update');
-
-        // 🔹 Update Lab Tests
-        Route::post('/patient/{id}/lab-tests', [DoctorController::class, 'updateLabTests'])->name('patient.labtests.update');
-
-        // 🔹 Update Medical Records
-        Route::post('/patient/{id}/records', [DoctorController::class, 'updateMedicalRecords'])->name('patient.records.update');
+        // Updates via modals
+        Route::post('/medical-records/{patient}/diagnosis', [DoctorController::class, 'updateDiagnosis'])->name('medical-records.updateDiagnosis');
+        Route::post('/medical-records/{patient}/lab-tests', [DoctorController::class, 'storeLabTests'])->name('lab-tests.store');
+        Route::post('/medical-records/{patient}/prescriptions', [DoctorController::class, 'storePrescriptions'])->name('prescriptions.store');
     });
 
+
+
+
+
+    
 
     // Nurse Routes (Requires 'nurse' role)
     Route::middleware(['role:nurse'])->prefix('nurse')->name('nurse.')->group(function () {
