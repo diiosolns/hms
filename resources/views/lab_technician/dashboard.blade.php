@@ -33,7 +33,7 @@
                             <div class="row g-gs">
                                 {{-- Card 1: Log Vitals --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('patients.index') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('lab_technician.labtests.requests') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
                                             <h5 class="title mb-3">Lab Tests</h5>
@@ -44,14 +44,14 @@
                                     </a><!-- .card -->
                                 </div><!-- .col -->
                                 
-                                {{-- Card 2: Manage Appointments --}}
+                                {{-- Card 2: Lab Test Catalog --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('appointments.index') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('lab_technician.catalog') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
                                             <h5 class="title mb-3">Lab Tests Catalog</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">View, create, and modify lab catalog.</span>
+                                                <span class="text-light">View lab tests catalog.</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->
@@ -59,7 +59,7 @@
 
                                 {{-- Card 3: Patient search --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('billing.create') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('patients.search') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
                                             <h5 class="title mb-3">Search Patients</h5>

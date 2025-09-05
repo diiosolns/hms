@@ -51,6 +51,15 @@ Route::post('/password/reset', [AuthController::class, 'reset']);
 Route::get('/profile/{id}', [AuthController::class, 'showProfile'])->name('profile');
 Route::get('/settings', [AuthController::class, 'showAccountSettings'])->name('settings');
 
+
+
+
+
+
+
+
+
+
 // Protected Routes for all authenticated users
 Route::middleware(['auth'])->group(function () {
 
@@ -112,8 +121,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
-
     // Admin Routes (Requires 'admin' role)
     Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -147,12 +154,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
-
-
-
-
-
     // Doctor Routes (Requires 'doctor' role)
     Route::middleware(['role:doctor'])->prefix('doctor')->name('doctor.')->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('dashboard');
@@ -168,6 +169,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/medical-records/{patient}/diagnosis', [DoctorController::class, 'updateDiagnosis'])->name('medical-records.updateDiagnosis');
         Route::post('/medical-records/{patient}/lab-tests', [DoctorController::class, 'storeLabTests'])->name('lab-tests.store');
         Route::post('/medical-records/{patient}/prescriptions', [DoctorController::class, 'storePrescriptions'])->name('prescriptions.store');
+
+        //Remove prescription or lab test
+        Route::delete('/medical-records/{patient}/prescriptions/{prescription}', [DoctorController::class, 'removePrescription'])->name('prescriptions.removeItem');
+        Route::delete('/medical-records/{patient}/lab-tests/{labRequestTest}', [DoctorController::class, 'removeLabTest'])->name('labtests.removeItem');
+
     });
 
 
@@ -192,6 +198,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tests/completed', [LabController::class, 'completedTests'])->name('tests.completed');
         Route::get('/results/upload', [LabController::class, 'uploadResults'])->name('results.upload');
         Route::get('/patients', [LabController::class, 'patientTestHistory'])->name('patients');
+
+        //Update Lab request test
+        Route::get('/labtests/requests', [LabController::class, 'labTestsRequest'])->name('labtests.requests');
+        Route::get('/labtests/requests/{id}', [LabController::class, 'showRequest'])->name('labtests.requests.show');
+        Route::get('/labtests', [LabController::class, 'labTestsCatalog'])->name('catalog');
+        Route::get('/labtests/{id}', [LabController::class, 'labTestsCatalog'])->name('catalog.show');
+        Route::post('/medical-records/{id}/labtests', [LabController::class, 'updateTestItem'])->name('medical-records.updateTestItem');
     });
 
     // Pharmacist Routes (Requires 'pharmacist' role)
@@ -200,7 +213,21 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/inventory', [PharmacistController::class, 'dashboard'])->name('inventory');
         Route::get('/prescriptions', [PharmacistController::class, 'dashboard'])->name('prescriptions');
         Route::get('/billing', [PharmacistController::class, 'dashboard'])->name('billing');
+
+        //Update prescriptions
+        Route::post('/medical-records/{patient}/prescriptions', [PharmacistController::class, 'updateDispense'])->name('medical-records.updateDispense');
     });
+
+
+
+
+
+
+
+
+
+
+
 
     // Receptionist Routes (Requires 'receptionist' role)
     Route::middleware(['role:receptionist'])->prefix('receptionist')->name('receptionist.')->group(function () {
@@ -231,7 +258,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/patients/assign/{doctor}', [PatientController::class, 'assignDoctor'])->name('patients.assign');
     Route::get('/patients/direct-lab/{id}', [PatientController::class, 'directLab'])->name('patients.direct.lab');
     Route::get('/patients/direct-pharmacy/{id}', [PatientController::class, 'directPharmacy'])->name('patients.direct.pharmacy');
+    Route::get('/patients/direct-reception/{id}', [PatientController::class, 'directReception'])->name('patients.direct.reception');
+    Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
+
     
+
     //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
     //Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
     Route::resource('appointments', AppointmentController::class);

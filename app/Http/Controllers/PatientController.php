@@ -229,6 +229,8 @@ class PatientController extends Controller
             'labRequestTests'
         ])->findOrFail($id);
 
+        //dd($patient);
+
         // Total of all invoices
         $totalInvoices = $patient->invoices->sum('total_amount');
 
@@ -318,6 +320,30 @@ class PatientController extends Controller
         $patient->update([
             'doctor_id' => $assignedUserId,
             'status' => 'Pharmacy',
+        ]);
+
+        return redirect()->back()->with('success', 'Patient assigned to Pharmacy successfully.');
+    }
+
+
+    public function directReception($id)
+    {
+        $user = Auth::user();
+
+        // Try to get pharmacist
+        $receptionist = User::where('role', 'receptionist')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->first();
+
+        $patient = Patient::findOrFail($id);
+
+        // If no pharmacist found, assign doctor_id to logged in user
+        $assignedUserId = $pharmacist ? $pharmacist->id : $user->id;
+
+        $patient->update([
+            'doctor_id' => $assignedUserId,
+            'status' => 'Reception',
         ]);
 
         return redirect()->back()->with('success', 'Patient assigned to Pharmacy successfully.');
@@ -465,4 +491,21 @@ class PatientController extends Controller
         return redirect()->route('patients.index')
                          ->with('success', 'Patient record deleted successfully.');
     }
+
+
+   public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        $patients = Patient::when($query, function ($q) use ($query) {
+            $q->where('first_name', 'like', "%{$query}%")
+              ->orWhere('last_name', 'like', "%{$query}%")
+              ->orWhere('phone', 'like', "%{$query}%");
+        })->get();
+
+        return view('patients.search', compact('patients', 'query'));
+    }
+
+
+
 }

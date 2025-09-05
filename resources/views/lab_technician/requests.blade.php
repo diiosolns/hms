@@ -1,25 +1,3 @@
-
-<style>
-        .dashboard-card {
-            text-align: center; /* Center all content */
-        }
-        .dashboard-card .card-icon {
-            font-size: 3rem; /* Make icons very large */
-            display: block; /* Make the icon a block element to center it */
-            margin: 0 auto 1rem; /* Center the icon and add spacing below */
-        }
-        .card-link {
-            text-decoration: none; /* Removes underline from the link */
-            color: inherit;       /* Inherits text color */
-        }
-        .card-link:hover {
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); /* Adds a subtle shadow on hover */
-            transform: translateY(-2px); /* Lifts the card slightly on hover */
-            transition: all 0.3s ease-in-out; /* Smooth transition */
-        }
-</style>
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -28,63 +6,53 @@
         <div class="container-fluid">
             <div class="nk-content-inner">
                 <div class="nk-content-body">
-                    <div class="row g-gs">
-                        <div class="col-xxl-12">
-                            <div class="row g-gs">
-                                {{-- Card 1: Log Vitals --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('patients.index') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
-                                            <h5 class="title mb-3">My Patients</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Manage medical records.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                                {{-- Card 2: Manage Appointments --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('appointments.index') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
-                                            <h5 class="title mb-3">My Appointments</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">View, create, and modify appointments.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
 
-                                {{-- Card 3: Patient search --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('patients.search') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
-                                            <h5 class="title mb-3">Search Patients</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Handle patient search.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                            </div><!-- .row -->
-                        </div><!-- .col -->
-                    </div><!-- .row -->
+                    <div class="nk-block-head">
+                                    <div class="nk-block-head-between flex-wrap gap g-2">
+                                        <div class="nk-block-head-content">
+                                            <h2 class="nk-block-title">Laboratory Tests Requests</h2>
+                                                <nav>
+                                                    <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                                        @if(Auth::user()->role === 'receptionist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'nurse')
+                                                        <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'doctor')
+                                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'pharmacist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'lab_technician')
+                                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'admin')
+                                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'owner')
+                                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                                        @endif
+
+                                                        @if(Auth::user()->role === 'admin')
+                                                        <li class="breadcrumb-item"><a href="{{ route('labtests.requests') }}">Lab Requests</a></li>
+                                                        @endif
+                                                        <li class="breadcrumb-item active" aria-current="page">Update Test Requests</li>
+                                                    </ol>
+                                                </nav>
+                                        </div>
+                                        <div class="nk-block-head-content">
+                                            
+                                        </div>
+                                    </div><!-- .nk-block-head-between -->
+                                </div><!-- .nk-block-head -->
 
 
 
-
-                    <!-- PATIENTS PENDING  -->
+                
+                    <!-- PATIENTS PENDING LAB TESTS -->
                     <div class="row g-gs mt-4">
                         <div class="col-xxl-12">
                             <div class="card h-100">
                                 <div class="card-body flex-grow-0 py-2">
                                     <div class="card-title-group">
                                         <div class="card-title">
-                                            <h4 class="title">Pending Patients</h4>
+                                            <h4 class="title">Lab Tests Requests</h4>
                                         </div>
                                         <div class="card-tools">
                                             <div class="dropdown">
@@ -111,13 +79,13 @@
                                         <thead class="table-light table-head-md">
                                             <tr>
                                                 <th class="tb-col">
-                                                    <span class="overline-title">Name</span>
+                                                    <span class="overline-title">Patient Name</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">Phone</span>
+                                                    <span class="overline-title">Requester</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">DOB</span>
+                                                    <span class="overline-title">Request Time</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Status</span>
@@ -128,34 +96,36 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse($patients as $patient)
+                                            @forelse($labRequests as $lab)
                                                 <tr>
                                                     <td class="tb-col">
                                                         <div class="media-group">
                                                             <div class="media media-md flex-shrink-0 media-middle media-circle text-bg-info-soft">
                                                                 <span class="smaller">
-                                                                    {{ strtoupper(substr($patient->first_name,0,1)) }}{{ strtoupper(substr($patient->last_name,0,1)) }}
+                                                                    {{ strtoupper(substr($lab->patient->first_name,0,1)) }}{{ strtoupper(substr($lab->patient->last_name,0,1)) }}
                                                                 </span>
                                                             </div>
                                                             <div class="media-text">
-                                                                <span class="title">{{ $patient->first_name }} {{ $patient->last_name }}</span>
-                                                                <span class="text smaller">Created {{ $patient->created_at->format('M d, Y h:i A') }}</span>
+                                                                <span class="title">{{ $lab->patient->first_name }} {{ $lab->patient->last_name }}</span>
+                                                                <span class="text smaller">
+                                                                    Requested at: {{ \Carbon\Carbon::parse($lab->requested_at)->format('M d, Y h:i A') }}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">{{ $patient->phone ?? 'N/A' }}</span>
+                                                        <span class="small">{{ $lab->requester->first_name ?? 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
                                                         <span class="small">
-                                                            {{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'N/A' }}
+                                                            {{ $lab->requested_at ? \Carbon\Carbon::parse($lab->requested_at)->format('M d, Y') : 'N/A' }}
                                                         </span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
-                                                        <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                        <span class="badge bg-primary">{{ $lab->status }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
-                                                        <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
+                                                        <a href="{{ route('lab_technician.labtests.requests.show', $lab->id) }}" class="btn btn-sm btn-outline-primary">
                                                             View
                                                         </a>
                                                     </td>
@@ -170,12 +140,12 @@
                                 </div><!-- .table-responsive -->
 
                                 <div class="card-footer text-center">
-                                    {{ $patients->links('pagination::bootstrap-5') }}
+                                    {{ $labRequests->links('pagination::bootstrap-5') }}
                                 </div>
                             </div><!-- .card -->
                         </div>
                     </div>
-                    <!-- END PATIENTS PENDING -->
+                    <!-- END PATIENTS PENDING LAB TESTS -->
 
 
 

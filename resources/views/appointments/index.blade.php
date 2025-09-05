@@ -54,8 +54,12 @@
                                 <tr>
                                     <td class="tb-col">{{ $appointment->patient->name ?? 'N/A' }}</td>
                                     <td class="tb-col">{{ $appointment->doctor->name ?? 'N/A' }}</td>
-                                    <td class="tb-col">{{ $appointment->appointment_date }}</td>
-                                    <td class="tb-col">{{ $appointment->appointment_time }}</td>
+                                    <td class="tb-col">
+                                        {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d') }}
+                                    </td>
+                                    <td class="tb-col">
+                                        {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i') }}
+                                    </td>
                                     <td class="tb-col">{{ $appointment->reason ?? '-' }}</td>
                                     <td class="tb-col">
                                         @if ($appointment->status === 'Scheduled')

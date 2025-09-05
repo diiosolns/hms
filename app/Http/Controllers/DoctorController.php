@@ -9,6 +9,9 @@ use App\Models\MedicalRecord;
 use App\Models\LabRequest;
 use App\Models\LabRequestTest;
 use App\Models\Prescription;
+use App\Models\LabTest;
+use App\Models\Invoice;
+use App\Models\PharmacyItem;
 
 class DoctorController extends Controller
 {
@@ -53,7 +56,11 @@ class DoctorController extends Controller
      public function updateDiagnosis(Request $request, $patientId)
     {
         $request->validate([
+            'chief_complaint' => 'required|string|max:2000',
             'diagnosis' => 'required|string|max:2000',
+            'treatment_plan' => 'nullable|string|max:2000',
+            'notes' => 'nullable|string|max:2000',
+            'status' => 'required|string|max:2000',
         ]);
 
         $record = MedicalRecord::updateOrCreate(
@@ -63,7 +70,11 @@ class DoctorController extends Controller
                 'visit_date' => now()->toDateString(),
             ],
             [
+                'chief_complaint' => $request->chief_complaint,
                 'diagnosis' => $request->diagnosis,
+                'treatment_plan' => $request->treatment_plan,
+                'notes' => $request->notes,
+                'status' => $request->status,
             ]
         );
 
@@ -78,18 +89,58 @@ class DoctorController extends Controller
         ]);
 
         $labRequest = LabRequest::create([
+            'hospital_id' => $request->hospital_id,
+            'branch_id' => $request->branch_id,
             'patient_id' => $patientId,
-            'doctor_id' => Auth::id(),
+            'requested_by' => Auth::id(),
+            'requested_at' => now()->toDateString(),
             'status' => 'Pending',
         ]);
 
+        //CREATE AN INVOICE
+        // Create or update invoice
+        $invoice_total_amount = 0;
+        $invoice = Invoice::updateOrCreate(
+            [
+                'patient_id' => $patientId,
+                'status'     => 'Pending',
+            ],
+            [
+                'user_id'        => Auth::id(),
+                'invoice_number' => 'INV' . uniqid(),
+                'invoice_date'   => now()->toDateString(),
+            ]
+        );
+
+        $invoiceNumber = 'INV' . str_pad($invoice->id, 8, '0', STR_PAD_LEFT);
+        $invoice->update(['invoice_number' => $invoiceNumber]);
+
         foreach ($request->lab_tests as $testId) {
+            $labTestItem = LabTest::findOrFail($testId);
             LabRequestTest::create([
                 'lab_request_id' => $labRequest->id,
                 'lab_test_id' => $testId,
+                'unit' => $labTestItem->unit,
+                'reference_range' => $labTestItem->normal_range,
                 'status' => 'Pending',
             ]);
+
+            // Create or update the item (example: using lab test id to match)
+            $invoice->items()->updateOrCreate(
+                ['description' => $labTestItem->name], 
+                [
+                    'quantity'   => 1,
+                    'unit_price' => $labTestItem->price,
+                    'total'      => $labTestItem->price,
+                ]
+            );
+
+            $invoice_total_amount += $labTestItem->price;
         }
+
+        //Update invoice total amount
+        $invoice_total_amount += $invoice->total_amount;
+        $invoice->update(['total_amount' => $invoice_total_amount]);
 
         return back()->with('success', 'Lab tests requested successfully.');
     }
@@ -111,22 +162,83 @@ class DoctorController extends Controller
             ]
         );
 
+        //CREATE OR UPDATE AN INVOICE
+        $invoice_total_amount = 0;
+        $invoice = Invoice::updateOrCreate(
+            [
+                'patient_id' => $patientId,
+                'status'     => 'Pending',
+            ],
+            [
+                'user_id'        => Auth::id(),
+                'invoice_number' => 'INV' . uniqid(),
+                'invoice_date'   => now()->toDateString(),
+            ]
+        );
+
+        $invoiceNumber = 'INV' . str_pad($invoice->id, 8, '0', STR_PAD_LEFT);
+        $invoice->update(['invoice_number' => $invoiceNumber]);
+
         foreach ($request->prescriptions as $p) {
+            $pharmacyItem = PharmacyItem::findOrFail($p['pharmacy_items_id']);
             Prescription::create([
                 'patient_id' => $patientId,
                 'medical_record_id' => $record->id,
                 'pharmacy_items_id' => $p['pharmacy_items_id'],
-                'drug_name' => PharmacyItem::find($p['pharmacy_items_id'])->drug_name,
+                'drug_name' => PharmacyItem::find($p['pharmacy_items_id'])->name,
                 'dosage' => $p['dosage'],
                 'frequency' => $p['frequency'] ?? null,
                 'duration' => $p['duration'] ?? null,
                 'quantity' => $p['quantity'],
                 'instructions' => $p['instructions'] ?? null,
             ]);
+
+            // Create or update the item (example: using lab test id to match)
+            $invoice->items()->updateOrCreate(
+                ['description' => $pharmacyItem->name], 
+                [
+                    'quantity'   => $p['quantity'],
+                    'unit_price' => $pharmacyItem->price,
+                    'total'      => ($pharmacyItem->price)*($p['quantity']),
+                ]
+            );
+
+            $invoice_total_amount += ($pharmacyItem->price)*($p['quantity']);
         }
+
+        //Update invoice total amount
+        $invoice_total_amount += $invoice->total_amount;
+        $invoice->update(['total_amount' => $invoice_total_amount]);
 
         return back()->with('success', 'Prescriptions added successfully.');
     }
+
+
+    public function removePrescription($patientId, $prescriptionId)
+    {
+        $prescription = Prescription::where('patient_id', $patientId)->findOrFail($prescriptionId);
+        $prescription->delete();
+
+        //REMOVE INVOICE ITEM AND BALANCE INVOICE
+
+        return back()->with('success', 'Prescription removed successfully.');
+    }
+
+    public function removeLabTest($patientId, $labRequestTestId)
+    {
+        $labRequestTest = LabRequestTest::whereHas('labRequest', function ($q) use ($patientId) {
+            $q->where('patient_id', $patientId);
+        })->findOrFail($labRequestTestId);
+
+        //$labRequestTest = LabRequestTest::findOrFail($labRequestTestId);
+
+        $labRequestTest->delete();
+
+        //REMOVE INVOICE ITEM AND BALANCE INVOICE
+
+        return back()->with('success', 'Lab test removed successfully.');
+    }
+
 
 
 
