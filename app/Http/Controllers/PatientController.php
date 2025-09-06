@@ -295,7 +295,6 @@ class PatientController extends Controller
         $assignedUserId = $labtech ? $labtech->id : $user->id;
 
         $patient->update([
-            'doctor_id' => $assignedUserId,
             'status' => 'Laboratory',
         ]);
 
@@ -318,7 +317,6 @@ class PatientController extends Controller
         $assignedUserId = $pharmacist ? $pharmacist->id : $user->id;
 
         $patient->update([
-            'doctor_id' => $assignedUserId,
             'status' => 'Pharmacy',
         ]);
 
@@ -330,7 +328,7 @@ class PatientController extends Controller
     {
         $user = Auth::user();
 
-        // Try to get pharmacist
+        // Try to get receptionist
         $receptionist = User::where('role', 'receptionist')
             ->where('hospital_id', $user->hospital_id)
             ->where('branch_id', $user->branch_id)
@@ -338,18 +336,15 @@ class PatientController extends Controller
 
         $patient = Patient::findOrFail($id);
 
-        // If no pharmacist found, assign doctor_id to logged in user
-        $assignedUserId = $pharmacist ? $pharmacist->id : $user->id;
+        // If no receptionist found, assign doctor_id to logged in user
+        $assignedUserId = $receptionist ? $receptionist->id : $user->id;
 
         $patient->update([
-            'doctor_id' => $assignedUserId,
             'status' => 'Reception',
         ]);
 
-        return redirect()->back()->with('success', 'Patient assigned to Pharmacy successfully.');
+        return redirect()->route('doctor.patients')->with('success', 'Patient assigned to Pharmacy successfully.');
     }
-
-
 
     /**
      * Show the form for editing the specified patient.

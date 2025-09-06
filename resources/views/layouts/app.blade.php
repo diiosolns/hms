@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <base href="../">
+    <base href="/">
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Multi-purpose admin dashboard template that especially build for programmers.">
     <title>HMS</title>
-    <link rel="shortcut icon" href="./images/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('images/app/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css?v1.1.1') }}">
 </head>
 
@@ -579,7 +579,7 @@
                 <div class="nk-footer">
                     <div class="container-fluid">
                         <div class="nk-footer-wrap">
-                            <div class="nk-footer-copyright"> &copy; 2022 Nioboard. Template by <a href="https://nyzibit.pw" target="_blank" class="text-reset">NyziBit</a>
+                            <div class="nk-footer-copyright"> &copy; 2025 HMS: Hospital Management System - <a href="https://nizybit.pw" target="_blank" class="text-reset">NyziBit</a>
                             </div>
                             <div class="nk-footer-links">
                                 <ul class="nav nav-sm">

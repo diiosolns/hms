@@ -59,7 +59,7 @@
 
                                 {{-- Card 3: Patient search --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('patients.search') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('lab_technician.patients.search') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
                                             <h5 class="title mb-3">Search Patients</h5>
@@ -84,7 +84,7 @@
                                 <div class="card-body flex-grow-0 py-2">
                                     <div class="card-title-group">
                                         <div class="card-title">
-                                            <h4 class="title">Pending Lab Tests</h4>
+                                            <h4 class="title">Pending Patients</h4>
                                         </div>
                                         <div class="card-tools">
                                             <div class="dropdown">

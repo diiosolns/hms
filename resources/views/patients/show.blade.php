@@ -22,7 +22,7 @@
                                             {{-- Full name --}}
                                             <h3 class="title mb-1">{{ $patient->first_name }} {{ $patient->last_name }}</h3>
                                             {{-- Patient ID --}}
-                                            <span class="badge bg-primary">Patient ID: {{ $patient->patient_id }}</span>
+                                            <span class="badge text-bg-primary-soft">ID: {{ $patient->patient_id }}</span>
                                             <ul class="nk-list-option pt-1">
                                                 {{-- Show branch if exists --}}
                                                 @if ($patient->branch)
@@ -117,8 +117,8 @@
                                                 {{-- If user is doctor, show Vital buttons --}}
                                                 @elseif(Auth::user()->role === 'doctor')
                                                     <li class="d-none d-md-block">
-                                                        <a href="" class="btn btn-soft btn-success">
-                                                            <em class="icon ni ni-activity"></em>
+                                                        <a href="{{ route('doctor.patients.direct.reception', $patient->id) }}" class="btn btn-outline-danger">
+                                                            <em class="icon ni ni-arrow-left"></em>
                                                             <span>Back Reception</span>
                                                         </a>
                                                     </li>
@@ -589,7 +589,8 @@
                                                                     <span class="small">{{ $key + 1 }}</span>
                                                                 </td>
                                                                 <td class="tb-col">
-                                                                    <span class="small">✅ {{ $test->labTest->name }}</span>
+                                                                    <em class="icon ni {{ $test->status === 'Completed' ? 'ni-check-fill-c text-success' : 'ni-alert-fill text-warning' }}"></em>
+                                                                    <span class="small"> {{ $test->labTest->name }}</span>
                                                                 </td>
                                                                 <td class="tb-col tb-col-end tb-col-sm">
                                                                     <span class="small">{{ $test->labTest->code }}</span>
@@ -602,15 +603,15 @@
                                                                 </td>
                                                                 <td class="tb-col tb-col-end">
                                                                     {{-- Remove Item --}}
-                                                                    @if ($test->labTest->status !== 'Closed' && in_array(Auth::user()->role, [ 'admin', 'doctor']))
+                                                                    @if ($test->status !== 'Completed' && in_array(Auth::user()->role, [ 'admin', 'doctor']))
                                                                         <form action="{{ route('doctor.prescriptions.removeItem', [$patient->id, $test->id] ) }}" 
                                                                               method="POST" onsubmit="return confirm('Are you sure you want to remove this item?')">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
                                                                         </form>
-                                                                    @elseif ($test->labTest->status === 'Closed')
-                                                                        <span class="badge bg-success">Closed</span>
+                                                                    @elseif ($test->status === 'Completed')
+                                                                        <span class="badge bg-success">Completed</span>
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -733,7 +734,7 @@
                                                             </div>
                                                             <div class="card-tools">
                                                                 @if ($test->status !== 'Completed' && in_array(Auth::user()->role, [ 'admin', 'lab_technician']))
-                                                                <a href="{{ route('lab_technician.medical-records.updateTestItem', [$patient->id, $test->id] ) }}" class="btn btn-sm btn-soft btn-primary" >
+                                                                <a href="{{ route('lab_technician.labtests.requests' ) }}" class="btn btn-sm btn-soft btn-primary" >
                                                                     <em class="icon ni ni-edit"></em> <span>Update Results</span>
                                                                 </a>
                                                                 @endif
@@ -753,7 +754,7 @@
                                                                         <div class="nk-timeline-content">
                                                                             <p class="small"><strong>Test Results</strong> </p>
                                                                             <span class="smaller time">Unit: {{ $test->unit ?? 'None' }} | {{ $test->reference_range ?? '' }}</span>
-                                                                            <p class="small">{{ $test->results ?? 'No results yet.' }}</p>
+                                                                            <p class="small">{{ $test->result ?? 'No results yet.' }}</p>
                                                                         </div>
                                                                     </div>
                                                                 </li>
@@ -853,7 +854,7 @@
                                                                 </td>
                                                                 <td class="tb-col tb-col-end">
                                                                     {{-- Remove Item --}}
-                                                                    @if ($prescription->status !== 'Closed' && in_array(Auth::user()->role, [ 'admin', 'doctor']))
+                                                                    @if ($prescription->status !== 'Closed' && in_array(Auth::user()->role, [ 'admin', 'pharmacist']))
                                                                         <button type="submit" class="btn btn-sm btn-outline-success"  data-bs-toggle="modal" data-bs-target="#dispenseModal{{ $prescription->id }}" >Dispense</button>
                                                                     @elseif ($prescription->status === 'Closed')
                                                                         <span class="badge bg-success">Dispensed</span>

@@ -1,9 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.err')
 
 @section('content')
-<div class="text-center p-10">
-    <h1 class="text-4xl font-bold text-red-600">404</h1>
-    <p class="text-lg mt-4">Sorry, the page you are looking for could not be found.</p>
-    <a href="{{ route('login') }}">Login</a>
-</div>
+    <div class="nk-main">
+        <div class="nk-wrap align-items-center justify-content-center">
+            <div class="container">
+                <div class="nk-block">
+                    <div class="nk-block-content wide-sm text-center mx-auto">
+                        <img src="{{ asset('images/error/404.png') }}" alt="" class="mb-5">
+                        <h2 class="nk-error-title mb-2">OOPS! Page not found!</h2>
+                        <p class="nk-error-text">We are very sorry for inconvenience. It looks like you’re try to access a page that either has been deleted or never existed.</p>
+                        <a href="{{ route('login') }}" class="btn btn-primary mt-1"><em class="icon ni ni-arrow-left"></em><span>Back To Home</span></a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .nk-wrap -->
+    </div> <!-- .nk-main -->
 @endsection

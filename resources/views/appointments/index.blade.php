@@ -52,8 +52,8 @@
                             <tbody>
                                 @forelse ($appointments as $appointment)
                                 <tr>
-                                    <td class="tb-col">{{ $appointment->patient->name ?? 'N/A' }}</td>
-                                    <td class="tb-col">{{ $appointment->doctor->name ?? 'N/A' }}</td>
+                                    <td class="tb-col">{{ $appointment->patient->first_name ?? 'N/A' }}</td>
+                                    <td class="tb-col">{{ $appointment->doctor->first_name ?? 'N/A' }}</td>
                                     <td class="tb-col">
                                         {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d') }}
                                     </td>

@@ -10,21 +10,21 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.tests.pending') }}" class="nk-menu-link">
+    <a href="{{ route('lab_technician.labtests.requests') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-list-check"></em></span>
         <span class="nk-menu-text">Pending Tests</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.tests.completed') }}" class="nk-menu-link">
+    <a href="{{ route('lab_technician.labtests.completed') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-check-circle"></em></span>
         <span class="nk-menu-text">Completed Tests</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.results.upload') }}" class="nk-menu-link">
+    <a href="{{ route('lab_technician.labtests.requests') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-upload-cloud"></em></span>
         <span class="nk-menu-text">Upload Results</span>
     </a>

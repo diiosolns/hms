@@ -59,7 +59,7 @@
 
                                 {{-- Card 3: Patient search --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('patients.search') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('doctor.patients.search') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
                                             <h5 class="title mb-3">Search Patients</h5>

@@ -29,8 +29,8 @@
                                                         <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
                                                         @endif
 
-                                                        @if(Auth::user()->role === 'admin')
-                                                        <li class="breadcrumb-item"><a href="{{ route('labtests.requests') }}">Lab Requests</a></li>
+                                                        @if(Auth::user()->role === 'lab_technician')
+                                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.labtests.requests') }}">Lab Requests</a></li>
                                                         @endif
                                                         <li class="breadcrumb-item active" aria-current="page">Update Test Requests</li>
                                                     </ol>
@@ -85,7 +85,10 @@
                                                     <span class="overline-title">Requester</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">Request Time</span>
+                                                    <span class="overline-title">Request Date</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end tb-col-sm">
+                                                    <span class="overline-title">Time</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Status</span>
@@ -121,8 +124,16 @@
                                                             {{ $lab->requested_at ? \Carbon\Carbon::parse($lab->requested_at)->format('M d, Y') : 'N/A' }}
                                                         </span>
                                                     </td>
+                                                    <td class="tb-col tb-col-end tb-col-sm">
+                                                        <span class="small">
+                                                            {{ $lab->requested_at ? \Carbon\Carbon::parse($lab->requested_at)->format('H:i') : 'N/A' }}
+                                                        </span>
+                                                    </td>
                                                     <td class="tb-col tb-col-end">
-                                                        <span class="badge bg-primary">{{ $lab->status }}</span>
+                                                        <span class="badge 
+                                                            {{ $lab->status === 'Closed' ? 'bg-success' : 'bg-warning' }}">
+                                                            {{ $lab->status }}
+                                                        </span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <a href="{{ route('lab_technician.labtests.requests.show', $lab->id) }}" class="btn btn-sm btn-outline-primary">
@@ -132,7 +143,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">No patients found.</td>
+                                                    <td colspan="5" class="text-center text-muted">No lab requests found.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

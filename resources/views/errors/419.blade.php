@@ -1,9 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.err')
 
 @section('content')
-<div class="text-center p-10">
-    <h1 class="text-4xl font-bold text-red-600">429</h1>
-    <p class="text-lg mt-4">Too many requests. Please slow down.</p>
-    <a href="{{ route('login') }}">Login</a>
-</div>
+    <div class="nk-main">
+        <div class="nk-wrap align-items-center justify-content-center">
+            <div class="container">
+                <div class="nk-block">
+                    <div class="nk-block-content wide-sm text-center mx-auto">
+                        <img src="{{ asset('images/error/c.png') }}" alt="" class="mb-5">
+                        <h2 class="nk-error-title mb-2">Oops! Too many requests. Please slow down.</h2>
+                        <p class="nk-error-text">We are very sorry for inconvenience. </p>
+                        <a href="{{ route('login') }}" class="btn btn-primary mt-1"><em class="icon ni ni-arrow-left"></em><span>Back To Home</span></a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- .nk-wrap -->
+    </div> <!-- .nk-main -->
 @endsection
+
+
