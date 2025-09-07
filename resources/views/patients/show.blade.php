@@ -68,6 +68,45 @@
 
                             </div><!-- .nk-block-head-between -->
 
+
+
+
+
+
+
+                            {{-- Display Success or Error Messages --}}
+                            @if (session('success'))
+                                <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="mt-3 alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ session('error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            {{-- Display Validation Errors --}}
+                            @if ($errors->any())
+                                <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+
+
+
+
+
+
                             <div class="nk-block-head-between gap g-2 mt-4">
                                         <div class="gap-col">
                                             <ul class="nav nav-pills nav-pills-border gap g-3" role="tablist">
@@ -81,7 +120,7 @@
                                                     <button  class="nav-link @if(Auth::user()->role === 'lab_technician') active @endif " data-bs-toggle="pill" data-bs-target="#pills-lab" type="button"> Laboratory </button>
                                                 </li>
                                                 <li class="nav-item" >
-                                                    <button  class="nav-link @if(Auth::user()->role === 'pharmacy') active @endif " data-bs-toggle="pill" data-bs-target="#pills-pharmacy" type="button"> Pharmacy </button>
+                                                    <button  class="nav-link @if(Auth::user()->role === 'pharmacist') active @endif " data-bs-toggle="pill" data-bs-target="#pills-pharmacy" type="button"> Pharmacy </button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -801,7 +840,7 @@
 
 
                                 <!-- PHARMACY TAB -->
-                                <div class="tab-pane @if(Auth::user()->role === 'pharmacy') show active @endif  " id="pills-pharmacy" role="pharmacy">
+                                <div class="tab-pane @if(Auth::user()->role === 'pharmacist') show active @endif  " id="pills-pharmacy" role="pharmacy">
                                     <!-- Prescriptions Card -->
                                         <div class="card border-light mb-3 mt-3">
                                           <div class="card-body py-2">
@@ -854,9 +893,9 @@
                                                                 </td>
                                                                 <td class="tb-col tb-col-end">
                                                                     {{-- Remove Item --}}
-                                                                    @if ($prescription->status !== 'Closed' && in_array(Auth::user()->role, [ 'admin', 'pharmacist']))
-                                                                        <button type="submit" class="btn btn-sm btn-outline-success"  data-bs-toggle="modal" data-bs-target="#dispenseModal{{ $prescription->id }}" >Dispense</button>
-                                                                    @elseif ($prescription->status === 'Closed')
+                                                                    @if ($prescription->status !== 'Dispensed' && in_array(Auth::user()->role, [ 'admin', 'pharmacist']))
+                                                                        <button type="submit" class="btn btn-sm btn-outline-primary"  data-bs-toggle="modal" data-bs-target="#dispenseModal{{ $prescription->id }}" >Dispense</button>
+                                                                    @elseif ($prescription->status === 'Dispensed')
                                                                         <span class="badge bg-success">Dispensed</span>
                                                                     @endif
                                                                 </td>
@@ -886,6 +925,7 @@
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <input type="hidden" name="status" value="Closed">
+                                                                                <input type="hidden" name="prescription_id" value="{{ $prescription->id }}">
                                                                                 <button type="submit" class="btn btn-md btn-primary">Update</button>
                                                                             </div>
                                                                         </form>

@@ -1,25 +1,3 @@
-
-<style>
-        .dashboard-card {
-            text-align: center; /* Center all content */
-        }
-        .dashboard-card .card-icon {
-            font-size: 3rem; /* Make icons very large */
-            display: block; /* Make the icon a block element to center it */
-            margin: 0 auto 1rem; /* Center the icon and add spacing below */
-        }
-        .card-link {
-            text-decoration: none; /* Removes underline from the link */
-            color: inherit;       /* Inherits text color */
-        }
-        .card-link:hover {
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); /* Adds a subtle shadow on hover */
-            transform: translateY(-2px); /* Lifts the card slightly on hover */
-            transition: all 0.3s ease-in-out; /* Smooth transition */
-        }
-</style>
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -28,63 +6,53 @@
         <div class="container-fluid">
             <div class="nk-content-inner">
                 <div class="nk-content-body">
-                    <div class="row g-gs">
-                        <div class="col-xxl-12">
-                            <div class="row g-gs">
-                                {{-- Card 1: Log Vitals --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('pharmacist.prescriptions') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
-                                            <h5 class="title mb-3">Presscriptions</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Manage Presscriptions</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                                {{-- Card 2: Manage Inventory --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('appointments.index') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
-                                            <h5 class="title mb-3">Manage Inventory</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">View, create, and modify inventory.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
 
-                                {{-- Card 3: Patient search --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('billing.create') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
-                                            <h5 class="title mb-3">Sales & Billing</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Handle sales and billings</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                            </div><!-- .row -->
-                        </div><!-- .col -->
-                    </div><!-- .row -->
+                    <div class="nk-block-head">
+                                    <div class="nk-block-head-between flex-wrap gap g-2">
+                                        <div class="nk-block-head-content">
+                                            <h2 class="nk-block-title">Patients Prescriptions</h2>
+                                                <nav>
+                                                    <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                                        @if(Auth::user()->role === 'receptionist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'nurse')
+                                                        <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'doctor')
+                                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'pharmacist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'lab_technician')
+                                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'admin')
+                                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                                        @elseif(Auth::user()->role === 'owner')
+                                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                                        @endif
+
+                                                        @if(Auth::user()->role === 'pharmacist')
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.prescriptions') }}">Prescriptions</a></li>
+                                                        @endif
+                                                        <li class="breadcrumb-item active" aria-current="page">Dispense Prescriptions</li>
+                                                    </ol>
+                                                </nav>
+                                        </div>
+                                        <div class="nk-block-head-content">
+                                            
+                                        </div>
+                                    </div><!-- .nk-block-head-between -->
+                                </div><!-- .nk-block-head -->
 
 
 
-
-                    <!-- PATIENTS PENDING Presscriptions -->
+                
+                    <!-- PATIENTS PENDING PRESCRIPTIONS -->
                     <div class="row g-gs mt-4">
                         <div class="col-xxl-12">
                             <div class="card h-100">
                                 <div class="card-body flex-grow-0 py-2">
                                     <div class="card-title-group">
                                         <div class="card-title">
-                                            <h4 class="title">Pending Presscriptions</h4>
+                                            <h4 class="title">Prescriptions</h4>
                                         </div>
                                         <div class="card-tools">
                                             <div class="dropdown">
@@ -111,13 +79,13 @@
                                         <thead class="table-light table-head-md">
                                             <tr>
                                                 <th class="tb-col">
-                                                    <span class="overline-title">Name</span>
+                                                    <span class="overline-title">Patient Name</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
                                                     <span class="overline-title">Phone</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">DOB</span>
+                                                    <span class="overline-title">Doctor</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Status</span>
@@ -148,7 +116,7 @@
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
                                                         <span class="small">
-                                                            {{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'N/A' }}
+                                                            {{ $patient->doctor->first_name ?? 'N/A' }} 
                                                         </span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
@@ -162,7 +130,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">No patients found.</td>
+                                                    <td colspan="5" class="text-center text-muted">No pending found.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
@@ -175,7 +143,7 @@
                             </div><!-- .card -->
                         </div>
                     </div>
-                    <!-- END PATIENTS PENDING Presscriptions -->
+                    <!-- END PATIENTS PENDING PRESCRIPTIONS -->
 
 
 

@@ -23,7 +23,7 @@ class PharmacyItemController extends Controller
             ->where('branch_id', $loggedUser->branch_id)
             ->paginate(10); // paginated for better UI
 
-        return view('admin.pharmacy.index', compact('pharmacyItems'));
+        return view('pharmacy.items.index', compact('pharmacyItems'));
     }
 
     /**
@@ -31,7 +31,7 @@ class PharmacyItemController extends Controller
      */
     public function create()
     {
-        return view('admin.pharmacy.create');
+        return view('pharmacy.items.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class PharmacyItemController extends Controller
             'expiry_date' => $validated['expiry_date'] ?? null,
         ]);
 
-        return redirect()->route('admin.pharmacy.index')
+        return redirect()->route('pharmacy.items.index')
                          ->with('success', 'Pharmacy item created successfully!');
     }
 
@@ -86,7 +86,7 @@ class PharmacyItemController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('admin.pharmacy.edit', compact('pharmacyItem'));
+        return view('pharmacy.items.edit', compact('pharmacyItem'));
     }
 
     /**
@@ -118,7 +118,7 @@ class PharmacyItemController extends Controller
 
         $pharmacyItem->update($validated);
 
-        return redirect()->route('admin.pharmacy.index')
+        return redirect()->route('pharmacy.items.index')
                          ->with('success', 'Pharmacy item updated successfully!');
     }
 
@@ -136,7 +136,7 @@ class PharmacyItemController extends Controller
 
         $pharmacyItem->delete();
 
-        return redirect()->route('admin.pharmacy.index')
+        return redirect()->route('pharmacy.items.index')
                          ->with('success', 'Pharmacy item deleted successfully!');
     }
 
@@ -152,6 +152,6 @@ class PharmacyItemController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('admin.pharmacy.show', compact('pharmacyItem'));
+        return view('pharmacy.items.show', compact('pharmacyItem'));
     }
 }

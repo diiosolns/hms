@@ -16,6 +16,7 @@ use App\Http\Controllers\LabTestController;
 use App\Http\Controllers\PharmacistController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\PharmacyItemController;
+use App\Http\Controllers\PharmacyStockController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\InvoiceController;
 
@@ -220,14 +221,29 @@ Route::middleware(['auth'])->group(function () {
     // Pharmacist Routes (Requires 'pharmacist' role)
     Route::middleware(['role:pharmacist'])->prefix('pharmacist')->name('pharmacist.')->group(function () {
         Route::get('/dashboard', [PharmacistController::class, 'dashboard'])->name('dashboard');
-        Route::get('/inventory', [PharmacistController::class, 'dashboard'])->name('inventory');
-        Route::get('/prescriptions', [PharmacistController::class, 'dashboard'])->name('prescriptions');
+        
+        Route::get('/pharmacy/items', [PharmacyItemController::class, 'index'])->name('items.index');
+        Route::get('/pharmacy/item/create', [PharmacyItemController::class, 'create'])->name('items.create');
+        Route::get('/pharmacy/stock/index', [PharmacyStockController::class, 'index'])->name('stock.index');
+        Route::get('/pharmacy/stock/create', [PharmacyStockController::class, 'create'])->name('stock.create');
+        Route::get('/pharmacy/stock/edit/{id}', [PharmacyStockController::class, 'edit'])->name('stock.edit');
+        Route::get('/pharmacy/stock/destroy/{id}', [PharmacyStockController::class, 'destroy'])->name('stock.destroy');
+        Route::get('/pharmacy/stock/adjustments', [PharmacyStockController::class, 'create'])->name('stock.adjustments');
+        Route::post('/pharmacy/stock/storeMultiple', [PharmacyStockController::class, 'storeMultiple'])->name('stock.storeMultiple');
+
+        Route::get('/prescriptions', [PharmacistController::class, 'prescriptions'])->name('prescriptions');
         Route::get('/billing', [PharmacistController::class, 'dashboard'])->name('billing');
 
         //Update prescriptions
         Route::post('/medical-records/{patient}/prescriptions', [PharmacistController::class, 'updateDispense'])->name('medical-records.updateDispense');
         //search
         Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
+
+        //Reports
+        Route::get('/pharmacy/reports/stock', [PharmacistController::class, 'dashboard'])->name('reports.stock');
+        Route::get('/pharmacy/reports/profit', [PharmacistController::class, 'dashboard'])->name('reports.profit');
+        Route::get('/pharmacy/reports/expiry', [PharmacistController::class, 'dashboard'])->name('reports.expiry');
+        
     });
 
 

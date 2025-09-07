@@ -40,8 +40,7 @@ class LabController extends Controller
             ->where('status', 'Pending')
             ->whereHas('patient', function ($query) {
                 $query->where('status', 'Laboratory'); 
-            })
-            ->paginate(20);
+            })->paginate(20);
 
         return view('lab_technician.requests', compact('patients', 'labRequests'));
     }

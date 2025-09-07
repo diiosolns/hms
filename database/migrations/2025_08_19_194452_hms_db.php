@@ -241,6 +241,7 @@ return new class extends Migration
             $table->integer('quantity'); // Total qty prescribed
             $table->integer('dispensed_qty')->default(0); // What pharmacist dispensed
             $table->text('instructions')->nullable();
+            $table->enum('status', ['Dispensed', 'Pending', 'Cancelled'])->default('Pending');
             $table->timestamps();
         });
 
