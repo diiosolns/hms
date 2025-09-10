@@ -25,6 +25,7 @@ class Prescription extends Model
         'quantity',
         'dispensed_qty',
         'instructions',
+        'status',
     ];
 
     /**
