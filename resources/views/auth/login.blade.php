@@ -86,7 +86,7 @@
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <div class="h1 title mb-3">Welcome back to <br> our HMS.</div>
-                                        <p>Discover how to manage Two-Factor Authentication in Joomla. The two-factor authentication in Joomla is a very popular security practice.</p>
+                                        <p>We're glad you're here. This system is designed to streamline our daily operations, from managing patient records and appointments to handling billing and administrative tasks.</p>
                                     </div>
                                 </div><!-- .row -->
                                 <div class="mt-5 pt-4">

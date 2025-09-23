@@ -101,6 +101,8 @@
                                 </div>
                             @endif
 
+                            
+
 
 
 
@@ -202,12 +204,16 @@
                                                                 <span class="text">{{ $patient->patient_id }}</span>
                                                             </li>
                                                             <li class="list-group-item">
+                                                                <span class="title fw-medium w-40 d-inline-block">Payment Method:</span>
+                                                                <span class="badge @if($patient->pay_method === 'Cash') text-bg-danger-soft @else text-bg-primary-soft @endif ">{{ $patient->pay_method }}</span>
+                                                            </li>
+                                                            <li class="list-group-item">
                                                                 <span class="title fw-medium w-40 d-inline-block">Doctor:</span>
                                                                 <span class="text">{{ $patient->doctor?->first_name ?? 'Not assigned' }} {{ $patient->doctor?->last_name ?? '' }}</span>
                                                             </li>
                                                             <li class="list-group-item">
-                                                                <span class="title fw-medium w-40 d-inline-block">Status:</span>
-                                                                <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                                <span class="title fw-medium w-40 d-inline-block">Department:</span>
+                                                                <span class="badge @if($patient->status === 'Closed') bg-success @elseif($patient->status === 'Cancelled') bg-danger @elseif($patient->status === 'Discharged') bg-warning @else bg-primary @endif ">{{ $patient->status }}</span>
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="title fw-medium w-40 d-inline-block">Room:</span>
@@ -515,6 +521,62 @@
                                         </div>
                                     </div><!-- .card -->
                                     <!-- END PATIENT INVOICES -->
+
+
+                                    <!-- CLOSE BUTTON GROUP     -->
+                                    <div class="card mt-4">
+                                        <div class="card-body">
+                                            <ul class="d-flex flex-wrap gap g-6">
+                                                <!-- Cancel -->
+                                                <li>
+                                                    <form id="cancelForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="Cancelled">
+                                                    </form>
+                                                    <button type="button" class="btn btn-outline-danger"
+                                                            onclick="confirmAction('cancelForm', 'Are you sure you want to cancel this patient?')">
+                                                        Cancel
+                                                    </button>
+                                                </li>
+
+                                                <!-- Discharge -->
+                                                <li>
+                                                    <form id="dischargeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="Discharged">
+                                                    </form>
+                                                    <button type="button" class="btn btn-outline-warning"
+                                                            onclick="confirmAction('dischargeForm', 'Are you sure you want to discharge this patient?')">
+                                                        Discharge
+                                                    </button>
+                                                </li>
+
+                                                <!-- Close -->
+                                                <li>
+                                                    <form id="closeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="status" value="Closed">
+                                                    </form>
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                            onclick="confirmAction('closeForm', 'Are you sure you want to close this patient record?')">
+                                                        Close
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        function confirmAction(formId, message) {
+                                            if (confirm(message)) {
+                                                document.getElementById(formId).submit();
+                                            }
+                                        }
+                                    </script>
+                                    <!-- END CLOSE BUTTON GROUP -->
 
 
                                 </div><!-- .tab-pane -->

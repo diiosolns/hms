@@ -88,6 +88,7 @@ class PharmacistController extends Controller
                 ->value('balance') ?? 0;
 
             if ($currentBalance < $validated['dispensed_qty']) {
+                //dd($currentBalance);
                 return back()->withErrors(['dispensed_qty' => 'Not enough stock available.']);
             }
 

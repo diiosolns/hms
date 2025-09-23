@@ -168,6 +168,7 @@ class PatientController extends Controller
         $invoiceitem = invoiceitem::create([
             'invoice_id' => $invoice->id,
             'description' => $service->name,
+            'type' => 'Service',
             'quantity' => 1,
             'unit_price' => $service->fee,
             'total' => $service->fee,
@@ -500,6 +501,29 @@ class PatientController extends Controller
 
         return view('patients.search', compact('patients', 'query'));
     }
+
+
+    public function updateStatus(Request $request, $patientId)
+    {
+        // Validate incoming status
+        $validated = $request->validate([
+            'status' => 'required|string|in:Cancelled,Discharged,Closed',
+        ]);
+
+        try {
+            // Find the patient
+            $patient = Patient::findOrFail($patientId);
+
+            // Update the status
+            $patient->status = $validated['status'];
+            $patient->save();
+
+            return redirect()->back()->with('success', 'Patient status updated to ' . $validated['status'] . ' successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update patient status: ' . $e->getMessage());
+        }
+    }
+
 
 
 

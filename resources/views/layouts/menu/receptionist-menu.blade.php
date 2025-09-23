@@ -15,7 +15,7 @@
         <span class="nk-menu-text">Patient</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('patients.create') }}" class="nk-menu-link"><span class="nk-menu-text">Register New Patient</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('patients.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add Patient</span></a></li>
         <li class="nk-menu-item"><a href="{{ route('patients.index') }}" class="nk-menu-link"><span class="nk-menu-text">Patient List</span></a></li>
     </ul>
 </li>
@@ -32,9 +32,16 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('billing.create') }}" class="nk-menu-link">
+    <a href="{{ route('receptionist.billing.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-cc-alt2"></em></span>
         <span class="nk-menu-text">Billing</span>
+    </a>
+</li>
+
+<li class="nk-menu-item">
+    <a href="{{ route('receptionist.reports.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+        <span class="nk-menu-text">Reports</span>
     </a>
 </li>
 

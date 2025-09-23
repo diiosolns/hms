@@ -121,9 +121,76 @@
                                 <ul class="nk-nav">
                                     <li class="nk-nav-item has-sub">
                                         <a href="#" class="nk-nav-link nk-nav-toggle">
-                                            <span class="nk-nav-text">Dashboards</span>
+                                            <span class="nk-nav-text">Quick Links</span>
                                         </a>
                                         <ul class="nk-nav-sub nk-nav-sub-lg">
+                                            @if(Auth::user()->role === 'receptionist')
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('receptionist.dashboard') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-dashboard-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Dashboard</span>
+                                                            <span class="sub-text d-block">Explore System Insights</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('patients.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-user-add"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Patients</span>
+                                                            <span class="sub-text d-block">Manage Patient Details</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('appointments.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-calendar"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Appointments</span>
+                                                            <span class="sub-text d-block">Manage patient appointmets</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('receptionist.billing.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-wallet"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Billing</span>
+                                                            <span class="sub-text d-block">Manage Pending Invoices</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('receptionist.reports.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-reports"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Reports</span>
+                                                            <span class="sub-text d-block">View and Download Reports</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            @elseif(Auth::user()->role === 'nurse')
                                             <li class="nk-nav-item">
                                                 <a href="./html/index.html" class="nk-nav-link bg-primary-soft-hover">
                                                     <div class="media-group flex-grow-1">
@@ -189,226 +256,101 @@
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
+                                            @endif
                                         </ul>
                                     </li>
+                                    
                                     <li class="nk-nav-item has-sub">
                                         <a href="#" class="nk-nav-link nk-nav-toggle">
-                                            <span class="nk-nav-text">Pages</span>
-                                        </a>
-                                        <ul class="nk-nav-sub">
-                                            <li class="nk-nav-item has-sub">
-                                                <a href="#" class="nk-nav-link nk-nav-toggle"> Applications </a>
-                                                <ul class="nk-nav-sub">
-                                                    <li class="nk-nav-item">
-                                                        <a href="./html/apps/fullcalendar/calendar.html" class="nk-nav-link"> Calendar </a>
-                                                    </li>
-                                                    <li class="nk-nav-item has-sub">
-                                                        <a href="#" class="nk-nav-link nk-nav-toggle"> Kanban board </a>
-                                                        <ul class="nk-nav-sub">
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/apps/kanban/kanban-basic.html" class="nk-nav-link"> Basic </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/apps/kanban/kanban-custom-board.html" class="nk-nav-link"> Custom Board </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="nk-nav-item has-sub">
-                                                        <a href="#" class="nk-nav-link nk-nav-toggle"> User Management </a>
-                                                        <ul class="nk-nav-sub">
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/user-manage/user-list.html" class="nk-nav-link"> Users List </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/user-manage/user-cards.html" class="nk-nav-link"> Users Cards </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="{{ route('profile', ['id' => Auth::user()->id]) }}" class="nk-nav-link"> Users Profile </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/user-manage/user-edit.html" class="nk-nav-link"> Users Edit </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="nk-nav-item has-sub">
-                                                        <a href="#" class="nk-nav-link nk-nav-toggle"> eCommerce </a>
-                                                        <ul class="nk-nav-sub">
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/products.html" class="nk-nav-link"> Products </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/categories.html" class="nk-nav-link"> Categories </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/add-product.html" class="nk-nav-link"> Add Product </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/edit-product.html" class="nk-nav-link"> Edit Product </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/add-category.html" class="nk-nav-link"> Add Category </a>
-                                                            </li>
-                                                            <li class="nk-nav-item">
-                                                                <a href="./html/ecommerce/edit-category.html" class="nk-nav-link"> Edit Category </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/components/data-tables.html" class="nk-nav-link"> Data tables </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/components/chart.html" class="nk-nav-link"> Chart </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/components/sweet-alert.html" class="nk-nav-link"> Sweetalert </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/auths/auth-register.html" class="nk-nav-link" target="_blank"> Auth Register </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/auths/auth-login.html" class="nk-nav-link" target="_blank"> Auth Login </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/auths/auth-reset.html" class="nk-nav-link" target="_blank"> Forgot Password </a>
-                                            </li>
-                                            <li class="nk-nav-item">
-                                                <a href="./html/error/page-404.html" class="nk-nav-link" target="_blank"> Page 404 </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nk-nav-item has-sub">
-                                        <a href="#" class="nk-nav-link nk-nav-toggle">
-                                            <span class="nk-nav-text">Ui Elements</span>
+                                            <span class="nk-nav-text">Features</span>
                                         </a>
                                         <div class="nk-nav-sub">
                                             <div class="nk-nav-mega nk-nav-mega-lg">
                                                 <div class="nk-nav-col">
-                                                    <h6 class="nk-nav-heading">Elements</h6>
+                                                    <h6 class="nk-nav-heading">Reception</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/components/alerts.html">Alerts</a>
+                                                            <a href="{{ route('patients.index') }}">Patients</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/badge.html">Badges</a>
+                                                            <a href="{{ route('appointments.index') }}">Appointmets</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/breadcrumb.html">Breadcrumb</a>
+                                                            <a href="{{ route('receptionist.billing.index') }}">Billing</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/buttons.html">Buttons</a>
+                                                            <a href="{{ route('receptionist.reports.index') }}">Reports</a>
+                                                        </li>
+                                                    </ul>
+                                                    <h6 class="nk-nav-heading">Nurse</h6>
+                                                    <ul class="link-list link-list-md link-list-hover-bg-primary">
+                                                        <li>
+                                                            <a href="./html/components/alerts.html">Vitals</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/button-group.html">Button group</a>
+                                                            <a href="./html/components/accordion.html">Appointments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/card.html">Cards</a>
+                                                            <a href="./html/components/accordion.html">Reports</a>
+                                                        </li>
+                                                    </ul>
+                                                </div><!-- .nk-nav-col -->
+                                                <div class="nk-nav-col">                                                    <h6 class="nk-nav-heading">Laboratory</h6>
+                                                    <ul class="link-list link-list-md link-list-hover-bg-primary">
+                                                        <li>
+                                                            <a href="./html/utilities/background.html">Lab Test</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/close-button.html">Close button</a>
+                                                            <a href="./html/utilities/borders.html">Test Results</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/list-group.html">List group</a>
+                                                            <a href="./html/utilities/colors.html">Appointments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/pagination.html">Pagination</a>
+                                                            <a href="./html/utilities/misc.html">Reports</a>
+                                                        </li>
+                                                    </ul>
+                                                    <h6 class="nk-nav-heading">Pharmacy</h6>
+                                                    <ul class="link-list link-list-md link-list-hover-bg-primary">
+                                                        <li>
+                                                            <a href="./html/layout/breakpoints.html">Prescription</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/placeholders.html">Placeholders</a>
+                                                            <a href="./html/layout/containers.html">Drugs</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/progress.html">Progress</a>
+                                                            <a href="./html/layout/gutters.html">Dispense</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/spinners.html">Spinners</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/components/accordion.html">Accordion</a>
+                                                            <a href="./html/layout/gutters.html">Reports</a>
                                                         </li>
                                                     </ul>
                                                 </div><!-- .nk-nav-col -->
                                                 <div class="nk-nav-col">
-                                                    <h6 class="nk-nav-heading">Components</h6>
+                                                    <h6 class="nk-nav-heading">Doctor</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/components/carousel.html">Carousel</a>
+                                                            <a href="./html/components/carousel.html">Patients</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/collapse.html">Collapse</a>
+                                                            <a href="./html/components/collapse.html">Appointments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/dropdowns.html">Dropdowns</a>
+                                                            <a href="./html/components/collapse.html">Prescriprions</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/modal.html">Modal</a>
+                                                            <a href="./html/components/tooltips.html">Lab Tests</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/navs-tabs.html">Tabs</a>
+                                                            <a href="./html/components/tooltips.html">Test Results</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/offcanvas.html">Offcanvas</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/components/popovers.html">Popovers</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/components/toasts.html">Toasts</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/components/tooltips.html">Tooltips</a>
-                                                        </li>
-                                                    </ul>
-                                                    <h6 class="nk-nav-heading">Layout</h6>
-                                                    <ul class="link-list link-list-md link-list-hover-bg-primary">
-                                                        <li>
-                                                            <a href="./html/layout/breakpoints.html">Breakpoints</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/layout/containers.html">Containers</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/layout/gutters.html">Gutters</a>
-                                                        </li>
-                                                    </ul>
-                                                </div><!-- .nk-nav-col -->
-                                                <div class="nk-nav-col">
-                                                    <h6 class="nk-nav-heading">Utilities</h6>
-                                                    <ul class="link-list link-list-md link-list-hover-bg-primary">
-                                                        <li>
-                                                            <a href="./html/utilities/background.html">Background</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/borders.html">Borders</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/colors.html">Colors</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/flex.html">Flex</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/images.html">Images</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/sizing.html">Sizing</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/spacing.html">Spacing</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/typography.html">Typography</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/tables.html">Tables</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="./html/utilities/misc.html">Miscellaneous</a>
+                                                            <a href="./html/components/tooltips.html">Reports</a>
                                                         </li>
                                                     </ul>
                                                 </div><!-- .nk-nav-col -->
                                                 <div class="nk-nav-col nk-nav-media">
-                                                    <img src="./images/thumb/a.jpg" alt="" class="rounded-3">
+                                                    <img src="{{ asset('images/app/a.png') }}" alt="" class="rounded-3">
                                                 </div><!-- .nk-nav-col -->
                                             </div><!-- .nk-nav-mega -->
                                         </div>
@@ -515,7 +457,7 @@
                                                 <ul class="link-list">
                                                      {{-- Common routes for all roles --}}
                                                     <li><a href="{{ route('profile', ['id' => Auth::user()->id]) }}"><em class="icon ni ni-user"></em> <span>My Profile</span></a></li>
-                                                    <li><a href="{{ route('settings') }}"><em class="icon ni ni-setting-alt"></em> <span>Account Settings</span></a></li>
+                                                    <li><a href="{{ route('profile.settings', ['id' => Auth::user()->id]) }}"><em class="icon ni ni-setting-alt"></em> <span>Account Settings</span></a></li>
                                                 </ul>
                                             </div>
                                             <div class="dropdown-content dropdown-content-x-lg py-3">

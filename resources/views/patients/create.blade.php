@@ -124,8 +124,12 @@
                                                                             id="pay_method" 
                                                                             name="pay_method">
                                                                         <option value="Cash">Choose how to pay</option>
-                                                                        <option value="Cash" {{ old('pay_method') == 'Male' ? 'selected' : '' }}>Cash</option>
-                                                                        <option value="Insurance" {{ old('pay_method') == 'Female' ? 'selected' : '' }}>Insurance</option>
+                                                                        <option value="Cash" {{ old('pay_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
+                                                                        <option value="NHIF" {{ old('pay_method') == 'NHIF' ? 'selected' : '' }}>NHIF</option>
+                                                                        <option value="AAR" {{ old('pay_method') == 'AAR' ? 'selected' : '' }}>AAR</option>
+                                                                        <option value="Strategis" {{ old('pay_method') == 'Strategis' ? 'selected' : '' }}>Strategis</option>
+                                                                        <option value="Britam" {{ old('pay_method') == 'Britam' ? 'selected' : '' }}>Britam</option>
+                                                                        <option value="Heritage" {{ old('pay_method') == 'Heritage' ? 'selected' : '' }}>Heritage</option>
                                                                     </select>
                                                                     @error('pay_method')
                                                                         <div class="invalid-feedback">{{ $message }}</div>

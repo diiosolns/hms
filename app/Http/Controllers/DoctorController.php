@@ -129,6 +129,7 @@ class DoctorController extends Controller
             $invoice->items()->updateOrCreate(
                 ['description' => $labTestItem->name], 
                 [
+                    'type'   => 'Laboratory',
                     'quantity'   => 1,
                     'unit_price' => $labTestItem->price,
                     'total'      => $labTestItem->price,
@@ -164,7 +165,7 @@ class DoctorController extends Controller
 
         //CREATE OR UPDATE AN INVOICE
         $invoice_total_amount = 0;
-        $invoice = Invoice::updateOrCreate(
+        $invoice = Invoice::firstOrCreate(
             [
                 'patient_id' => $patientId,
                 'status'     => 'Pending',
@@ -173,6 +174,7 @@ class DoctorController extends Controller
                 'user_id'        => Auth::id(),
                 'invoice_number' => 'INV' . uniqid(),
                 'invoice_date'   => now()->toDateString(),
+                'total_amount'   => 0, 
             ]
         );
 
@@ -197,6 +199,7 @@ class DoctorController extends Controller
             $invoice->items()->updateOrCreate(
                 ['description' => $pharmacyItem->name], 
                 [
+                    'type'   => 'Pharmacy',
                     'quantity'   => $p['quantity'],
                     'unit_price' => $pharmacyItem->price,
                     'total'      => ($pharmacyItem->price)*($p['quantity']),

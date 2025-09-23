@@ -50,6 +50,8 @@ Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])-
 Route::post('/password/reset', [AuthController::class, 'reset']);
 
 Route::get('/profile/{id}', [AuthController::class, 'showProfile'])->name('profile');
+Route::get('/profile/{id}/settings', [AuthController::class, 'showAccountSettings'])->name('profile.settings');
+Route::post('/user/password/update', [AuthController::class, 'updatePassword'])->name('user.password.update');
 Route::get('/settings', [AuthController::class, 'showAccountSettings'])->name('settings');
 
 
@@ -260,6 +262,8 @@ Route::middleware(['auth'])->group(function () {
     // Receptionist Routes (Requires 'receptionist' role)
     Route::middleware(['role:receptionist'])->prefix('receptionist')->name('receptionist.')->group(function () {
         Route::get('/dashboard', [ReceptionistController::class, 'dashboard'])->name('dashboard');
+        Route::get('/billing', [ReceptionistController::class, 'billing'])->name('billing.index');
+        Route::get('/reports', [ReceptionistController::class, 'reports'])->name('reports.index');
         Route::resource('appointments', AppointmentController::class);
         // Add other receptionist routes here
         //Search
@@ -290,6 +294,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patients/direct-pharmacy/{id}', [PatientController::class, 'directPharmacy'])->name('patients.direct.pharmacy');
     Route::get('/patients/direct-reception/{id}', [PatientController::class, 'directReception'])->name('patients.direct.reception');
     Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
+    Route::put('/patients/{id}/status', [PatientController::class, 'updateStatus'])->name('patients.updateStatus');
 
     
 

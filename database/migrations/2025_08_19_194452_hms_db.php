@@ -83,7 +83,7 @@ return new class extends Migration
             $table->string('address', 255)->nullable();
             $table->string('emergency_contact_name', 100)->nullable();
             $table->string('emergency_contact_phone', 15)->nullable();
-            $table->enum('pay_method', ['Cash', 'Insurance'])->nullable()->default('Cash');
+            $table->string('pay_method', 100)->nullable()->default('Cash');
             $table->enum('status', ['Reception', 'Nurse', 'Doctor', 'Laboratory', 'Pharmacy', 'Closed', 'Discharged', 'Cancelled'])->nullable()->default('Reception');
             $table->timestamps();
         });

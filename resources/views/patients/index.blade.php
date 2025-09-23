@@ -29,7 +29,7 @@
                                                         @endif
 
                                                         @if(Auth::user()->role === 'receptionist')
-                                                        <li class="breadcrumb-item"><a href="{{ route('patients.create') }}">Add new parient</a></li>
+                                                        <li class="breadcrumb-item"><a href="{{ route('patients.create') }}">Add parient</a></li>
                                                         @endif
                                                         <li class="breadcrumb-item active" aria-current="page">Manage patients</li>
                                                     </ol>
@@ -60,28 +60,48 @@
                                 </div><!-- .nk-block-head -->
                                 <div class="nk-block">
                                     <div class="card">
-                                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"><div class="dataTable-top"><div class="dataTable-dropdown"><label><select class="dataTable-selector"><option value="5">5</option><option value="10" selected="">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option></select> Per page</label></div><div class="dataTable-search"><input class="dataTable-input" placeholder="Search..." type="text"></div></div><div class="dataTable-container table-responsive">
-                                            <table class="datatable-init table dataTable-table" data-nk-container="table-responsive">
+                                        <table class="datatable-init table" data-nk-container="table-responsive">
                                             <thead class="table-light">
-                                                <tr><th class="tb-col" data-sortable="" style="width: 36.425%;"><a href="#" class="dataTable-sorter">
+                                                <tr>
+                                                    <th class="tb-col">
                                                         <span class="overline-title">Patient Detais</span>
-                                                    </a></th><th class="tb-col" data-sortable="" style="width: 19.3929%;"><a href="#" class="dataTable-sorter">
-                                                        <span class="overline-title">Phone</span>
-                                                    </a></th><th class="tb-col" data-sortable="" style="width: 15.0084%;"><a href="#" class="dataTable-sorter">
+                                                    </th>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Gender</span>
+                                                    </th>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Phone No.</span>
+                                                    </th>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">E-Mail</span>
+                                                    </th>
+                                                    <th class="tb-col">
                                                         <span class="overline-title">Contact Person</span>
-                                                    </a></th><th class="tb-col " data-sortable="" style="width: 0%;"><a href="#" class="dataTable-sorter">
+                                                    </th>
+                                                    <th class="tb-col">
                                                         <span class="overline-title">Payment Method</span>
-                                                    </a></th><th class="tb-col " data-sortable="" style="width: 0%;"><a href="#" class="dataTable-sorter">
-                                                        <span class="overline-title">Joined Date</span>
-                                                    </a></th><th class="tb-col" data-sortable="" style="width: 16.0202%;"><a href="#" class="dataTable-sorter">
+                                                    </th>
+                                                    <th class="tb-col tb-col-md">
+                                                        <span class="overline-title">Joining Date</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-md">
+                                                        <span class="overline-title">Last Updated</span>
+                                                    </th>
+                                                    <th class="tb-col ">
+                                                        <span class="overline-title">Doctor</span>
+                                                    </th>
+                                                    <th class="tb-col">
                                                         <span class="overline-title">Status</span>
-                                                    </a></th><th class="tb-col tb-col-end" data-sortable="false" style="width: 13.1535%;">
+                                                    </th>
+                                                    <th class="tb-col tb-col-end" data-sortable="false">
                                                         <span class="overline-title">Action</span>
-                                                    </th></tr>
+                                                    </th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @forelse ($patients as $patient)
-                                                <tr><td class="tb-col">
+                                                <tr>
+                                                    <td class="tb-col">
                                                         <div class="media-group">
                                                             <div class="media media-md media-middle media-circle text-bg-primary-soft">
                                                                 <span class="smaller">
@@ -92,14 +112,20 @@
                                                                 <a href="{{ route('patients.show', $patient->id) }}" class="title">
                                                                     {{ $patient->first_name }} {{ $patient->last_name }}
                                                                 </a>
-                                                                <span class="small text">{{ $patient->email ?? 'No e-mail' }}</span>
+                                                                <span class="small text">{{ $patient->patient_id }}</span>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="tb-col">{{ $patient->phone ?? 'Not provided' }}</td>
+                                                    <td class="tb-col">{{ $patient->gender ?? 'N/A' }}</td>
+                                                    <td class="tb-col">{{ $patient->phone ?? 'N/A' }}</td>
+                                                    <td class="tb-col">{{ $patient->email ?? 'N/A' }}</td>
                                                     <td class="tb-col">{{ $patient->emergency_contact_name ?? '' }} {{ $patient->emergency_contact_phone ?? 'None' }}</td>
-                                                    <td class="tb-col">{{ $patient->pay_method ?? 'N/A' }}</td>
-                                                    <td class="tb-col ">{{ $patient->created_at->format('Y/m/d') }}</td>
+                                                    <td class="tb-col"> <span class="badge @if($patient->pay_method === 'Cash') text-bg-danger-soft @else text-bg-primary-soft @endif">{{ $patient->pay_method ?? 'N/A' }}</span></td>
+                                                    <td class="tb-col">{{ $patient->created_at ? \Carbon\Carbon::parse($patient->created_at)->format('M d, Y') : 'N/A' }}</td>
+                                                    <td class="tb-col">
+                                                        <span class="small">{{ $patient->updated_at ? $patient->updated_at->format('M d, h:i A') : 'N/A' }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-md">{{ $patient->doctor->first_name . ' ' . $patient->doctor->last_name }}</td>
                                                     <td class="tb-col">
                                                         @if ($patient->status == 'Closed')
                                                             <span class="badge text-bg-success-soft">{{ $patient->status }}</span>
@@ -125,7 +151,7 @@
                                                                             <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                                                 @csrf
                                                                                 @method('DELETE')
-                                                                                <button type="submit" class="dropdown-item">
+                                                                                <button type="submit" class="dropdown-item text-bg-danger-soft">
                                                                                     <em class="icon ni ni-trash"></em><span>Delete</span>
                                                                                 </button>
                                                                             </form>
@@ -149,24 +175,14 @@
                                                             </a>
                                                         @endif
                                                     </td>
-
                                                 </tr>
                                                 @empty
-                                                    <tr>
-                                                        <td colspan="7" class="text-center text-muted">No patients found.</td>
-                                                    </tr>
+                                                <tr>
+                                                    <td colspan="11" class="text-center text-bg-mute-soft">No pending patients found.</td>
+                                                </tr>
                                                 @endforelse
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="dataTable-bottom">
-                                            <div class="dataTable-info">Showing 1 to 10 of 24 entries</div>
-                                            <nav class="dataTable-pagination">
-                                                <ul class="dataTable-pagination-list"><li class="active"><a href="#" data-page="1">1</a></li><li class=""><a href="#" data-page="2">2</a></li><li class=""><a href="#" data-page="3">3</a></li><li class="pager"><a href="#" data-page="2"><em class="icon ni ni-chevron-right"></em></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
+                                            </tbody>
+                                        </table>
                                     </div><!-- .card -->
                                 </div><!-- .nk-block -->
                             </div>

@@ -143,9 +143,40 @@ class AuthController extends Controller
         return view('auth.profile', compact('user'));
     }
 
-    public function showAccountSettings()
+    public function showAccountSettings($id)
     {
+        // Find the user by ID. If not found, it will automatically throw a 404 exception.
+        $user = User::findOrFail($id);
 
+        // Pass the user data to the profile view.
+        return view('auth.settings', compact('user'));
     }
+
+    public function updatePassword(Request $request)
+    {
+        // 1. Validate the form data.
+        // The 'confirmed' rule automatically checks if 'new_password' and 'new_password_confirmation' match.
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // 2. Check if the current password is correct.
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'The provided current password does not match your password.');
+        }
+
+        // 3. Update the password.
+        // We use Hash::make() to securely hash the new password before saving it.
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        // 4. Redirect back with a success message.
+        return back()->with('status', 'Password changed successfully!');
+    }
+
+    
     
 }
