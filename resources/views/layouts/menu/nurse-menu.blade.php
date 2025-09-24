@@ -19,7 +19,7 @@
 
 <li class="nk-menu-item">
     <a href="{{ route('nurse.vitals.log') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-heart"></em></span>
+        <span class="nk-menu-icon"><em class="icon ni ni-activity"></em></span>
         <span class="nk-menu-text">Log Vitals</span>
     </a>
 </li>
@@ -32,9 +32,9 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('nurse.medication.log') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-pills"></em></span>
-        <span class="nk-menu-text">Medication Log</span>
+    <a href="{{ route('nurse.reports') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+        <span class="nk-menu-text">Reports</span>
     </a>
 </li>
 

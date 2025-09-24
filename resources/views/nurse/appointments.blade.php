@@ -8,27 +8,16 @@
                 <div class="nk-block-head">
                     <div class="nk-block-head-between flex-wrap gap g-2">
                         <div class="nk-block-head-content">
-                            <h2 class="nk-block-title">Appointments</h2>
+                            <h2 class="nk-block-title">My Appointments</h2>
                             <nav>
                                 <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                    @if(Auth::user()->role === 'receptionist')
-                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
-                                    @elseif(Auth::user()->role === 'doctor')
-                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
-                                    @elseif(Auth::user()->role === 'admin')
-                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                    @endif
+                                    <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Manage Appointments</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="nk-block-head-content">
-                            @if(Auth::user()->role === 'receptionist' || Auth::user()->role === 'admin')
-                                <a href="{{ route('appointments.create') }}" class="btn btn-primary d-none d-md-inline-flex">
-                                    <em class="icon ni ni-plus"></em>
-                                    <span>Book Appointment</span>
-                                </a>
-                            @endif
+                            <!-- you can add button here -->
                         </div>
                     </div><!-- .nk-block-head-between -->
                 </div><!-- .nk-block-head -->
@@ -60,7 +49,7 @@
                                     <td class="tb-col">
                                         {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i') }}
                                     </td>
-                                    <td class="tb-col">{{ $appointment->service->name ?? '-' }}</td>
+                                    <td class="tb-col">{{ $appointment->reason ?? '-' }}</td>
                                     <td class="tb-col">
                                         @if ($appointment->status === 'Scheduled')
                                             <span class="badge text-bg-info-soft">{{ $appointment->status }}</span>

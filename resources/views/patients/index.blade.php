@@ -129,6 +129,10 @@
                                                     <td class="tb-col">
                                                         @if ($patient->status == 'Closed')
                                                             <span class="badge text-bg-success-soft">{{ $patient->status }}</span>
+                                                        @elseif ($patient->status == 'Cancelled')
+                                                            <span class="badge text-bg-danger-soft">{{ $patient->status }}</span>
+                                                        @elseif ($patient->status == 'Discharged')
+                                                            <span class="badge text-bg-warning-soft">{{ $patient->status }}</span>
                                                         @else
                                                             <span class="badge text-bg-primary-soft">{{ $patient->status }}</span>
                                                         @endif
@@ -178,7 +182,7 @@
                                                 </tr>
                                                 @empty
                                                 <tr>
-                                                    <td colspan="11" class="text-center text-bg-mute-soft">No pending patients found.</td>
+                                                    <td colspan="11" class="text-center text-bg-mute-soft">No patients found.</td>
                                                 </tr>
                                                 @endforelse
                                             </tbody>

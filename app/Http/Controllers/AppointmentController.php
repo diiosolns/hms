@@ -3,14 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Appointment;
-use App\Models\Patient;
-use App\Models\User; // doctors
-use App\Models\Service;
 use App\Models\Hospital;
 use App\Models\Branch;
+use App\Models\User;
+use App\Models\Patient;
+use App\Models\Service;
+use App\Models\Appointment;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use App\Models\NurseTriageAssessment;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MedicalRecord;
+use App\Models\LabRequest;
+use App\Models\LabRequestTest;
+use App\Models\Prescription;
+use App\Models\LabTest;
+use App\Models\PharmacyItem;
 
 class AppointmentController extends Controller
 {
@@ -20,6 +31,7 @@ class AppointmentController extends Controller
     public function index()
     {
         $appointments = Appointment::with(['patient', 'doctor', 'service'])
+            ->where('branch_id', Auth::user()->branch_id)
             ->orderBy('appointment_date', 'desc')
             ->paginate(15);
 
@@ -58,6 +70,8 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $request->validate([
             'patient_id'        => 'required|exists:patients,id',
             'doctor_id'         => 'required|exists:users,id',
@@ -69,6 +83,8 @@ class AppointmentController extends Controller
         ]);
 
         Appointment::create([
+            'hospital_id'      => $user->hospital_id,
+            'branch_id'        => $user->branch_id,
             'patient_id'       => $request->patient_id,
             'doctor_id'        => $request->doctor_id,
             'service_id'       => $request->service_id,
@@ -143,8 +159,52 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-        $appointment = Appointment::with(['patient', 'doctor', 'service'])->findOrFail($id);
+        $user = Auth::user();
 
-        return view('appointments.show', compact('appointment'));
+        $appointment = Appointment::with(['patient', 'doctor', 'service'])->findOrFail($id);
+        $patient = Patient::with([
+            'branch', 
+            'appointments', 
+            'nurseTriageAssessments', 
+            'medicalRecords', 
+            'LabRequests',
+            'prescriptions',
+            'doctor',
+            'appointments',
+            'invoices',
+            'pendingInvoices',
+            'labRequestTests'
+        ])->findOrFail($appointment->patient_id);
+
+        // Total of all invoices
+        $totalInvoices = $patient->invoices->sum('total_amount');
+
+        // Total of pending invoices
+        $totalPendingInvoices = $patient->pendingInvoices->sum('total_amount');
+
+        $doctors = User::with('pending_patients')
+               ->where('role', 'Doctor')
+               ->where('branch_id', Auth::user()->branch_id)
+               ->paginate(20);
+
+        // Get active services
+        $services = Service::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active availableTests
+        $availableTests = LabTest::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        // Get active pharmacyItems
+        $pharmacyItems = PharmacyItem::where('status', 'Active')
+            ->where('hospital_id', $user->hospital_id)
+            ->where('branch_id', $user->branch_id)
+            ->get();
+
+        return view('appointments.show', compact('appointment','patient', 'doctors', 'totalInvoices', 'totalPendingInvoices', 'services', 'availableTests', 'pharmacyItems'));
     }
 }

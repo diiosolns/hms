@@ -113,7 +113,7 @@
                                         <div class="gap-col">
                                             <ul class="nav nav-pills nav-pills-border gap g-3" role="tablist">
                                                 <li class="nav-item" >
-                                                    <button class="nav-link @if(Auth::user()->role === 'receptionist') active @endif " data-bs-toggle="tab" data-bs-target="#tab-1" type="button" aria-selected="true" role="tab"> Overview </button>
+                                                    <button class="nav-link @if(in_array(Auth::user()->role, ['receptionist', 'nurse', 'owner', 'admin'])) active @endif " data-bs-toggle="tab" data-bs-target="#tab-1" type="button" aria-selected="true" role="tab"> Overview </button>
                                                 </li>
                                                 <li class="nav-item" >
                                                     <button  class="nav-link @if(Auth::user()->role === 'doctor') active @endif " data-bs-toggle="pill" data-bs-target="#pills-doctor" type="button"> Doctor </button>
@@ -191,7 +191,7 @@
                         
                         <div class="nk-block">
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane @if(Auth::user()->role === 'receptionist') show active @endif " id="tab-1" tabindex="0" role="tabpanel">
+                                <div class="tab-pane @if(in_array(Auth::user()->role, ['receptionist', 'nurse', 'owner', 'admin'])) show active @endif " id="tab-1" tabindex="0" role="tabpanel">
                                     <div class="card card-gutter-md">
                                         <div class="card-row card-row-lg col-sep col-sep-lg">
                                             <div class="card-aside">
@@ -434,6 +434,7 @@
 
 
                                     <!-- PATIENT INVOICES  -->
+                                    @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
                                     <div class="card h-100 mt-4">
                                         <div class="card-body flex-grow-0 py-2">
                                             <div class="card-title-group">
@@ -520,10 +521,12 @@
                                             Make sure all bills are cleared before going to next step.
                                         </div>
                                     </div><!-- .card -->
+                                    @endif
                                     <!-- END PATIENT INVOICES -->
 
 
                                     <!-- CLOSE BUTTON GROUP     -->
+                                    @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
                                     <div class="card mt-4">
                                         <div class="card-body">
                                             <ul class="d-flex flex-wrap gap g-6">
@@ -552,19 +555,6 @@
                                                         Discharge
                                                     </button>
                                                 </li>
-
-                                                <!-- Close -->
-                                                <li>
-                                                    <form id="closeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="status" value="Closed">
-                                                    </form>
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                            onclick="confirmAction('closeForm', 'Are you sure you want to close this patient record?')">
-                                                        Close
-                                                    </button>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -576,6 +566,7 @@
                                             }
                                         }
                                     </script>
+                                    @endif
                                     <!-- END CLOSE BUTTON GROUP -->
 
 
@@ -1007,6 +998,42 @@
                                             <div class="card-footer">   
                                             </div>
                                         </div>
+
+
+
+
+
+
+                                    <!-- CLOSE BUTTON GROUP     -->
+                                    @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
+                                    <div class="card mt-4">
+                                        <div class="card-body">
+                                            <p class="mb-2">
+                                                Closing this treatment file will finalize all records for this patient. 
+                                                No further edits can be made once the file is closed. 
+                                                Please ensure all treatment details are correctly entered before proceeding.
+                                            </p>
+                                            <form id="closeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status" value="Closed">
+                                            </form>
+                                            <button type="button" class="btn btn-outline-danger"
+                                                    onclick="confirmAction('closeForm', 'Are you sure you want to close this patient record?')">
+                                                Close Treatment File
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        function confirmAction(formId, message) {
+                                            if (confirm(message)) {
+                                                document.getElementById(formId).submit();
+                                            }
+                                        }
+                                    </script>
+                                    @endif
+                                    <!-- END CLOSE BUTTON GROUP -->
                                 </div><!-- .pharmacy tab-pane -->
 
 

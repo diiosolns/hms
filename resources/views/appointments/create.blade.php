@@ -42,21 +42,23 @@
                         <div class="card-body">
                             <h4 class="mb-4">Register a New Appointment</h4>
 
-                            <form action="{{ route('admin.appointments.store') }}" method="POST">
+                            <form action="{{ route('appointments.store') }}" method="POST">
                                 @csrf
                                 <div class="row g-3">
 
                                     <!-- Patient -->
                                     <div class="col-lg-6">
-                                        <label for="patient_id" class="form-label">Patient <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('patient_id') is-invalid @enderror" name="patient_id" id="patient_id">
-                                            <option value="">Select Patient</option>
-                                            @foreach($patients as $patient)
-                                                <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
-                                                    {{ $patient->first_name }} {{ $patient->last_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-group">
+                                            <label class="form-label">Patient <span class="text-danger">*</span></label>
+                                            <div class="form-control-wrap">
+                                                <select class="js-select @error('patient_id') is-invalid @enderror" name="patient_id" id="patient_id" data-search="true" data-sort="true">
+                                                    <option value="">Select Patient</option>
+                                                    @foreach($patients as $patient)
+                                                        <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>{{ $patient->first_name }} {{ $patient->last_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                         @error('patient_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -64,15 +66,17 @@
 
                                     <!-- Doctor -->
                                     <div class="col-lg-6">
-                                        <label for="doctor_id" class="form-label">Doctor <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('doctor_id') is-invalid @enderror" name="doctor_id" id="doctor_id">
-                                            <option value="">Select Doctor</option>
-                                            @foreach($doctors as $doctor)
-                                                <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
-                                                    {{ $doctor->first_name }} {{ $doctor->last_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-group">
+                                            <label class="form-label">Doctor <span class="text-danger">*</span></label>
+                                            <div class="form-control-wrap">
+                                                <select class="js-select @error('doctor_id') is-invalid @enderror" name="doctor_id" id="doctor_id" data-search="true" data-sort="true">
+                                                    <option value="">Select Doctor</option>
+                                                    @foreach($doctors as $doctor)
+                                                        <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>{{ $doctor->first_name }} {{ $doctor->last_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                         @error('doctor_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -83,7 +87,7 @@
                                         <div class="form-group">
                                             <label class="form-label">Service</label>
                                             <div class="form-control-wrap">
-                                                <select class="js-select @error('service_id') is-invalid @enderror" name="service_id" id="service_id" data-search="true" data-sort="false">
+                                                <select class="js-select @error('service_id') is-invalid @enderror" name="service_id" id="service_id" data-search="true" data-sort="true">
                                                     <option value="1">Select Service (Optional)</option>
                                                     @foreach($services as $service)
                                                     <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
@@ -127,12 +131,16 @@
 
                                     <!-- Status -->
                                     <div class="col-lg-6">
-                                        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('status') is-invalid @enderror" name="status" id="status">
-                                            <option value="Scheduled" {{ old('status') == 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                            <option value="Completed" {{ old('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                            <option value="Cancelled" {{ old('status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                            <div class="form-control-wrap">
+                                                <select class="js-select @error('status') is-invalid @enderror" name="status" id="status" data-search="true" data-sort="false">
+                                                    <option value="Scheduled" {{ old('status') == 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
+                                                    <option value="Completed" {{ old('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                                    <option value="Cancelled" {{ old('status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

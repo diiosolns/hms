@@ -24,9 +24,16 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('doctor.lab_results') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-activity"></em></span>
-        <span class="nk-menu-text">Lab Results</span>
+    <a href="{{ route('patients.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
+        <span class="nk-menu-text">Patients</span>
+    </a>
+</li>
+
+<li class="nk-menu-item">
+    <a href="{{ route('doctor.reports') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+        <span class="nk-menu-text">Reports</span>
     </a>
 </li>
 

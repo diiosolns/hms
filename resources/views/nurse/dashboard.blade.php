@@ -33,9 +33,9 @@
                             <div class="row g-gs">
                                 {{-- Card 1: Log Vitals --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('patients.index') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('nurse.vitals.log') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
+                                            <div class="card-icon text-primary"><em class="icon ni ni-activity-round"></em></div>
                                             <h5 class="title mb-3">Log Vitals</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
                                                 <span class="text-light">Update Triage Assessments.</span>
@@ -46,12 +46,12 @@
                                 
                                 {{-- Card 2: Manage Appointments --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('appointments.index') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('nurse.appointments') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
-                                            <h5 class="title mb-3">Manage Appointments</h5>
+                                            <h5 class="title mb-3">My Appointments</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">View, create, and modify appointments.</span>
+                                                <span class="text-light">Manage Appointments.</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->
@@ -59,12 +59,12 @@
 
                                 {{-- Card 3: Patient search --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('billing.create') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('nurse.reports') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
-                                            <h5 class="title mb-3">Search Patients</h5>
+                                            <div class="card-icon text-primary"><em class="icon ni ni-reports"></em></div>
+                                            <h5 class="title mb-3">Reports</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Handle patient search.</span>
+                                                <span class="text-light">View and Download Reports</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->
@@ -117,10 +117,13 @@
                                                     <span class="overline-title">Phone</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">DOB</span>
+                                                    <span class="overline-title">Pay Method</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
-                                                    <span class="overline-title">Status</span>
+                                                    <span class="overline-title">Department</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Doctor</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Actions</span>
@@ -147,12 +150,13 @@
                                                         <span class="small">{{ $patient->phone ?? 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">
-                                                            {{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'N/A' }}
-                                                        </span>
+                                                        <span class="badge @if($patient->pay_method === 'Cash') text-bg-danger-soft @else text-bg-primary-soft @endif">{{ $patient->pay_method ?? 'Cash' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <span class="small">{{ $patient->doctor ? $patient->doctor->first_name . ' ' . $patient->doctor->last_name : 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">

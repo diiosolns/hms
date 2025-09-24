@@ -160,14 +160,10 @@ Route::middleware(['auth'])->group(function () {
     // Doctor Routes (Requires 'doctor' role)
     Route::middleware(['role:doctor'])->prefix('doctor')->name('doctor.')->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('dashboard');
-        Route::get('/patients', [PatientController::class, 'index'])->name('patients');
-        Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments');
-        Route::get('/lab-results', [DoctorController::class, 'labResults'])->name('lab_results');
-        Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
-
-        // Medical Record & Inputs
-        Route::get('/medical-records/{patient}', [DoctorController::class, 'showMedicalRecord'])->name('medical.records.show');
-
+        Route::get('/patients', [DoctorController::class, 'patients'])->name('patients');
+        Route::get('/appointments', [DoctorController::class, 'appointments'])->name('appointments');
+        Route::get('/reports', [DoctorController::class, 'reports'])->name('reports');
+        
         // Updates via modals
         Route::post('/medical-records/{patient}/diagnosis', [DoctorController::class, 'updateDiagnosis'])->name('medical-records.updateDiagnosis');
         Route::post('/medical-records/{patient}/lab-tests', [DoctorController::class, 'storeLabTests'])->name('lab-tests.store');
@@ -193,9 +189,11 @@ Route::middleware(['auth'])->group(function () {
     // Nurse Routes (Requires 'nurse' role)
     Route::middleware(['role:nurse'])->prefix('nurse')->name('nurse.')->group(function () {
         Route::get('/dashboard', [NurseController::class, 'dashboard'])->name('dashboard');
-        Route::get('/patients', [NurseController::class, 'patients'])->name('patients');
+        //Route::get('/patients', [NurseController::class, 'patients'])->name('patients');
+        Route::get('/patients', [PatientController::class, 'index'])->name('patients');
         Route::get('/vitals/log', [NurseController::class, 'logVitals'])->name('vitals.log');
         Route::get('/appointments', [NurseController::class, 'appointments'])->name('appointments');
+        Route::get('/reports', [NurseController::class, 'reports'])->name('reports');
         Route::get('/medication/log', [NurseController::class, 'logMedication'])->name('medication.log');
     });
 
@@ -270,7 +268,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
     });
 
-    Route::prefix('nurse')->name('nurse.')->middleware(['auth', 'role:nurse'])->group(function () {
+    /*Route::prefix('nurse')->name('nurse.')->middleware(['auth', 'role:nurse'])->group(function () {
         Route::get('/dashboard', [NurseController::class, 'dashboard'])->name('dashboard');
         Route::get('/patients', [PatientController::class, 'index'])->name('patients');
         Route::get('/vitals', [PatientController::class, 'index'])->name('vitals.log');
@@ -279,12 +277,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/appointments', [NurseController::class, 'storeAppointment'])->name('appointments.store');
         Route::get('/medication', [NurseController::class, 'createMedication'])->name('medication.log');
         Route::post('/medication', [NurseController::class, 'storeMedication'])->name('medication.store');
-    });
+    });*/
 
     //Can be accessed by many-users
     Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
     Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
     Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show');
     Route::get('/patients/{id}/edit', [PatientController::class, 'edit'])->name('patients.edit');
     Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
@@ -293,9 +292,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patients/direct-lab/{id}', [PatientController::class, 'directLab'])->name('patients.direct.lab');
     Route::get('/patients/direct-pharmacy/{id}', [PatientController::class, 'directPharmacy'])->name('patients.direct.pharmacy');
     Route::get('/patients/direct-reception/{id}', [PatientController::class, 'directReception'])->name('patients.direct.reception');
-    Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search');
     Route::put('/patients/{id}/status', [PatientController::class, 'updateStatus'])->name('patients.updateStatus');
-
+    Route::resource('appointments', AppointmentController::class);
     
 
     //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');

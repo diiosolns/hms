@@ -1,84 +1,31 @@
-
-<style>
-        .dashboard-card {
-            text-align: center; /* Center all content */
-        }
-        .dashboard-card .card-icon {
-            font-size: 3rem; /* Make icons very large */
-            display: block; /* Make the icon a block element to center it */
-            margin: 0 auto 1rem; /* Center the icon and add spacing below */
-        }
-        .card-link {
-            text-decoration: none; /* Removes underline from the link */
-            color: inherit;       /* Inherits text color */
-        }
-        .card-link:hover {
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); /* Adds a subtle shadow on hover */
-            transform: translateY(-2px); /* Lifts the card slightly on hover */
-            transition: all 0.3s ease-in-out; /* Smooth transition */
-        }
-</style>
-
-
 @extends('layouts.app')
 
 @section('content')
-    
-    <div class="nk-content">
-        <div class="container-fluid">
-            <div class="nk-content-inner">
-                <div class="nk-content-body">
+<div class="nk-content">
+    <div class="container">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head">
+                    <div class="nk-block-head-between flex-wrap gap g-2">
+                        <div class="nk-block-head-content">
+                            <h2 class="nk-block-title">My Patients</h2>
+                                <nav>
+                                    <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Pending Patients</li>
+                                    </ol>
+                                </nav>
+                        </div>
+                        <div class="nk-block-head-content">
+                            <ul class="d-flex">
+                                <!-- ADD ANY BUTTON HERE -->
+                            </ul>
+                        </div>
+                    </div><!-- .nk-block-head-between -->
+                </div><!-- .nk-block -->
+                <div class="nk-block">
+                    <!-- PATIENTS PENDING VITALS -->
                     <div class="row g-gs">
-                        <div class="col-xxl-12">
-                            <div class="row g-gs">
-                                {{-- Card 1: Log Vitals --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('doctor.patients') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-users"></em></div>
-                                            <h5 class="title mb-3">My Patients</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Manage medical records.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                                {{-- Card 2: Manage Appointments --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('doctor.appointments') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
-                                            <h5 class="title mb-3">My Appointments</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Manage my appointments.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-
-                                {{-- Card 3: Patient search --}}
-                                <div class="col-md-4">
-                                    <a href="{{ route('doctor.reports') }}" class="card h-100 card-link dashboard-card">
-                                        <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-reports"></em></div>
-                                            <h5 class="title mb-3">Reports</h5>
-                                            <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Create & Download Reports.</span>
-                                            </div>
-                                        </div><!-- .card-body -->
-                                    </a><!-- .card -->
-                                </div><!-- .col -->
-                                
-                            </div><!-- .row -->
-                        </div><!-- .col -->
-                    </div><!-- .row -->
-
-
-
-
-                    <!-- PATIENTS PENDING  -->
-                    <div class="row g-gs mt-4">
                         <div class="col-xxl-12">
                             <div class="card h-100">
                                 <div class="card-body flex-grow-0 py-2">
@@ -179,13 +126,10 @@
                             </div><!-- .card -->
                         </div>
                     </div>
-                    <!-- END PATIENTS PENDING -->
-
-
-
-
-                </div>
+                    <!-- END PATIENTS PENDING VITALS -->
+                </div><!-- .nk-block -->
             </div>
         </div>
     </div>
+</div>
 @endsection

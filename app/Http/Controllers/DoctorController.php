@@ -12,13 +12,15 @@ use App\Models\Prescription;
 use App\Models\LabTest;
 use App\Models\Invoice;
 use App\Models\PharmacyItem;
+use App\Models\Appointment;
 
 class DoctorController extends Controller
 {
     //
     public function dashboard()
     {
-        $patients = Patient::where('status', 'Doctor')
+        $patients = Patient::with('doctor')
+            ->where('status', 'Doctor')
             ->where('branch_id', Auth::user()->branch_id)
             ->where('doctor_id', Auth::user()->id)
             ->paginate(10);
@@ -33,23 +35,26 @@ class DoctorController extends Controller
 
     public function patients()
     {
+        $patients = Patient::with('doctor')
+            ->where('status', 'Doctor')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->where('doctor_id', Auth::user()->id)
+            ->paginate(10);
 
+        return view('doctor.patients', compact('patients'));
     }
 
     public function appointments()
     {
+        $appointments = Appointment::with(['patient', 'doctor', 'service'])
+            ->where('branch_id', Auth::user()->branch_id)
+            ->where('doctor_id', Auth::user()->id)
+            ->orderBy('appointment_date', 'desc')
+            ->paginate(15);
 
+        return view('doctor.appointments', compact('appointments'));
     }
 
-    public function labResults()
-    {
-
-    }
-
-    public function showMedicalRecord()
-    {
-
-    }
 
 
     //====================================
@@ -240,6 +245,23 @@ class DoctorController extends Controller
         //REMOVE INVOICE ITEM AND BALANCE INVOICE
 
         return back()->with('success', 'Lab test removed successfully.');
+    }
+
+
+
+    public function reports()
+    {
+        $excludedStatuses = ['Closed', 'Discharged', 'Cancelled'];
+
+        $patients = Patient::with('doctor')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->whereNotIn('status', $excludedStatuses)  
+            ->where('doctor_id', Auth::user()->id)
+            ->whereHas('nurseTriageAssessments', function ($query) {
+                $query->where('status', 'Pending');
+            })->get();
+
+        return view('doctor.reports', compact('patients'));
     }
 
 

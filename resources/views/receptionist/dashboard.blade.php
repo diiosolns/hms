@@ -38,11 +38,11 @@
                                         <div class="amount h2 mb-2">{{ number_format($totalPatients) }}</div>
                                         <div class="d-flex flex-wrap align-items-center gap g-1">
                                             <div class="gap-col">
-                                                <span class="badge text-bg-primary-soft">
+                                                <span class="badge text-bg-secondary-soft">
                                                     <em class="icon ni ni-users-fill"></em> Male {{ number_format($malePatients) }} </span>
                                             </div>
                                             <div class="gap-col">
-                                                <span class="badge text-bg-primary-soft">
+                                                <span class="badge text-bg-secondary-soft">
                                                 <em class="icon ni ni-users"></em> Female {{ number_format($femalePatients) }}</span>
                                             </div>
                                         </div>
@@ -74,11 +74,11 @@
                                         <div class="amount h2 mb-2">{{ number_format($scheduledAppointments) }}</div>
                                         <div class="d-flex flex-wrap align-items-center gap g-1">
                                             <div class="gap-col">
-                                                <span class="badge text-bg-primary-soft">
+                                                <span class="badge text-bg-secondary-soft">
                                                     <em class="icon ni ni-users-fill"></em> Male {{ number_format($maleAppointments) }} </span>
                                             </div>
                                             <div class="gap-col">
-                                                <span class="badge text-bg-primary-soft">
+                                                <span class="badge text-bg-secondary-soft">
                                                 <em class="icon ni ni-users"></em> Female {{ number_format($femaleAppointments) }}</span>
                                             </div>
                                         </div>
@@ -110,11 +110,11 @@
                                         <div class="amount h2 mb-2">{{ number_format($pendingInvoices) }} <small class="small txt-light">Pending Invoices</small> </div>
                                         <div class="d-flex flex-wrap align-items-center gap g-1">
                                             <div class="gap-col">
-                                                <span class="badge text-bg-danger-soft">
+                                                <span class="badge text-bg-primary-soft">
                                                     <em class="icon ni ni-wallet-fill"></em> Cash {{ number_format($pendingCashInvoices) }} </span>
                                             </div>
                                             <div class="gap-col">
-                                                <span class="badge text-bg-success-soft">
+                                                <span class="badge text-bg-info-soft">
                                                 <em class="icon ni ni-wallet"></em> Insurance {{ number_format($pendingInvoices - $pendingCashInvoices) }}</span>
                                             </div>
                                         </div>

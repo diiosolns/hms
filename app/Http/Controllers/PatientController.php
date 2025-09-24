@@ -37,9 +37,9 @@ class PatientController extends Controller
         // Apply role-based filtering
         $user = Auth::user();
         if ($user->role === 'nurse') {
-            $query->where('status', 'Nurse');
+            $query->whereIn('status', ['Nurse', 'Reception', 'Laboratory', 'Doctor', 'Pharmacy']);
         } else if ($user->role === 'doctor') {
-            $query->where('status', 'Doctor');
+            $query->whereIn('status', ['Nurse', 'Reception', 'Laboratory', 'Doctor', 'Pharmacy']);
             $query->where('doctor_id', Auth::id());
         } else if ($user->role === 'lab_technician') {
             $query->where('status', 'Laboratory');
@@ -489,17 +489,38 @@ class PatientController extends Controller
     }
 
 
-   public function search(Request $request)
+   public function search(Request $request): View
     {
-        $query = $request->input('q');
+        // Start with a base query on the Patient model
+        $query = Patient::query()->where('branch_id', Auth::user()->branch_id);
 
-        $patients = Patient::when($query, function ($q) use ($query) {
-            $q->where('first_name', 'like', "%{$query}%")
-              ->orWhere('last_name', 'like', "%{$query}%")
-              ->orWhere('phone', 'like', "%{$query}%");
-        })->get();
+        if ($request->filled('status')) {
+            if ($request->status === 'Pending') {
+                $query->whereNotIn('status', ['Closed', 'Cancelled', 'Discharged']);
+            } else {
+                $query->where('status', $request->status);
+            }
+        }
+        
+        // Check for a search query from the request
+        if ($request->filled('search')) {
+            $searchTerm = strtolower($request->search);
 
-        return view('patients.search', compact('patients', 'query'));
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('last_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('phone', 'like', "%{$searchTerm}%")
+                  ->orWhere('patient_id', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Order newest to oldest
+        $patients = $query->latest('created_at')->get();
+
+        return view('patients.index', [
+            'patients' => $patients,
+            'searchTerm' => $request->search,
+        ]);
     }
 
 

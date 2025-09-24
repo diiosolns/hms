@@ -170,7 +170,8 @@ class AuthController extends Controller
 
         // 3. Update the password.
         // We use Hash::make() to securely hash the new password before saving it.
-        $user->password = Hash::make($request->new_password);
+        //$user->password = Hash::make($request->new_password);
+        $user->password = $request->new_password; // Mutator will handle hashing
         $user->save();
 
         // 4. Redirect back with a success message.

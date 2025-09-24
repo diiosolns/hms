@@ -139,9 +139,9 @@
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="{{ route('patients.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                <a href="{{ route('patients.index') }}" class="nk-nav-link bg-secondary-soft-hover">
                                                     <div class="media-group flex-grow-1">
-                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                        <div class="media media-md media-middle media-border text-bg-secondary-soft-outline">
                                                             <em class="icon ni ni-user-add"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
@@ -152,9 +152,9 @@
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="{{ route('appointments.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                <a href="{{ route('appointments.index') }}" class="nk-nav-link bg-success-soft-hover">
                                                     <div class="media-group flex-grow-1">
-                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                        <div class="media media-md media-middle media-border text-bg-success-soft-outline">
                                                             <em class="icon ni ni-calendar"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
@@ -165,9 +165,9 @@
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="{{ route('receptionist.billing.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                <a href="{{ route('receptionist.billing.index') }}" class="nk-nav-link bg-info-soft-hover">
                                                     <div class="media-group flex-grow-1">
-                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                        <div class="media media-md media-middle media-border text-bg-info-soft-outline">
                                                             <em class="icon ni ni-wallet"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
@@ -178,9 +178,9 @@
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="{{ route('receptionist.reports.index') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                <a href="{{ route('receptionist.reports.index') }}" class="nk-nav-link bg-danger-soft-hover">
                                                     <div class="media-group flex-grow-1">
-                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                        <div class="media media-md media-middle media-border text-bg-danger-soft-outline">
                                                             <em class="icon ni ni-reports"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
@@ -192,66 +192,132 @@
                                             </li>
                                             @elseif(Auth::user()->role === 'nurse')
                                             <li class="nk-nav-item">
-                                                <a href="./html/index.html" class="nk-nav-link bg-primary-soft-hover">
+                                                <a href="{{ route('nurse.dashboard') }}" class="nk-nav-link bg-primary-soft-hover">
                                                     <div class="media-group flex-grow-1">
                                                         <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
                                                             <em class="icon ni ni-dashboard-fill"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
-                                                            <span class="title">Default</span>
-                                                            <span class="sub-text d-block">Website Analytics</span>
+                                                            <span class="title">Dashboard</span>
+                                                            <span class="sub-text d-block">Explore System Insights</span>
                                                         </div>
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="./html/index-ecommerce.html" class="nk-nav-link bg-secondary-soft-hover">
+                                                <a href="{{ route('nurse.vitals.log') }}" class="nk-nav-link bg-secondary-soft-hover">
                                                     <div class="media-group flex-grow-1">
                                                         <div class="media media-md media-middle media-border text-bg-secondary-soft-outline">
-                                                            <em class="icon ni ni-cart-fill"></em>
+                                                            <em class="icon ni ni-activity"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
-                                                            <span class="title">eCommerce</span>
-                                                            <span class="sub-text d-block">Sales reports</span>
+                                                            <span class="title">Log Vitals</span>
+                                                            <span class="sub-text d-block">Patients Pending Vitals</span>
                                                         </div>
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="./html/index-project.html" class="nk-nav-link bg-success-soft-hover">
+                                                <a href="{{ route('nurse.patients') }}" class="nk-nav-link bg-success-soft-hover">
                                                     <div class="media-group flex-grow-1">
                                                         <div class="media media-md media-middle media-border text-bg-success-soft-outline">
-                                                            <em class="icon ni ni-link-group"></em>
+                                                            <em class="icon ni ni-users"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
-                                                            <span class="title">Project</span>
-                                                            <span class="sub-text d-block">Tasts, graphs & charts</span>
+                                                            <span class="title">Patients</span>
+                                                            <span class="sub-text d-block">View Patients List</span>
                                                         </div>
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="./html/index-marketing.html" class="nk-nav-link bg-info-soft-hover">
+                                                <a href="{{ route('nurse.appointments') }}" class="nk-nav-link bg-info-soft-hover">
                                                     <div class="media-group flex-grow-1">
                                                         <div class="media media-md media-middle media-border text-bg-info-soft-outline">
-                                                            <em class="icon ni ni-growth-fill"></em>
+                                                            <em class="icon ni ni-calendar-alt"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
-                                                            <span class="title">Marketing</span>
-                                                            <span class="sub-text d-block">Campaings & conversions</span>
+                                                            <span class="title">Appointments</span>
+                                                            <span class="sub-text d-block">Manage My Appointments</span>
                                                         </div>
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
                                             <li class="nk-nav-item">
-                                                <a href="./html/index-nft.html" class="nk-nav-link bg-danger-soft-hover">
+                                                <a href="{{ route('nurse.reports') }}" class="nk-nav-link bg-danger-soft-hover">
                                                     <div class="media-group flex-grow-1">
                                                         <div class="media media-md media-middle media-border text-bg-danger-soft-outline">
-                                                            <em class="icon ni ni-img-fill"></em>
+                                                            <em class="icon ni ni-reports"></em>
                                                         </div>
                                                         <div class="media-text flex-grow-1">
-                                                            <span class="title">NFT</span>
-                                                            <span class="sub-text d-block">Sell &amp; Create your own NFTs</span>
+                                                            <span class="title">Reports</span>
+                                                            <span class="sub-text d-block">Create &amp; Download Reports</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            @elseif(Auth::user()->role === 'doctor')
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('doctor.dashboard') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-dashboard-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Dashboard</span>
+                                                            <span class="sub-text d-block">Explore System Insights</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('doctor.patients') }}" class="nk-nav-link bg-secondary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-secondary-soft-outline">
+                                                            <em class="icon ni ni-folder"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">My Patients</span>
+                                                            <span class="sub-text d-block">Patients assigned to me</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('patients.index') }}" class="nk-nav-link bg-success-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-success-soft-outline">
+                                                            <em class="icon ni ni-users"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Patients</span>
+                                                            <span class="sub-text d-block">View Patients List</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('doctor.appointments') }}" class="nk-nav-link bg-info-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-info-soft-outline">
+                                                            <em class="icon ni ni-calendar-alt"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Appointments</span>
+                                                            <span class="sub-text d-block">Manage my appointments</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('doctor.reports') }}" class="nk-nav-link bg-danger-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-danger-soft-outline">
+                                                            <em class="icon ni ni-reports"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Reports</span>
+                                                            <span class="sub-text d-block">Create &amp; Download Reports</span>
                                                         </div>
                                                     </div><!-- .media-group -->
                                                 </a>
@@ -285,17 +351,21 @@
                                                     <h6 class="nk-nav-heading">Nurse</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/components/alerts.html">Vitals</a>
+                                                            <a href="{{ route('nurse.vitals.log') }}">Log Vitals</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/accordion.html">Appointments</a>
+                                                            <a href="{{ route('nurse.patients') }}">Patients</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/accordion.html">Reports</a>
+                                                            <a href="{{ route('nurse.appointments') }}">Appointments</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ route('nurse.reports') }}">Reports</a>
                                                         </li>
                                                     </ul>
                                                 </div><!-- .nk-nav-col -->
-                                                <div class="nk-nav-col">                                                    <h6 class="nk-nav-heading">Laboratory</h6>
+                                                <div class="nk-nav-col">                                                    
+                                                    <h6 class="nk-nav-heading">Laboratory</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
                                                             <a href="./html/utilities/background.html">Lab Test</a>
@@ -330,22 +400,25 @@
                                                     <h6 class="nk-nav-heading">Doctor</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/components/carousel.html">Patients</a>
+                                                            <a href="{{ route('doctor.patients') }}">My Patients</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/collapse.html">Appointments</a>
+                                                            <a href="{{ route('patients.index') }}">Patients</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/collapse.html">Prescriprions</a>
+                                                            <a href="{{ route('doctor.appointments') }}">Appointments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/tooltips.html">Lab Tests</a>
+                                                            <a href="{{ route('doctor.patients') }}">Prescriprions</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/tooltips.html">Test Results</a>
+                                                            <a href="{{ route('doctor.patients') }}">Lab Tests</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/components/tooltips.html">Reports</a>
+                                                            <a href="{{ route('doctor.patients') }}">Test Results</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ route('doctor.reports') }}">Reports</a>
                                                         </li>
                                                     </ul>
                                                 </div><!-- .nk-nav-col -->
@@ -372,51 +445,92 @@
                                         <div class="dropdown-menu dropdown-menu-lg">
                                             <div class="dropdown-content dropdown-content-x-lg py-1">
                                                 <div class="search-inline">
-                                                    <div class="form-control-wrap flex-grow-1">
-                                                        <input placeholder="Type Query" type="text" class="form-control-plaintext">
-                                                    </div>
-                                                    <em class="icon icon-sm ni ni-search"></em>
+                                                    <form action="{{ route('patients.search') }}" method="GET" class="search-inline d-flex w-100 ">
+                                                        @csrf
+                                                        <div class="form-control-wrap flex-grow-1 me-2">
+                                                            <input placeholder="Serch by ID, Name or Phone" type="text" name="search" class="form-control-plaintext">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-md btn-zoom btn-icon me-n1" title="Search">
+                                                            <em class="icon icon-sm ni ni-search"></em>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="dropdown-divider m-0"></div>
                                             <div class="dropdown-content dropdown-content-x-lg py-3">
                                                 <div class="dropdown-title pb-2">
-                                                    <h5 class="title">Recent searches</h5>
+                                                    <h5 class="title">Quick searches</h5>
                                                 </div>
                                                 <ul class="dropdown-list gap gy-2">
                                                     <li>
                                                         <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-light"><em class="icon ni ni-clock"></em></div>
+                                                            <div class="media media-md media-middle media-circle text-bg-light"><em class="icon ni ni-users"></em></div>
                                                             <div class="media-text">
-                                                                <div class="lead-text">Styled Doughnut Chart</div>
+                                                                <div class="lead-text">Pending Patients</div>
                                                                 <span class="sub-text">1 days ago</span>
                                                             </div>
                                                             <div class="media-action media-action-end">
-                                                                <button class="btn btn-md btn-zoom btn-icon me-n1"><em class="icon ni ni-trash"></em></button>
+                                                                <form action="{{ route('patients.search') }}" method="GET" class="d-flex align-items-center">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="Pending">
+                                                                    <button type="submit" class="btn btn-md btn-zoom btn-icon me-n1" title="View Pending Patients">
+                                                                        <em class="icon ni ni-search"></em>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-light"><em class="icon ni ni-clock"></em></div>
+                                                            <div class="media media-md media-middle media-circle text-bg-success"><em class="icon ni ni-user-check"></em></div>
                                                             <div class="media-text">
-                                                                <div class="lead-text">Custom Select Input</div>
+                                                                <div class="lead-text">Closed Patients</div>
                                                                 <span class="sub-text">07 Aug</span>
                                                             </div>
                                                             <div class="media-action media-action-end">
-                                                                <button class="btn btn-md btn-zoom btn-icon me-n1"><em class="icon ni ni-trash"></em></button>
+                                                                <form action="{{ route('patients.search') }}" method="GET" class="d-flex align-items-center">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="Closed">
+                                                                    <button type="submit" class="btn btn-md btn-zoom btn-icon me-n1" title="View Closed Patients">
+                                                                        <em class="icon ni ni-search"></em>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-light"><img src="./images/avatar/a.jpg" alt=""></div>
+                                                            <div class="media media-md media-middle media-circle text-bg-warning"><em class="icon ni ni-user-cross"></em></div>
                                                             <div class="media-text">
-                                                                <div class="lead-text">Sharon Walker</div>
+                                                                <div class="lead-text">Discharged Patients</div>
                                                                 <span class="sub-text">Admin</span>
                                                             </div>
                                                             <div class="media-action media-action-end">
-                                                                <button class="btn btn-md btn-zoom btn-icon me-n1"><em class="icon ni ni-trash"></em></button>
+                                                                <form action="{{ route('patients.search') }}" method="GET" class="d-flex align-items-center">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="Discharged">
+                                                                    <button type="submit" class="btn btn-md btn-zoom btn-icon me-n1" title="View Discharged Patients">
+                                                                        <em class="icon ni ni-search"></em>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="media-group">
+                                                            <div class="media media-md media-middle media-circle text-bg-danger"><em class="icon ni ni-user-cross"></em></div>
+                                                            <div class="media-text">
+                                                                <div class="lead-text">Cancelled Patients</div>
+                                                                <span class="sub-text">Admin</span>
+                                                            </div>
+                                                            <div class="media-action media-action-end">
+                                                                <form action="{{ route('patients.search') }}" method="GET" class="d-flex align-items-center">
+                                                                    @csrf
+                                                                    <input type="hidden" name="status" value="Cancelled">
+                                                                    <button type="submit" class="btn btn-md btn-zoom btn-icon me-n1" title="View Cancelled Patients">
+                                                                        <em class="icon ni ni-search"></em>
+                                                                    </button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </li>
