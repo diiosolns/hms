@@ -17,23 +17,30 @@
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.labtests.completed') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-check-circle"></em></span>
-        <span class="nk-menu-text">Completed Tests</span>
+    <a href="{{ route('lab_technician.catalog') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-list-index"></em></span>
+        <span class="nk-menu-text">Tests Catalog</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.labtests.requests') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-upload-cloud"></em></span>
-        <span class="nk-menu-text">Upload Results</span>
+    <a href="{{ route('lab_technician.appointments.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-calendar-alt"></em></span>
+        <span class="nk-menu-text">Appointments</span>
     </a>
 </li>
 
 <li class="nk-menu-item">
-    <a href="{{ route('lab_technician.patients') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-user"></em></span>
-        <span class="nk-menu-text">Patient Test History</span>
+    <a href="{{ route('patients.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
+        <span class="nk-menu-text">Patients</span>
+    </a>
+</li>
+
+<li class="nk-menu-item">
+    <a href="{{ route('lab_technician.reports.index') }}" class="nk-menu-link">
+        <span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span>
+        <span class="nk-menu-text">Reports</span>
     </a>
 </li>
 

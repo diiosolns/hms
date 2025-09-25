@@ -322,6 +322,72 @@
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
+                                            @elseif(Auth::user()->role === 'lab_technician')
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('lab_technician.dashboard') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-dashboard-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Dashboard</span>
+                                                            <span class="sub-text d-block">Explore System Insights</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('lab_technician.labtests.requests') }}" class="nk-nav-link bg-secondary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-secondary-soft-outline">
+                                                            <em class="icon ni ni-list-check"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Pending Tests</span>
+                                                            <span class="sub-text d-block">Update laboratory test results</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('lab_technician.catalog') }}" class="nk-nav-link bg-success-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-success-soft-outline">
+                                                            <em class="icon ni ni-list-index"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Tests Catalog</span>
+                                                            <span class="sub-text d-block">Manage lab tests catalog.</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('lab_technician.appointments.index') }}" class="nk-nav-link bg-info-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-info-soft-outline">
+                                                            <em class="icon ni ni-calendar-alt"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Appointments</span>
+                                                            <span class="sub-text d-block">Manage my appointments</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('lab_technician.reports.index') }}" class="nk-nav-link bg-danger-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-danger-soft-outline">
+                                                            <em class="icon ni ni-reports"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Reports</span>
+                                                            <span class="sub-text d-block">Create &amp; Download Reports</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
                                             @endif
                                         </ul>
                                     </li>
@@ -368,16 +434,16 @@
                                                     <h6 class="nk-nav-heading">Laboratory</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/utilities/background.html">Lab Test</a>
+                                                            <a href="{{ route('lab_technician.labtests.requests') }}">Lab Test</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/utilities/borders.html">Test Results</a>
+                                                            <a href="{{ route('lab_technician.catalog') }}">Tests Catalog</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/utilities/colors.html">Appointments</a>
+                                                            <a href="{{ route('lab_technician.appointments.index') }}">Appointments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/utilities/misc.html">Reports</a>
+                                                            <a href="{{ route('lab_technician.reports.index') }}">Reports</a>
                                                         </li>
                                                     </ul>
                                                     <h6 class="nk-nav-heading">Pharmacy</h6>

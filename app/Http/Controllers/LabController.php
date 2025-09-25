@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\LabTest;
 use App\Models\LabRequest;
 use App\Models\LabRequestTest;
+use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -18,11 +19,24 @@ class LabController extends Controller
     //
     public function dashboard()
     {
-        $patients = Patient::where('status', 'Laboratory')
+        $patientsWithRecords = Patient::with('doctor')
+            ->where('status', 'Laboratory')
+            ->whereHas('medicalRecords')
             ->where('branch_id', Auth::user()->branch_id)
             ->paginate(10);
 
-        return view('lab_technician.dashboard', compact('patients'));
+        $patientsWithoutRecords = Patient::with('doctor')
+            ->where('status', 'Laboratory')
+            ->whereDoesntHave('medicalRecords')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->paginate(10);
+
+        $patients = Patient::with('doctor')
+            ->where('status', 'Laboratory')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->paginate(10);
+
+        return view('lab_technician.dashboard', compact('patients','patientsWithRecords','patientsWithoutRecords'));
     }
 
     
@@ -179,6 +193,29 @@ class LabController extends Controller
         $labTest = LabTest::findOrFail($id);
 
         return view('lab_technician.show_catalog', compact('labTest'));
+    }
+
+
+    public function reports()
+    {
+        $excludedStatuses = ['Closed', 'Discharged', 'Cancelled'];
+
+        $patients = Patient::where('status', 'Laboratory')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->get();
+
+        return view('lab_technician.reports', compact('patients'));
+    }
+
+    public function appointments()
+    {
+        $appointments = Appointment::with(['patient', 'doctor', 'service'])
+            ->where('branch_id', Auth::user()->branch_id)
+            ->where('doctor_id', Auth::user()->id)
+            ->orderBy('appointment_date', 'desc')
+            ->paginate(15);
+
+        return view('lab_technician.appointments', compact('appointments'));
     }
     
 }

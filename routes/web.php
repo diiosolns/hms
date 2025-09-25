@@ -203,6 +203,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tests/pending', [LabController::class, 'pendingTests'])->name('tests.pending');
         Route::post('/results/upload/{id}', [LabController::class, 'uploadResults'])->name('results.upload');
         Route::get('/patients', [LabController::class, 'patientTestHistory'])->name('patients');
+        Route::get('/reports', [LabController::class, 'reports'])->name('reports.index');
+        Route::get('/appointments', [LabController::class, 'appointments'])->name('appointments.index');
 
         //Update Lab request test
         Route::get('/labtests/requests', [LabController::class, 'labTestsRequest'])->name('labtests.requests');
