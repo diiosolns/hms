@@ -12,13 +12,13 @@
                             <nav>
                                 <ol class="breadcrumb breadcrumb-arrow mb-0">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.pharmacy.index') }}">Manage Pharmacy Items</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('pharmacy.index') }}">Manage Pharmacy Items</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Edit Item</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="nk-block-head-content">
-                            <a href="{{ route('admin.pharmacy.index') }}" class="btn btn-soft btn-primary">
+                            <a href="{{ route('pharmacy.index') }}" class="btn btn-soft btn-primary">
                                 <em class="icon ni ni-eye"></em><span>View Items</span>
                             </a>
                         </div>
@@ -30,7 +30,7 @@
                         <div class="card-body">
                             <h4 class="mb-4">Update Pharmacy Item</h4>
 
-                            <form action="{{ route('admin.pharmacy.update', $pharmacyItem->id) }}" method="POST">
+                            <form action="{{ route('pharmacy.update', $pharmacyItem->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 

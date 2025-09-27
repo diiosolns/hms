@@ -31,11 +31,11 @@
                     <div class="row g-gs">
                         <div class="col-xxl-12">
                             <div class="row g-gs">
-                                {{-- Card 1: Log Vitals --}}
+                                {{-- Card 1: Presscriptions --}}
                                 <div class="col-md-4">
                                     <a href="{{ route('pharmacist.prescriptions') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-user-add"></em></div>
+                                            <div class="card-icon text-primary"><em class="icon ni ni-file-text-fill"></em></div>
                                             <h5 class="title mb-3">Presscriptions</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
                                                 <span class="text-light">Manage Presscriptions</span>
@@ -44,14 +44,14 @@
                                     </a><!-- .card -->
                                 </div><!-- .col -->
                                 
-                                {{-- Card 2: Manage Inventory --}}
+                                {{-- Card 2: Manage Inventory/ Stock --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('appointments.index') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('pharmacist.stock.index') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
                                             <div class="card-icon text-primary"><em class="icon ni ni-calendar"></em></div>
-                                            <h5 class="title mb-3">Manage Inventory</h5>
+                                            <h5 class="title mb-3">Stock Management</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">View, create, and modify inventory.</span>
+                                                <span class="text-light">Manage Pharmacy Inventory.</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->
@@ -59,12 +59,12 @@
 
                                 {{-- Card 3: Patient search --}}
                                 <div class="col-md-4">
-                                    <a href="{{ route('billing.create') }}" class="card h-100 card-link dashboard-card">
+                                    <a href="{{ route('pharmacist.items.index') }}" class="card h-100 card-link dashboard-card">
                                         <div class="card-body">
-                                            <div class="card-icon text-primary"><em class="icon ni ni-search"></em></div>
-                                            <h5 class="title mb-3">Sales & Billing</h5>
+                                            <div class="card-icon text-primary"><em class="icon ni ni-capsule"></em></div>
+                                            <h5 class="title mb-3">Pharmacy Items</h5>
                                             <div class="d-flex align-items-center justify-content-center smaller flex-wrap">
-                                                <span class="text-light">Handle sales and billings</span>
+                                                <span class="text-light">Handle pharmacy items</span>
                                             </div>
                                         </div><!-- .card-body -->
                                     </a><!-- .card -->
@@ -117,10 +117,13 @@
                                                     <span class="overline-title">Phone</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">DOB</span>
+                                                    <span class="overline-title">Pay Method</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
-                                                    <span class="overline-title">Status</span>
+                                                    <span class="overline-title">Department</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Doctor</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Actions</span>
@@ -147,12 +150,13 @@
                                                         <span class="small">{{ $patient->phone ?? 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">
-                                                            {{ $patient->date_of_birth ? \Carbon\Carbon::parse($patient->date_of_birth)->format('M d, Y') : 'N/A' }}
-                                                        </span>
+                                                        <span class="badge @if($patient->pay_method === 'Cash') text-bg-danger-soft @else text-bg-primary-soft @endif">{{ $patient->pay_method ?? 'Cash' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <span class="small">{{ $patient->doctor ? $patient->doctor->first_name . ' ' . $patient->doctor->last_name : 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
@@ -162,7 +166,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">No patients found.</td>
+                                                    <td colspan="6" class="text-center text-muted">No patients found.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

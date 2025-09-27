@@ -296,8 +296,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/patients/direct-reception/{id}', [PatientController::class, 'directReception'])->name('patients.direct.reception');
     Route::put('/patients/{id}/status', [PatientController::class, 'updateStatus'])->name('patients.updateStatus');
     Route::resource('appointments', AppointmentController::class);
+    Route::delete('/patients/{patient}/prescriptions/{prescription}', [DoctorController::class, 'removePrescription'])->name('prescriptions.removeItem');
+    Route::resource('pharmacy', PharmacyItemController::class);
     
-
     //Route::get('/appointments/create', [ReceptionistController::class, 'createAppointments'])->name('appointments.create');
     //Route::get('/appointments/', [ReceptionistController::class, 'viewAppointments'])->name('appointments.index');
     Route::resource('appointments', AppointmentController::class);

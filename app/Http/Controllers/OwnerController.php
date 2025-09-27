@@ -2,10 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hospital;
+use App\Models\Appointment;
 use App\Models\Branch;
-use App\Models\User;
+use App\Models\Hospital;
+use App\Models\HospitalBranch;
+use App\Models\Inventory;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use App\Models\LabRequest;
+use App\Models\LabRequestTest;
+use App\Models\LabTest;
+use App\Models\MedicalRecord;
+use App\Models\NurseTriageAssessment;
 use App\Models\Patient;
+use App\Models\PharmacyItem;
+use App\Models\PharmacyStock;
+use App\Models\Prescription;
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

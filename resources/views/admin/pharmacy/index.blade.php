@@ -29,7 +29,7 @@
                                                         @endif
 
                                                         @if(Auth::user()->role === 'admin')
-                                                        <li class="breadcrumb-item"><a href="{{ route('admin.pharmacy.create') }}">Add new test</a></li>
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacy.create') }}">Add new test</a></li>
                                                         @endif
                                                         <li class="breadcrumb-item active" aria-current="page">Manage Lab Tests</li>
                                                     </ol>
@@ -39,13 +39,13 @@
                                             <ul class="d-flex">
                                                 @if(Auth::user()->role === 'admin')
                                                 <li>
-                                                    <a href="{{ route('admin.pharmacy.create') }}" class="btn btn-md d-md-none btn-primary" >
+                                                    <a href="{{ route('pharmacy.create') }}" class="btn btn-md d-md-none btn-primary" >
                                                         <em class="icon ni ni-plus"></em>
                                                         <span>Add</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('admin.pharmacy.create') }}" class="btn btn-primary d-none d-md-inline-flex" >
+                                                    <a href="{{ route('pharmacy.create') }}" class="btn btn-primary d-none d-md-inline-flex" >
                                                         <em class="icon ni ni-plus"></em>
                                                         <span>Add Pharmacy Item</span>
                                                     </a>
@@ -112,7 +112,7 @@
                                                                 </span>
                                                             </div>
                                                             <div class="media-text">
-                                                                <a href="{{ route('admin.pharmacy.show', $pharmacy->id) }}" class="title">
+                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}" class="title">
                                                                     {{ $pharmacy->name }}
                                                                 </a>
                                                                 <span class="small text">{{ $pharmacy->code }}</span>
@@ -140,12 +140,12 @@
                                                                 <div class="dropdown-content py-1">
                                                                     <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                                             <li>
-                                                                                <a href="{{ route('admin.pharmacy.edit', $pharmacy->id) }}">
+                                                                                <a href="{{ route('pharmacy.edit', $pharmacy->id) }}">
                                                                                     <em class="icon ni ni-edit"></em><span>Edit</span>
                                                                                 </a>
                                                                             </li>
                                                                             <li>
-                                                                                <form action="{{ route('admin.pharmacy.destroy', $pharmacy->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                                <form action="{{ route('pharmacy.destroy', $pharmacy->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                                                     @csrf
                                                                                     @method('DELETE')
                                                                                     <button type="submit" class="dropdown-item">
@@ -154,7 +154,7 @@
                                                                                 </form>
                                                                             </li>
                                                                             <li>
-                                                                                <a href="{{ route('admin.pharmacy.show', $pharmacy->id) }}">
+                                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}">
                                                                                     <em class="icon ni ni-eye"></em><span>View Details</span>
                                                                                 </a>
                                                                             </li>

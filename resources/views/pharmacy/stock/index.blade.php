@@ -28,10 +28,10 @@
                                                         <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
                                                         @endif
 
-                                                        @if(Auth::user()->role === 'admin')
-                                                        <li class="breadcrumb-item"><a href="{{ route('admin.pharmacy.create') }}">Add new test</a></li>
+                                                        @if(in_array(Auth::user()->role, ['admin', 'pharmacist']))
+                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacy.create') }}">Add new record</a></li>
                                                         @endif
-                                                        <li class="breadcrumb-item active" aria-current="page">Manage Lab Tests</li>
+                                                        <li class="breadcrumb-item active" aria-current="page">Manage Stock Levels</li>
                                                     </ol>
                                                 </nav>
                                         </div>
@@ -111,7 +111,7 @@
                                                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                 <div class="dropdown-content py-1">
                                                                     <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        @if(Auth::user()->role === 'admin')
+                                                                        @if(in_array(Auth::user()->role, ['admin', 'pharmacist']))
                                                                         <li>
                                                                             <a href="{{ route('pharmacist.stock.edit', $item->id) }}">
                                                                                 <em class="icon ni ni-edit"></em><span>Edit</span>

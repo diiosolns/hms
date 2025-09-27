@@ -525,50 +525,6 @@
                                     <!-- END PATIENT INVOICES -->
 
 
-                                    <!-- CLOSE BUTTON GROUP     -->
-                                    @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
-                                    <div class="card mt-4">
-                                        <div class="card-body">
-                                            <ul class="d-flex flex-wrap gap g-6">
-                                                <!-- Cancel -->
-                                                <li>
-                                                    <form id="cancelForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="status" value="Cancelled">
-                                                    </form>
-                                                    <button type="button" class="btn btn-outline-danger"
-                                                            onclick="confirmAction('cancelForm', 'Are you sure you want to cancel this patient?')">
-                                                        Cancel
-                                                    </button>
-                                                </li>
-
-                                                <!-- Discharge -->
-                                                <li>
-                                                    <form id="dischargeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="status" value="Discharged">
-                                                    </form>
-                                                    <button type="button" class="btn btn-outline-warning"
-                                                            onclick="confirmAction('dischargeForm', 'Are you sure you want to discharge this patient?')">
-                                                        Discharge
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <script>
-                                        function confirmAction(formId, message) {
-                                            if (confirm(message)) {
-                                                document.getElementById(formId).submit();
-                                            }
-                                        }
-                                    </script>
-                                    @endif
-                                    <!-- END CLOSE BUTTON GROUP -->
-
 
                                 </div><!-- .tab-pane -->
 
@@ -601,7 +557,7 @@
                                                                 <div class="nk-timeline-item-inner">
                                                                     <div class="nk-timeline-symbol">
                                                                         <div class="media media-md media-middle media-circle">
-                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                            <img src="{{ asset('images/app/diagnosis.jpg') }}" alt="">
                                                                         </div>
                                                                     </div>
                                                                     <div class="nk-timeline-content">
@@ -615,7 +571,7 @@
                                                                 <div class="nk-timeline-item-inner">
                                                                     <div class="nk-timeline-symbol">
                                                                         <div class="media media-md media-middle media-circle">
-                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                            <img src="{{ asset('images/app/diagnosis.jpg') }}" alt="">
                                                                         </div>
                                                                     </div>
                                                                     <div class="nk-timeline-content">
@@ -629,7 +585,7 @@
                                                                 <div class="nk-timeline-item-inner">
                                                                     <div class="nk-timeline-symbol">
                                                                         <div class="media media-md media-middle media-circle">
-                                                                            <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                            <img src="{{ asset('images/app/diagnosis.jpg') }}" alt="">
                                                                         </div>
                                                                     </div>
                                                                     <div class="nk-timeline-content">
@@ -696,7 +652,7 @@
                                                                 <td class="tb-col tb-col-end">
                                                                     {{-- Remove Item --}}
                                                                     @if ($test->status !== 'Completed' && in_array(Auth::user()->role, [ 'admin', 'doctor']))
-                                                                        <form action="{{ route('doctor.prescriptions.removeItem', [$patient->id, $test->id] ) }}" 
+                                                                        <form action="{{ route('prescriptions.removeItem', [$patient->id, $test->id] ) }}" 
                                                                               method="POST" onsubmit="return confirm('Are you sure you want to remove this item?')">
                                                                             @csrf
                                                                             @method('DELETE')
@@ -840,7 +796,7 @@
                                                                     <div class="nk-timeline-item-inner">
                                                                         <div class="nk-timeline-symbol">
                                                                             <div class="media media-md media-middle media-circle">
-                                                                                <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                                <img src="{{ asset('images/app/lab.jpg') }}" alt="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="nk-timeline-content">
@@ -854,7 +810,7 @@
                                                                     <div class="nk-timeline-item-inner">
                                                                         <div class="nk-timeline-symbol">
                                                                             <div class="media media-md media-middle media-circle">
-                                                                                <img src="{{ asset('images/users/def.jpg') }}" alt="">
+                                                                                <img src="{{ asset('images/app/lab4.jpg') }}" alt="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="nk-timeline-content">
@@ -998,30 +954,81 @@
                                             <div class="card-footer">   
                                             </div>
                                         </div>
+                                    
+                                </div><!-- .pharmacy tab-pane -->
 
 
 
 
+                            </div><!-- .tab-content -->
 
 
-                                    <!-- CLOSE BUTTON GROUP     -->
+
+
+                            <!-- OUTSIDE TABS -->
+                            <!-- CLOSE BUTTON GROUP     -->
                                     @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
                                     <div class="card mt-4">
                                         <div class="card-body">
-                                            <p class="mb-2">
-                                                Closing this treatment file will finalize all records for this patient. 
-                                                No further edits can be made once the file is closed. 
-                                                Please ensure all treatment details are correctly entered before proceeding.
-                                            </p>
-                                            <form id="closeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
-                                                @csrf
-                                                @method('PUT')
-                                                <input type="hidden" name="status" value="Closed">
-                                            </form>
-                                            <button type="button" class="btn btn-outline-danger"
-                                                    onclick="confirmAction('closeForm', 'Are you sure you want to close this patient record?')">
-                                                Close Treatment File
-                                            </button>
+                                            <div class="card-title mb-2">
+                                                <h4 class="bio-block-title">Finalize Patient Record</h4>
+                                            </div>
+                                            <div class="list-group-dotted " style="padding-left: 20px !important;">
+                                                <div class="row mt-2">
+                                                    <div class="mb-2 col-md-9">
+                                                        Closing this file will mark the patient’s case as completed. Ensure that all necessary information and actions have been taken before closing.
+                                                    </div>
+                                                    <div class="mb-2 col-md-3 text-light">
+                                                        <form id="closeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="status" value="Closed">
+                                                        </form>
+                                                        <button type="button" class="btn btn-outline-danger"
+                                                                onclick="confirmAction('closeForm', 'Are you sure you want to close this patient record?')">
+                                                            Close Treatment File
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-dotted " style="padding-left: 20px !important;">
+                                                <div class="row mt-2">
+                                                    <div class="mb-2 col-md-9">
+                                                        Discharging this patient will finalize their treatment records. No further updates or edits will be allowed after discharge. Please confirm that all medical notes, prescriptions, and tests have been completed before proceeding.
+                                                    </div>
+                                                    <div class="mb-2 col-md-3 text-light">
+                                                        <form id="dischargeForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="status" value="Discharged">
+                                                        </form>
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                                onclick="confirmAction('dischargeForm', 'Are you sure you want to discharge this patient?')">
+                                                            Discharge Partient
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-dotted " style="padding-left: 20px !important;">
+                                                <div class="row mt-2">
+                                                    <div class="mb-2 col-md-9">
+                                                        Cancelling this file will stop all ongoing processes for this patient. Please confirm that this action is intended, as it cannot be reversed.
+                                                    </div>
+                                                    <div class="mb-2 col-md-3 text-light">
+                                                        <form id="cancelForm" action="{{ route('patients.updateStatus', $patient->id) }}" method="POST" style="display:none;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input type="hidden" name="status" value="Cancelled">
+                                                        </form>
+                                                        <button type="button" class="btn btn-outline-danger"
+                                                                onclick="confirmAction('cancelForm', 'Are you sure you want to cancel this patient?')">
+                                                            Cancel Treatment
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1034,19 +1041,10 @@
                                     </script>
                                     @endif
                                     <!-- END CLOSE BUTTON GROUP -->
-                                </div><!-- .pharmacy tab-pane -->
+                            <!-- END OUTSIDE TABS -->
 
 
 
-
-
-
-
-
-
-
-
-                            </div><!-- .tab-content -->
                         </div><!-- .nk-block -->
                     @else
                         {{-- Show a message if the patient is not found --}}

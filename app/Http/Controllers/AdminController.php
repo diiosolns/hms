@@ -2,10 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hospital;
+use App\Models\Appointment;
 use App\Models\Branch;
-use App\Models\User;
+use App\Models\Hospital;
+use App\Models\HospitalBranch;
+use App\Models\Inventory;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use App\Models\LabRequest;
+use App\Models\LabRequestTest;
+use App\Models\LabTest;
+use App\Models\MedicalRecord;
+use App\Models\NurseTriageAssessment;
 use App\Models\Patient;
+use App\Models\PharmacyItem;
+use App\Models\PharmacyStock;
+use App\Models\Prescription;
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,16 +30,80 @@ class AdminController extends Controller
     //
     public function dashboard()
     {
-        /*$patients = Patient::where('status', 'Nurse')
-            ->where('branch_id', Auth::user()->branch_id)
-            ->paginate(10);*/
+        // Get the authenticated owner.
+        $user = Auth::user();
+
+        $excludedStatuses = ['Closed', 'Discharged', 'Cancelled'];
+        $excludedStatuses_all = ['Discharged', 'Cancelled'];
 
         $patients = Patient::where('branch_id', Auth::user()->branch_id)
             ->whereHas('nurseTriageAssessments', function ($query) {
                 $query->where('status', 'Pending');
             })->paginate(10);
 
-        return view('admin.dashboard', compact('patients'));
+        //Get users Counts
+        $totalUsers = User::where('branch_id', $user->branch_id)->where('role', '!=', 'owner')->count();
+        $receptionists = User::where('branch_id', $user->branch_id)->where('role', 'receptionist')->count();
+        $doctors = User::where('branch_id', $user->branch_id)->where('role', 'doctor')->count();
+        $nurses = User::where('branch_id', $user->branch_id)->where('role', 'nurse')->count();
+        $lab_tchnicians = User::where('branch_id', $user->branch_id)->where('role', 'lab_technician')->count();
+        $pharmacists = User::where('branch_id', $user->branch_id)->where('role', 'pharmacist')->count();
+
+        //Get patient counts
+        $patients_query = Patient::where('branch_id', Auth::user()->branch_id)
+            ->whereNotIn('status', $excludedStatuses_all);
+        $totalPatients = (clone $patients_query)->count();
+        $malePatients  = (clone $patients_query)->where('gender', 'Male')->count();
+        $femalePatients = (clone $patients_query)->where('gender', 'Female')->count();
+        $cashPatients = (clone $patients_query)->where('pay_method', 'Cash')->count();
+
+        $scheduledAppointments = Appointment::where('status', 'Scheduled')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->count();
+
+        $maleAppointments = Appointment::where('status', 'Scheduled')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->whereHas('patient', function ($q) {
+                $q->where('gender', 'Male');
+            })->count();
+
+        $femaleAppointments = Appointment::where('status', 'Scheduled')
+            ->where('branch_id', Auth::user()->branch_id)
+            ->whereHas('patient', function ($q) {
+                $q->where('gender', 'Female');
+            })->count();
+
+        $pendingInvoices = Invoice::where('status', 'Pending')
+            ->whereHas('patient', function ($q) {
+                $q->where('branch_id', Auth::user()->branch_id);
+            })->count();
+
+        $pendingCashInvoices = Invoice::where('status', 'Pending')
+            ->whereHas('patient', function ($q) {
+                $q->where('branch_id', Auth::user()->branch_id)
+                  ->where('pay_method', 'Cash');
+            })->count();
+
+        return view('admin.dashboard', 
+            compact(
+                'totalUsers',
+                'receptionists',
+                'doctors',
+                'nurses',
+                'lab_tchnicians',
+                'pharmacists',
+
+                'patients', 
+                'totalPatients',
+                'malePatients',
+                'femalePatients',
+                'cashPatients', 
+                'scheduledAppointments',
+                'maleAppointments',
+                'femaleAppointments',
+                'pendingInvoices',
+                'pendingCashInvoices'
+            ));
     }
 
 

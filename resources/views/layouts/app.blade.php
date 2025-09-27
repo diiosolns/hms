@@ -388,6 +388,72 @@
                                                     </div><!-- .media-group -->
                                                 </a>
                                             </li>
+                                            @elseif(Auth::user()->role === 'pharmacist')
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('pharmacist.dashboard') }}" class="nk-nav-link bg-primary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-primary-soft-outline">
+                                                            <em class="icon ni ni-dashboard-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Dashboard</span>
+                                                            <span class="sub-text d-block">Explore System Insights</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('pharmacist.items.index') }}" class="nk-nav-link bg-secondary-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-secondary-soft-outline">
+                                                            <em class="icon ni ni-capsule"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Pharmacy Itemss</span>
+                                                            <span class="sub-text d-block">Manage pharmacy items</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('pharmacist.stock.index') }}" class="nk-nav-link bg-success-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-success-soft-outline">
+                                                            <em class="icon ni ni-package-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Stock Management</span>
+                                                            <span class="sub-text d-block">Manage pharmacy inventory.</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('pharmacist.prescriptions') }}" class="nk-nav-link bg-info-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-info-soft-outline">
+                                                            <em class="icon ni ni-file-text-fill"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Prescriptions</span>
+                                                            <span class="sub-text d-block">Manage patient Prescriptions</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
+                                            <li class="nk-nav-item">
+                                                <a href="{{ route('pharmacist.reports.stock') }}" class="nk-nav-link bg-danger-soft-hover">
+                                                    <div class="media-group flex-grow-1">
+                                                        <div class="media media-md media-middle media-border text-bg-danger-soft-outline">
+                                                            <em class="icon ni ni-reports"></em>
+                                                        </div>
+                                                        <div class="media-text flex-grow-1">
+                                                            <span class="title">Reports</span>
+                                                            <span class="sub-text d-block">Create &amp; Download Reports</span>
+                                                        </div>
+                                                    </div><!-- .media-group -->
+                                                </a>
+                                            </li>
                                             @endif
                                         </ul>
                                     </li>
@@ -434,7 +500,7 @@
                                                     <h6 class="nk-nav-heading">Laboratory</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="{{ route('lab_technician.labtests.requests') }}">Lab Test</a>
+                                                            <a href="{{ route('lab_technician.labtests.requests') }}">Pending Tests</a>
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('lab_technician.catalog') }}">Tests Catalog</a>
@@ -449,16 +515,16 @@
                                                     <h6 class="nk-nav-heading">Pharmacy</h6>
                                                     <ul class="link-list link-list-md link-list-hover-bg-primary">
                                                         <li>
-                                                            <a href="./html/layout/breakpoints.html">Prescription</a>
+                                                            <a href="{{ route('pharmacist.prescriptions') }}">Prescription</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/layout/containers.html">Drugs</a>
+                                                            <a href="{{ route('pharmacist.items.index') }}">Pharmacy Items</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/layout/gutters.html">Dispense</a>
+                                                            <a href="{{ route('pharmacist.stock.index') }}">Stock Management</a>
                                                         </li>
                                                         <li>
-                                                            <a href="./html/layout/gutters.html">Reports</a>
+                                                            <a href="{{ route('pharmacist.reports.stock') }}">Reports</a>
                                                         </li>
                                                     </ul>
                                                 </div><!-- .nk-nav-col -->

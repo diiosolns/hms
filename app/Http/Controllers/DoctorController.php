@@ -104,7 +104,10 @@ class DoctorController extends Controller
 
         //CREATE AN INVOICE
         // Create or update invoice
-        $invoice_total_amount = 0;
+        $pending_invoice = Invoice::where('patient_id', $patientId)
+                  ->where('status', 'Pending')
+                  ->first();
+        $invoice_total_amount = $pending_invoice ? $pending_invoice->total_amount : 0;
         $invoice = Invoice::updateOrCreate(
             [
                 'patient_id' => $patientId,
@@ -114,6 +117,7 @@ class DoctorController extends Controller
                 'user_id'        => Auth::id(),
                 'invoice_number' => 'INV' . uniqid(),
                 'invoice_date'   => now()->toDateString(),
+                'total_amount'   => $invoice_total_amount, 
             ]
         );
 
@@ -169,7 +173,10 @@ class DoctorController extends Controller
         );
 
         //CREATE OR UPDATE AN INVOICE
-        $invoice_total_amount = 0;
+        $pending_invoice = Invoice::where('patient_id', $patientId)
+                  ->where('status', 'Pending')
+                  ->first();
+        $invoice_total_amount = $pending_invoice ? $pending_invoice->total_amount : 0;
         $invoice = Invoice::firstOrCreate(
             [
                 'patient_id' => $patientId,
@@ -179,7 +186,7 @@ class DoctorController extends Controller
                 'user_id'        => Auth::id(),
                 'invoice_number' => 'INV' . uniqid(),
                 'invoice_date'   => now()->toDateString(),
-                'total_amount'   => 0, 
+                'total_amount'   => $invoice_total_amount, 
             ]
         );
 

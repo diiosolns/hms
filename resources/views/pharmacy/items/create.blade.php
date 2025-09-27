@@ -26,13 +26,13 @@
                                                         @elseif(Auth::user()->role === 'owner')
                                                         <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
                                                         @endif
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.pharmacy.index') }}">Manage Pharmacy Items</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('pharmacy.index') }}">Manage Pharmacy Items</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Add Pharmacy Item</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="nk-block-head-content">
-                            <a href="{{ route('admin.pharmacy.index') }}" class="btn btn-soft btn-primary">
+                            <a href="{{ route('pharmacy.index') }}" class="btn btn-soft btn-primary">
                                 <em class="icon ni ni-eye"></em><span>View Pharmacy Items</span>
                             </a>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <h4 class="mb-4">Register a New Pharmacy Item</h4>
 
-                            <form action="{{ route('admin.pharmacy.store') }}" method="POST">
+                            <form action="{{ route('pharmacy.store') }}" method="POST">
                                 @csrf
                                 <div class="row g-3">
 

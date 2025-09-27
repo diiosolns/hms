@@ -79,16 +79,19 @@
                                         <thead class="table-light table-head-md">
                                             <tr>
                                                 <th class="tb-col">
-                                                    <span class="overline-title">Patient Name</span>
+                                                    <span class="overline-title">Name</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
                                                     <span class="overline-title">Phone</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end tb-col-sm">
-                                                    <span class="overline-title">Doctor</span>
+                                                    <span class="overline-title">Pay Method</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
-                                                    <span class="overline-title">Status</span>
+                                                    <span class="overline-title">Department</span>
+                                                </th>
+                                                <th class="tb-col tb-col-end">
+                                                    <span class="overline-title">Doctor</span>
                                                 </th>
                                                 <th class="tb-col tb-col-end">
                                                     <span class="overline-title">Actions</span>
@@ -115,12 +118,13 @@
                                                         <span class="small">{{ $patient->phone ?? 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end tb-col-sm">
-                                                        <span class="small">
-                                                            {{ $patient->doctor->first_name ?? 'N/A' }} 
-                                                        </span>
+                                                        <span class="badge @if($patient->pay_method === 'Cash') text-bg-danger-soft @else text-bg-primary-soft @endif">{{ $patient->pay_method ?? 'Cash' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <span class="badge bg-primary">{{ $patient->status }}</span>
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
+                                                        <span class="small">{{ $patient->doctor ? $patient->doctor->first_name . ' ' . $patient->doctor->last_name : 'N/A' }}</span>
                                                     </td>
                                                     <td class="tb-col tb-col-end">
                                                         <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
@@ -130,7 +134,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">No pending found.</td>
+                                                    <td colspan="6" class="text-center text-muted">No patients found.</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>

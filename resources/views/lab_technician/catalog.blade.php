@@ -9,7 +9,7 @@
                                 <div class="nk-block-head">
                                     <div class="nk-block-head-between flex-wrap gap g-2">
                                         <div class="nk-block-head-content">
-                                            <h2 class="nk-block-title">Laboratory Tests</h2>
+                                            <h2 class="nk-block-title">Laboratory Tests Catalog</h2>
                                                 <nav>
                                                     <ol class="breadcrumb breadcrumb-arrow mb-0">
                                                         @if(Auth::user()->role === 'receptionist')
