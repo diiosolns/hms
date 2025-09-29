@@ -78,11 +78,28 @@ class AdminController extends Controller
                 $q->where('branch_id', Auth::user()->branch_id);
             })->count();
 
+        //Billing & Sales
         $pendingCashInvoices = Invoice::where('status', 'Pending')
             ->whereHas('patient', function ($q) {
                 $q->where('branch_id', Auth::user()->branch_id)
                   ->where('pay_method', 'Cash');
-            })->count();
+            })->sum('total_amount');
+        $paidCashInvoices = Invoice::where('status', 'Paid')
+            ->whereHas('patient', function ($q) {
+                $q->where('branch_id', Auth::user()->branch_id)
+                  ->where('pay_method', 'Cash');
+            })->sum('total_amount');
+        $pendingNonCashInvoices = Invoice::where('status', 'Pending')
+            ->whereHas('patient', function ($q) {
+                $q->where('branch_id', Auth::user()->branch_id)
+                  ->where('pay_method', '!=', 'Cash');
+            })->sum('total_amount');
+        $paidNonCashInvoices = Invoice::where('status', 'Paid')
+            ->whereHas('patient', function ($q) {
+                $q->where('branch_id', Auth::user()->branch_id)
+                  ->where('pay_method', '!=', 'Cash');
+            })->sum('total_amount');
+
 
         return view('admin.dashboard', 
             compact(
@@ -102,7 +119,13 @@ class AdminController extends Controller
                 'maleAppointments',
                 'femaleAppointments',
                 'pendingInvoices',
-                'pendingCashInvoices'
+                'pendingCashInvoices',
+
+                'pendingCashInvoices',
+                'paidCashInvoices',
+                'pendingNonCashInvoices',
+                'paidNonCashInvoices'
+
             ));
     }
 
