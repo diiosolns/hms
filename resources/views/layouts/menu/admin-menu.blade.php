@@ -78,6 +78,19 @@
     </a>
 </li>
 
+
+<li class="nk-menu-item has-sub">
+    <a href="#" class="nk-menu-link nk-menu-toggle">
+        <span class="nk-menu-icon"><em class="icon ni ni-calendar"></em></span>
+        <span class="nk-menu-text">Asset Management</span>
+    </a>
+    <ul class="nk-menu-sub">
+        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">Add Asset</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Available Assets</span></a></li>
+    </ul>
+</li>
+
+
 {{-- Logout Link with a form for security --}}
 <li class="nk-menu-item">
     <a href="{{ route('logout') }}" class="nk-menu-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

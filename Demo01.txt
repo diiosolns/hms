@@ -1,0 +1,35 @@
+Owner
+Admin
+Receptionist
+Nurse
+Doctor
+Pharmacist
+Lab technician
+
+Estimate test waiting time
+Doctor must view drug quantity available
+Should not assign drug which is not available
+Dispensed qnty not updating - check
+Recalculate bill after dispense
+Patient must go direct from doctor to pharmacy
+Pharmacy must have cashier features
+
+Owner should approve registered users
+Any admin change must have owner approval
+
+Give alert one month before for all expiring drugs
+Store assets list - name, price, acquired date, qnty, supplier name, supplier contacts, eos, description
+
+Report
+Patient billing report
+Patient Diagnosis/Treatment report
+
+
+MUHOZI KYAGAJU
+
+Branch : Kwembe & Mwendapole
+
+MK Polyclinic - Mwendapole
+
+
+

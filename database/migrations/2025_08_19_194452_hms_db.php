@@ -277,6 +277,53 @@ return new class extends Migration
             $table->enum('status', ['Pending', 'Updated', 'Cancelled'])->default('Pending');
             $table->timestamps();
         });
+
+        Schema::create('asset_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->timestamps();
+        });
+
+        Schema::create('assets', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('hospital_id');
+            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('assigned_to')->nullable(); // user responsible
+
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('serial_number')->nullable()->unique();
+            $table->date('purchase_date')->nullable();
+            $table->decimal('purchase_cost', 12, 2)->nullable();
+            $table->enum('status', ['active', 'in_maintenance', 'retired', 'lost'])->default('active');
+            $table->string('location')->nullable();
+            $table->date('warranty_expiry')->nullable();
+
+            $table->timestamps();
+
+            // Foreign Keys
+            $table->foreign('hospital_id')->references('id')->on('hospitals')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('asset_categories')->onDelete('cascade');
+            $table->foreign('assigned_to')->references('id')->on('users')->onDelete('set null');
+        });
+
+        Schema::create('asset_maintenances', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('asset_id');
+
+            $table->date('maintenance_date');
+            $table->string('performed_by')->nullable(); // internal staff or vendor
+            $table->text('details')->nullable();
+            $table->decimal('cost', 12, 2)->nullable();
+            $table->date('next_due_date')->nullable();
+
+            $table->timestamps();
+
+            // Foreign Keys
+            $table->foreign('asset_id')->references('id')->on('assets')->onDelete('cascade');
+        });
     }
 
     /**
@@ -285,24 +332,6 @@ return new class extends Migration
     public function down(): void
     {
         // Drop tables in reverse order to respect foreign key constraints
-        /*Schema::dropIfExists('lab_tests');
-        Schema::dropIfExists('lab_test_catalogs');
-        Schema::dropIfExists('nurse_triage_assessments');
-        Schema::dropIfExists('ward_and_beds');
-        Schema::dropIfExists('inventory');
-        Schema::dropIfExists('invoice_items');
-        Schema::dropIfExists('invoices');
-        Schema::dropIfExists('prescriptions');
-        Schema::dropIfExists('medical_records');
-        Schema::dropIfExists('appointments');
-        Schema::dropIfExists('patients');
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('branches');
-        Schema::dropIfExists('hospitals');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');*/
-
-
         Schema::dropIfExists('nurse_triage_assessments');
         Schema::dropIfExists('ward_and_beds');
         Schema::dropIfExists('services');
@@ -323,6 +352,8 @@ return new class extends Migration
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
 
-
+        Schema::dropIfExists('asset_categories');
+        Schema::dropIfExists('assets');
+        Schema::dropIfExists('asset_maintenances');
     }
 };
