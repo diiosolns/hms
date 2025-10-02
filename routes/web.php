@@ -20,6 +20,10 @@ use App\Http\Controllers\PharmacyStockController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\InvoiceController;
 
+use App\Http\Controllers\AssetMaintenanceController;
+use App\Http\Controllers\AssetCategoryController;
+use App\Http\Controllers\AssetController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -318,4 +322,19 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
+
+
+
 });
+
+
+Route::middleware(['auth'])->group(function () {
+        Route::resource('asset-categories', AssetCategoryController::class);
+        Route::resource('assets', AssetController::class);
+
+        // Nested route for maintenance
+        Route::get('assets/{asset}/maintenances', [AssetMaintenanceController::class, 'index'])->name('asset.maintenances.index');
+        Route::get('assets/{asset}/maintenances/create', [AssetMaintenanceController::class, 'create'])->name('asset.maintenances.create');
+        Route::post('assets/{asset}/maintenances', [AssetMaintenanceController::class, 'store'])->name('asset.maintenances.store');
+    });
