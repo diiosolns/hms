@@ -9,7 +9,11 @@ class AssetCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'hospital_id',
+        'branch_id',
+        'name'
+    ];
 
     /**
      * A category has many assets.

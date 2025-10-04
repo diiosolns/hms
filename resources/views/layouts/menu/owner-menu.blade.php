@@ -30,8 +30,10 @@
         <span class="nk-menu-text">Asset Management</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">Add Asset</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Available Assets</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add Asset</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.index') }}" class="nk-menu-link"><span class="nk-menu-text">Assets</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.categories.index') }}" class="nk-menu-link"><span class="nk-menu-text">Categories</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.index') }}" class="nk-menu-link"><span class="nk-menu-text">Maintainances</span></a></li>
     </ul>
 </li>
 

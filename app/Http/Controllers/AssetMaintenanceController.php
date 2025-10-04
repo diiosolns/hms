@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\AssetMaintenance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class AssetMaintenanceController extends Controller
 {

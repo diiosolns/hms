@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('asset_categories', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('hospital_id');
+            $table->unsignedBigInteger('branch_id');
             $table->string('name')->unique();
             $table->timestamps();
         });

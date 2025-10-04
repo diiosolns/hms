@@ -329,12 +329,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
-        Route::resource('asset-categories', AssetCategoryController::class);
-        Route::resource('assets', AssetController::class);
-
-        // Nested route for maintenance
-        Route::get('assets/{asset}/maintenances', [AssetMaintenanceController::class, 'index'])->name('asset.maintenances.index');
-        Route::get('assets/{asset}/maintenances/create', [AssetMaintenanceController::class, 'create'])->name('asset.maintenances.create');
-        Route::post('assets/{asset}/maintenances', [AssetMaintenanceController::class, 'store'])->name('asset.maintenances.store');
-    });
+Route::middleware(['auth'])->prefix('assets')->name('assets.')->group(function () {
+    Route::resource('categories', AssetCategoryController::class);
+    Route::resource('asset', AssetController::class);
+    //Route::resource('/', AssetController::class)->parameters(['' => 'asset']);
+    Route::get('maintenances', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
+    Route::get('{asset}/maintenances', [AssetMaintenanceController::class, 'index'])->name('maintenances.index');
+    //Route::get('{asset}/maintenances/create', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
+    Route::post('maintenances', [AssetMaintenanceController::class, 'store'])->name('maintenances.store');
+});
