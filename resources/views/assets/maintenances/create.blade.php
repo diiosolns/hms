@@ -11,14 +11,13 @@
                             <h2 class="nk-block-title">Log New Maintenance Record</h2>
                             <nav>
                                 <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="">Asset Maintenance</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('assets.maintenances.index', $asset ) }}">{{ $asset->name }}</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Log Record</li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="nk-block-head-content">
-                            <a href="" class="btn btn-soft btn-primary">
+                            <a href="{{ route('assets.asset.index') }}" class="btn btn-soft btn-primary">
                                 <em class="icon ni ni-eye"></em><span>View All Records</span>
                             </a>
                         </div>
@@ -30,7 +29,7 @@
                         <div class="card-body">
                             <h4 class="mb-4">Enter Maintenance Details</h4>
 
-                            <form action="{{ route('assets.maintenances.store') }}" method="POST">
+                            <form action="{{ route('assets.maintenances.store', $asset ) }}" method="POST">
                                 @csrf
                                 <div class="row g-3">
 
@@ -44,8 +43,7 @@
                                                      required>
                                                 <!-- Placeholder options - replace with actual assets from the database -->
                                                 <option value="" disabled selected>Select an Asset</option>
-                                                <option value="1" {{ old('asset_id')=='1' ? 'selected' : '' }}>Asset 1: X-Ray Machine</option>
-                                                <option value="2" {{ old('asset_id')=='2' ? 'selected' : '' }}>Asset 2: Server Rack</option>
+                                                <option value="{{ $asset->id }}" {{ old('asset_id')=='1' ? 'selected' : '' }}>{{ $asset->name }}</option>
                                             </select>
                                             @error('asset_id')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -88,13 +86,13 @@
                                     <!-- Cost -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="cost" class="form-label">Cost (in $)</label>
+                                            <label for="cost" class="form-label">Cost (in TZS)</label>
                                             <input type="number" step="0.01"
                                                      class="form-control @error('cost') is-invalid @enderror"
                                                      id="cost"
                                                      name="cost"
                                                      value="{{ old('cost') }}"
-                                                     placeholder="e.g. 150.75">
+                                                     placeholder="e.g. 20000">
                                             @error('cost')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -129,10 +127,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <!-- Hidden hospital and branch (Kept for context, assuming this data is still relevant) -->
-                                    <input type="hidden" name="hospital_id" value="{{ auth()->user()->hospital_id ?? '' }}">
-                                    <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id ?? '' }}">
 
                                     <!-- Submit -->
                                     <div class="col-lg-12">

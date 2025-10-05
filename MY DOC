@@ -99,3 +99,75 @@ git stash
 # Apply stashed changes
 git stash apply
 # ...existing
+
+
+
+============================================
+-------------XAMPP--------------------------
+============================================
+🟢 1. Set MySQL Root Password
+
+By default, MySQL in XAMPP has no password for the root user.
+
+Steps:
+
+Start Apache and MySQL in the XAMPP Control Panel.
+
+Open your browser and go to:
+
+http://localhost/phpmyadmin/
+
+
+Click on the “User accounts” tab.
+
+Find the root user (usually listed as root@localhost).
+
+Click “Edit privileges” → scroll down to “Change password” section.
+
+Enter your new password and click “Go”.
+
+Alternatively (via command line):
+
+Open the XAMPP Shell (click the “Shell” button in XAMPP Control Panel).
+
+Run the following commands:
+
+mysql -u root
+
+
+Then:
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'YourNewPassword';
+FLUSH PRIVILEGES;
+EXIT;
+
+🟡 2. Update phpMyAdmin Configuration
+
+After setting the MySQL password, phpMyAdmin will need it to log in.
+
+Steps:
+
+Open this file in a text editor:
+
+C:\xampp\phpMyAdmin\config.inc.php
+
+
+Find this line:
+
+$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['password'] = '';
+
+
+Replace it with:
+
+$cfg['Servers'][$i]['password'] = 'YourNewPassword';
+
+
+(Optional but safer) Change auth type to cookie:
+
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+
+
+→ This will prompt you to log in manually each time you access phpMyAdmin.
+==============================================

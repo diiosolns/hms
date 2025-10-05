@@ -333,8 +333,12 @@ Route::middleware(['auth'])->prefix('assets')->name('assets.')->group(function (
     Route::resource('categories', AssetCategoryController::class);
     Route::resource('asset', AssetController::class);
     //Route::resource('/', AssetController::class)->parameters(['' => 'asset']);
-    Route::get('maintenances', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
+    //Route::get('{asset}/maintenances', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
     Route::get('{asset}/maintenances', [AssetMaintenanceController::class, 'index'])->name('maintenances.index');
-    //Route::get('{asset}/maintenances/create', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
-    Route::post('maintenances', [AssetMaintenanceController::class, 'store'])->name('maintenances.store');
+    Route::get('{asset}/maintenances/create', [AssetMaintenanceController::class, 'create'])->name('maintenances.create');
+    Route::post('{asset}/maintenances', [AssetMaintenanceController::class, 'store'])->name('maintenances.store');
+    Route::get('{asset}/maintenances/{maintenance}/show', [AssetMaintenanceController::class, 'show'])->name('maintenances.show');
+    Route::get('{asset}/maintenances/{maintenance}/edit', [AssetMaintenanceController::class, 'edit'])->name('maintenances.edit');
+    Route::put('{asset}/maintenances/{maintenance}', [AssetMaintenanceController::class, 'update'])->name('maintenances.update');
+    Route::delete('{asset}/maintenances/{maintenance}', [AssetMaintenanceController::class, 'destroy'])->name('maintenances.destroy');
 });

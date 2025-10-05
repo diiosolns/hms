@@ -163,8 +163,13 @@
                                                     <div class="dropdown-content py-1">
                                                         <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                             <li>
-                                                                <a href="{{ route('assets.maintenances.index', $asset->id) }}">
-                                                                    <em class="icon ni ni-eye"></em><span>View Maintainances</span>
+                                                                <a href="{{ route('assets.asset.show', $asset) }}">
+                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('assets.maintenances.index', $asset) }}">
+                                                                    <em class="icon ni ni-setting"></em><span>Maintainances</span>
                                                                 </a>
                                                             </li>
                                                             <li>

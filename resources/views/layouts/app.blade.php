@@ -24,7 +24,7 @@
                     <div class="nk-sidebar-brand">
                         <a href="./html/index.html" class="logo-link">
                             <div class="logo-wrap">
-                                <h1>HMS</h1>
+                                <h2>{{ Auth::user()->branch->name }}</h2>
                                 <!-- <img class="logo-img logo-light" src="./images/logo.png" srcset="./images/logo2x.png 2x" alt="">
                                 <img class="logo-img logo-dark" src="./images/logo-dark.png" srcset="./images/logo-dark2x.png 2x" alt="">
                                 <img class="logo-img logo-icon" src="./images/logo-icon.png" srcset="./images/logo-icon2x.png 2x" alt=""> -->

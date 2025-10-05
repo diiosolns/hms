@@ -31,17 +31,6 @@
     </ul>
 </li>
 
-<li class="nk-menu-item has-sub">
-    <a href="#" class="nk-menu-link nk-menu-toggle">
-        <span class="nk-menu-icon"><em class="icon ni ni-calendar"></em></span>
-        <span class="nk-menu-text">Appointments</span>
-    </a>
-    <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">All Appointments</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Schedule Appointment</span></a></li>
-    </ul>
-</li>
-
 <li class="nk-menu-item">
     <a href="{{ route('admin.billing.index') }}" class="nk-menu-link">
         <span class="nk-menu-icon"><em class="icon ni ni-coins"></em></span>
@@ -49,26 +38,17 @@
     </a>
 </li>
 
-<li class="nk-menu-item">
-    <a href="{{ route('admin.pharmacy.index') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-capsule-fill"></em></span>
-        <span class="nk-menu-text">Pharmacy</span>
+<li class="nk-menu-item has-sub">
+    <a href="#" class="nk-menu-link nk-menu-toggle">
+        <span class="nk-menu-icon"><em class="icon ni ni-masonry-fill"></em></span>
+        <span class="nk-menu-text">Asset Management</span>
     </a>
-</li>
-
-<li class="nk-menu-item">
-    <a href="{{ route('admin.lab.index') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-filter"></em></span>
-        <span class="nk-menu-text">Laboratory</span>
-    </a>
-</li>
-
-
-<li class="nk-menu-item">
-    <a href="{{ route('admin.services.index') }}" class="nk-menu-link">
-        <span class="nk-menu-icon"><em class="icon ni ni-account-setting"></em></span>
-        <span class="nk-menu-text">Services</span>
-    </a>
+    <ul class="nk-menu-sub">
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.create') }}" class="nk-menu-link"><span class="nk-menu-text">Add Asset</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.index') }}" class="nk-menu-link"><span class="nk-menu-text">Assets</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.categories.index') }}" class="nk-menu-link"><span class="nk-menu-text">Categories</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('assets.asset.index') }}" class="nk-menu-link"><span class="nk-menu-text">Maintainances</span></a></li>
+    </ul>
 </li>
 
 <li class="nk-menu-item">
@@ -78,18 +58,27 @@
     </a>
 </li>
 
-
 <li class="nk-menu-item has-sub">
     <a href="#" class="nk-menu-link nk-menu-toggle">
-        <span class="nk-menu-icon"><em class="icon ni ni-calendar"></em></span>
-        <span class="nk-menu-text">Asset Management</span>
+        <span class="nk-menu-icon"><em class="icon ni ni-setting"></em></span>
+        <span class="nk-menu-text">Settings</span>
     </a>
     <ul class="nk-menu-sub">
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">Add Asset</span></a></li>
-        <li class="nk-menu-item"><a href="{{ route('admin.appointments.create') }}" class="nk-menu-link"><span class="nk-menu-text">Available Assets</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.services.index') }}" class="nk-menu-link"><span class="nk-menu-text">Services</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.lab.index') }}" class="nk-menu-link"><span class="nk-menu-text">Laboratory</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('admin.pharmacy.index') }}" class="nk-menu-link"><span class="nk-menu-text">Pharmacy</span></a></li>
     </ul>
 </li>
 
+<li class="nk-menu-item has-sub">
+    <a href="#" class="nk-menu-link nk-menu-toggle">
+        <span class="nk-menu-icon"><em class="icon ni ni-setting-alt"></em></span>
+        <span class="nk-menu-text">Others</span>
+    </a>
+    <ul class="nk-menu-sub">
+        <li class="nk-menu-item"><a href="{{ route('admin.appointments.index') }}" class="nk-menu-link"><span class="nk-menu-text">Appointments</span></a></li>
+    </ul>
+</li>
 
 {{-- Logout Link with a form for security --}}
 <li class="nk-menu-item">

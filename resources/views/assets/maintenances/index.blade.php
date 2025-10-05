@@ -9,32 +9,12 @@
                     <div class="nk-block-head">
                         <div class="nk-block-head-between flex-wrap gap g-2">
                             <div class="nk-block-head-content">
-                                <h2 class="nk-block-title">Asset Management</h2>
+                                <h2 class="nk-block-title">{{ $asset->name }}</h2>
                                 <nav>
                                     <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                        {{-- Dashboard Links (Kept original logic for roles) --}}
-                                        @if(Auth::user()->role === 'receptionist')
-                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'nurse')
-                                        <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'doctor')
-                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'pharmacist')
-                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'lab_technician')
-                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'admin')
-                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                        @elseif(Auth::user()->role === 'owner')
-                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
-                                        @endif
-
-                                        {{-- Updated breadcrumb for Asset Management context --}}
                                         <li class="breadcrumb-item"><a href="{{ route('assets.asset.index') }}">Assets</a></li>
-                                        @if(Auth::user()->role === 'admin')
-                                        <li class="breadcrumb-item"><a href="{{ route('assets.maintenances.create') }}">Add new record</a></li>
-                                        @endif
-                                        <li class="breadcrumb-item active" aria-current="page">Maintenance Records</li>
+                                        <li class="breadcrumb-item active" aria-current="page">{{ $asset->serial_number }}</li>
+                                        <li class="breadcrumb-item active" aria-current="page">{{ $asset->name }}</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -42,13 +22,13 @@
                                 <ul class="d-flex">
                                     @if(in_array(Auth::user()->role, ['admin', 'owner']))
                                     <li>
-                                        <a href="{{ route('assets.maintenances.create') }}" class="btn btn-md d-md-none btn-primary" >
+                                        <a href="{{ route('assets.maintenances.create', $asset ) }}" class="btn btn-md d-md-none btn-primary" >
                                             <em class="icon ni ni-plus"></em>
                                             <span>Add</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('assets.maintenances.create') }}" class="btn btn-primary d-none d-md-inline-flex" >
+                                        <a href="{{ route('assets.maintenances.create', $asset ) }}" class="btn btn-primary d-none d-md-inline-flex" >
                                             <em class="icon ni ni-plus"></em>
                                             <span>Add Maintenance Record</span>
                                         </a>
@@ -66,10 +46,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="tb-col">
-                                            <span class="overline-title">Record ID</span>
-                                        </th>
-                                        <th class="tb-col">
-                                            <span class="overline-title">Asset Name</span>
+                                            <span class="overline-title">Description</span>
                                         </th>
                                         <th class="tb-col">
                                             <span class="overline-title">Maintenance Date</span>
@@ -102,15 +79,11 @@
                                                     <em class="icon ni ni-setting"></em>
                                                 </div>
                                                 <div class="media-text">
-                                                    <a href="{{ route('assets.maintenances.show', $record->id) }}" class="title">
-                                                        {{ $record->record_id ?? $record->id }} {{-- Display a record ID or unique identifier --}}
-                                                    </a>
-                                                    <span class="small text">{{ $record->description ?? 'No description' }}</span>
+                                                    <span class="small text">{{ $record->details ?? 'No description' }}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         {{-- Table Data Cells Updated for Maintenance Records --}}
-                                        <td class="tb-col">{{ $record->asset_name ?? 'N/A' }}</td>
                                         <td class="tb-col">{{ \Carbon\Carbon::parse($record->maintenance_date)->format('M d, Y') }}</td>
                                         <td class="tb-col tb-col-xl">{{ $record->type }}</td>
                                         <td class="tb-col tb-col-md">{{ number_format($record->cost, 0) }}</td>
@@ -121,7 +94,7 @@
                                             @elseif ($record->status === 'Pending')
                                                 <span class="badge text-bg-warning-soft">{{ $record->status }}</span>
                                             @else
-                                                <span class="badge text-bg-danger-soft">{{ $record->status }}</span>
+                                                <span class="badge text-bg-success-soft">{{ 'Completed' }}</span>
                                             @endif
                                         </td>
                                         <td class="tb-col tb-col-end">
@@ -133,12 +106,12 @@
                                                     <div class="dropdown-content py-1">
                                                         <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                             <li>
-                                                                <a href="{{ route('assets.maintenances.edit', $record->id) }}">
+                                                                <a href="{{ route('assets.maintenances.edit', [$asset->id, $record->id]) }}">
                                                                     <em class="icon ni ni-edit"></em><span>Edit Record</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <form action="{{ route('assets.maintenances.destroy', $record->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this maintenance record?');">
+                                                                <form action="{{ route('assets.maintenances.destroy', [$asset->id, $record->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this maintenance record?');">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="dropdown-item">
@@ -147,7 +120,7 @@
                                                                 </form>
                                                             </li>
                                                             <li>
-                                                                <a href="{{ route('assets.maintenances.show', $record->id) }}">
+                                                                <a href="{{ route('assets.maintenances.show', [$asset->id, $record->id] ) }}">
                                                                     <em class="icon ni ni-eye"></em><span>View Details</span>
                                                                 </a>
                                                             </li>

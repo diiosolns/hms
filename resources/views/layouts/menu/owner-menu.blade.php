@@ -26,7 +26,7 @@
 
 <li class="nk-menu-item has-sub">
     <a href="#" class="nk-menu-link nk-menu-toggle">
-        <span class="nk-menu-icon"><em class="icon ni ni-calendar"></em></span>
+        <span class="nk-menu-icon"><em class="icon ni ni-masonry-fill"></em></span>
         <span class="nk-menu-text">Asset Management</span>
     </a>
     <ul class="nk-menu-sub">
