@@ -9,14 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('insurance_companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
-    }
+    Schema::create('insurance_companies', function (Blueprint $table) {
+        $table->id();
+        $table->string('name')->unique();
+        $table->string('contact_person')->nullable();
+        $table->string('phone')->nullable();
+        $table->string('email')->nullable();
+        $table->text('address')->nullable();
+        $table->enum('status', ['active', 'inactive'])->default('active');
+        $table->timestamps();
+    });
 
     /**
      * Reverse the migrations.

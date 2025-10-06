@@ -23,6 +23,9 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AssetMaintenanceController;
 use App\Http\Controllers\AssetCategoryController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\InsuranceCompanyController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -323,7 +326,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
+    //Manage insurance companies
+    Route::resource('insurance_companies', InsuranceCompanyController::class);
 
 
 });
