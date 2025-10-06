@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\InsuranceCompany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InsuranceCompanyController extends Controller
 {
@@ -12,8 +14,26 @@ class InsuranceCompanyController extends Controller
      */
     public function index()
     {
-        $companies = InsuranceCompany::orderBy('name')->paginate(10);
-        return view('insurance_companies.index', compact('companies'));
+        $user = Auth::user();
+        $hospitals = $user->hospitals;
+        $hospitalIds = $hospitals->pluck('id');
+        $branches = Branch::whereIn('hospital_id', $hospitalIds)->get();  
+
+        if($user->role === 'owner') {
+            $insuranceCompanies = InsuranceCompany::with('hospital','branch')->orderBy('name')
+                ->whereIn('hospital_id', $hospitalIds)
+                ->get();
+        } else {
+            $hospital_id = $user->hospital_id;
+            $branch_id = $user->branch_id;
+
+            $insuranceCompanies = InsuranceCompany::with('hospital','branch')->orderBy('name')
+                ->where('hospital_id', $hospital_id)
+                ->where('branch_id', $branch_id)
+                ->get();
+        }
+
+        return view('insurance_companies.index', compact('insuranceCompanies'));
     }
 
     /**
@@ -30,6 +50,8 @@ class InsuranceCompanyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'hospital_id'     => 'required|exists:hospitals,id',
+            'branch_id'       => 'required|exists:branches,id',
             'name' => 'required|string|max:255|unique:insurance_companies,name',
             'contact_person' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:30',
@@ -70,6 +92,14 @@ class InsuranceCompanyController extends Controller
 
         return redirect()->route('insurance_companies.index')
                          ->with('success', 'Insurance company updated successfully.');
+    }
+
+    /**
+     * Show the details view.
+     */
+    public function show()
+    {
+        return view('insurance_companies.show');
     }
 
     /**

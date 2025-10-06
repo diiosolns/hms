@@ -67,6 +67,7 @@
         <li class="nk-menu-item"><a href="{{ route('admin.services.index') }}" class="nk-menu-link"><span class="nk-menu-text">Services</span></a></li>
         <li class="nk-menu-item"><a href="{{ route('admin.lab.index') }}" class="nk-menu-link"><span class="nk-menu-text">Laboratory</span></a></li>
         <li class="nk-menu-item"><a href="{{ route('admin.pharmacy.index') }}" class="nk-menu-link"><span class="nk-menu-text">Pharmacy</span></a></li>
+        <li class="nk-menu-item"><a href="{{ route('insurance_companies.index') }}" class="nk-menu-link"><span class="nk-menu-text">Insurance Company</span></a></li>
     </ul>
 </li>
 

@@ -8,18 +8,25 @@
                 <div class="nk-block-head">
                     <div class="nk-block-head-between flex-wrap gap g-2 align-items-center">
                         <div class="nk-block-head-content">
-                            <h2 class="nk-block-title">Add New Pharmacy Item</h2>
+                            <h2 class="nk-block-title">Add New Insurance Company</h2>
                             <nav>
                                 <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('pharmacy.index') }}">Manage Pharmacy Items</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Add Pharmacy Item</li>
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('insurance_companies.index') }}">Manage Insurance Companies</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        Add New
+                                    </li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="nk-block-head-content">
-                            <a href="{{ route('pharmacy.index') }}" class="btn btn-soft btn-primary">
-                                <em class="icon ni ni-eye"></em><span>View Pharmacy Items</span>
+                            <a href="{{ route('insurance_companies.index') }}" class="btn btn-soft btn-primary">
+                                <em class="icon ni ni-eye"></em>
+                                <span>View Companies</span>
                             </a>
                         </div>
                     </div>
@@ -28,148 +35,100 @@
                 <div class="nk-block">
                     <div class="card card-gutter-md">
                         <div class="card-body">
-                            <h4 class="mb-4">Register a New Pharmacy Item</h4>
+                            <h4 class="mb-4">Register New Insurance Company</h4>
 
-                            <form action="{{ route('pharmacy.store') }}" method="POST">
+                            <form action="{{ route('insurance_companies.store') }}" method="POST">
                                 @csrf
                                 <div class="row g-3">
 
-                                    <!-- Item Code -->
+                                    {{-- Company Name --}}
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="code" class="form-label">Item Code <span class="text-danger">*</span></label>
+                                            <label for="name" class="form-label">Company Name <span class="text-danger">*</span></label>
                                             <input type="text"
-                                                   class="form-control @error('code') is-invalid @enderror"
-                                                   id="code"
-                                                   name="code"
-                                                   value="{{ old('code') }}"
-                                                   placeholder="e.g. MED001">
-                                            @error('code')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Item Name -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="name" class="form-label">Item Name <span class="text-danger">*</span></label>
-                                            <input type="text"
-                                                   class="form-control @error('name') is-invalid @enderror"
-                                                   id="name"
-                                                   name="name"
-                                                   value="{{ old('name') }}"
-                                                   placeholder="e.g. Paracetamol 500mg">
+                                                class="form-control @error('name') is-invalid @enderror"
+                                                id="name"
+                                                name="name"
+                                                value="{{ old('name') }}"
+                                                placeholder="e.g. Jubilee Insurance Ltd"
+                                                required>
                                             @error('name')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Category -->
+                                    {{-- Contact Person --}}
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="category" class="form-label">Category</label>
+                                            <label for="contact_person" class="form-label">Contact Person</label>
                                             <input type="text"
-                                                   class="form-control @error('category') is-invalid @enderror"
-                                                   id="category"
-                                                   name="category"
-                                                   value="{{ old('category') }}"
-                                                   placeholder="e.g. Analgesic, Antibiotic">
-                                            @error('category')
+                                                class="form-control @error('contact_person') is-invalid @enderror"
+                                                id="contact_person"
+                                                name="contact_person"
+                                                value="{{ old('contact_person') }}"
+                                                placeholder="e.g. John Doe">
+                                            @error('contact_person')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Manufacturer -->
+                                    {{-- Phone --}}
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="manufacturer" class="form-label">Manufacturer</label>
+                                            <label for="phone" class="form-label">Phone</label>
                                             <input type="text"
-                                                   class="form-control @error('manufacturer') is-invalid @enderror"
-                                                   id="manufacturer"
-                                                   name="manufacturer"
-                                                   value="{{ old('manufacturer') }}"
-                                                   placeholder="e.g. Pfizer, GSK">
-                                            @error('manufacturer')
+                                                class="form-control @error('phone') is-invalid @enderror"
+                                                id="phone"
+                                                name="phone"
+                                                value="{{ old('phone') }}"
+                                                placeholder="e.g. +255 712 345 678">
+                                            @error('phone')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Expiry Date -->
+                                    {{-- Email --}}
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="expiry_date" class="form-label">Expiry Date</label>
-                                            <input type="date"
-                                                   class="form-control @error('expiry_date') is-invalid @enderror"
-                                                   id="expiry_date"
-                                                   name="expiry_date"
-                                                   value="{{ old('expiry_date') }}">
-                                            @error('expiry_date')
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email"
+                                                class="form-control @error('email') is-invalid @enderror"
+                                                id="email"
+                                                name="email"
+                                                value="{{ old('email') }}"
+                                                placeholder="e.g. info@jubilee.co.tz">
+                                            @error('email')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Unit -->
-                                    <div class="col-lg-6">
+                                    {{-- Address --}}
+                                    <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label for="unit" class="form-label">Unit</label>
-                                            <input type="text"
-                                                   class="form-control @error('unit') is-invalid @enderror"
-                                                   id="unit"
-                                                   name="unit"
-                                                   value="{{ old('unit') }}"
-                                                   placeholder="e.g. Tablet, Bottle, Box">
-                                            @error('unit')
+                                            <label for="address" class="form-label">Address</label>
+                                            <textarea class="form-control @error('address') is-invalid @enderror"
+                                                      id="address"
+                                                      name="address"
+                                                      rows="3"
+                                                      placeholder="e.g. P.O. Box 1234, Dar es Salaam">{{ old('address') }}</textarea>
+                                            @error('address')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Quantity -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
-                                            <input type="number"
-                                                   class="form-control @error('quantity') is-invalid @enderror"
-                                                   id="quantity"
-                                                   name="quantity"
-                                                   value="{{ old('quantity') }}"
-                                                   placeholder="e.g. 100">
-                                            @error('quantity')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Price -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
-                                            <input type="number" step="0.01"
-                                                   class="form-control @error('price') is-invalid @enderror"
-                                                   id="price"
-                                                   name="price"
-                                                   value="{{ old('price') }}"
-                                                   placeholder="e.g. 10.50">
-                                            @error('price')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Status -->
+                                    {{-- Status --}}
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                                            <select class="form-control @error('status') is-invalid @enderror"
-                                                    id="status"
-                                                    name="status">
-                                                <option value="Active" {{ old('status')=='Active' ? 'selected' : '' }}>Active</option>
-                                                <option value="Inactive" {{ old('status')=='Inactive' ? 'selected' : '' }}>Inactive</option>
+                                            <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
+                                                <option value="">Select Status</option>
+                                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                             </select>
                                             @error('status')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -177,34 +136,52 @@
                                         </div>
                                     </div>
 
-                                    <!-- Description -->
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="description" class="form-label">Description</label>
-                                            <textarea class="form-control @error('description') is-invalid @enderror"
-                                                      id="description"
-                                                      name="description"
-                                                      placeholder="Optional description">{{ old('description') }}</textarea>
-                                            @error('description')
+                                    {{-- Hospital & Branch --}}
+                                    @if(Auth::user()->role === 'owner')
+                                        <div class="col-md-6">
+                                            <label for="hospital_id" class="form-label">Hospital</label>
+                                            <select class="form-select @error('hospital_id') is-invalid @enderror" id="hospital_id" name="hospital_id" required>
+                                                <option value="">Select Hospital</option>
+                                                @foreach ($hospitals as $hospital)
+                                                    <option value="{{ $hospital->id }}" {{ old('hospital_id') == $hospital->id ? 'selected' : '' }}>
+                                                        {{ $hospital->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('hospital_id')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                    </div>
 
-                                    <!-- Hidden hospital and branch -->
-                                    <input type="hidden" name="hospital_id" value="{{ auth()->user()->hospital_id }}">
-                                    <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
+                                        <div class="col-md-6">
+                                            <label for="branch_id" class="form-label">Branch</label>
+                                            <select class="form-select @error('branch_id') is-invalid @enderror" id="branch_id" name="branch_id" required>
+                                                <option value="">Select Branch</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
+                                                        {{ $branch->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('branch_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @else
+                                        <input type="hidden" name="hospital_id" value="{{ auth()->user()->hospital_id }}">
+                                        <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
+                                    @endif
 
-                                    <!-- Submit -->
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-primary" type="submit">Save Pharmacy Item</button>
+                                    {{-- Submit --}}
+                                    <div class="col-12 mt-4">
+                                        <button class="btn btn-primary" type="submit">Register Insurance Company</button>
                                     </div>
                                 </div>
                             </form>
 
-                        </div><!-- .card-body -->
-                    </div><!-- .card -->
-                </div><!-- .nk-block -->
+                        </div> <!-- .card-body -->
+                    </div> <!-- .card -->
+                </div> <!-- .nk-block -->
             </div>
         </div>
     </div>

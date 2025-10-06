@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('hospital_id');
+            $table->unsignedBigInteger('branch_id');
             $table->morphs('priceable'); // priceable_id, priceable_type
             $table->foreignId('insurance_company_id')->nullable()->constrained()->onDelete('cascade');
             $table->decimal('price', 10, 2);

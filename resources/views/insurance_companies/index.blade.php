@@ -1,182 +1,163 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- Place the HTML code here --}}
-    <div class="nk-content">
-                    <div class="container">
-                        <div class="nk-content-inner">
-                            <div class="nk-content-body">
-                                <div class="nk-block-head">
-                                    <div class="nk-block-head-between flex-wrap gap g-2">
-                                        <div class="nk-block-head-content">
-                                            <h2 class="nk-block-title">Pharmacy</h2>
-                                                <nav>
-                                                    <ol class="breadcrumb breadcrumb-arrow mb-0">
-                                                        @if(Auth::user()->role === 'receptionist')
-                                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'nurse')
-                                                        <li class="breadcrumb-item"><a href="{{ route('nurse.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'doctor')
-                                                        <li class="breadcrumb-item"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'pharmacist')
-                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacist.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'lab_technician')
-                                                        <li class="breadcrumb-item"><a href="{{ route('lab_technician.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'admin')
-                                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                                        @elseif(Auth::user()->role === 'owner')
-                                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
-                                                        @endif
+<div class="nk-content">
+    <div class="container">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
 
-                                                        @if(Auth::user()->role === 'admin')
-                                                        <li class="breadcrumb-item"><a href="{{ route('pharmacy.create') }}">Add new test</a></li>
-                                                        @endif
-                                                        <li class="breadcrumb-item active" aria-current="page">Manage Lab Tests</li>
-                                                    </ol>
-                                                </nav>
-                                        </div>
-                                        <div class="nk-block-head-content">
-                                            <ul class="d-flex">
-                                                @if(Auth::user()->role === 'admin')
-                                                <li>
-                                                    <a href="{{ route('pharmacy.create') }}" class="btn btn-md d-md-none btn-primary" >
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Add</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('pharmacy.create') }}" class="btn btn-primary d-none d-md-inline-flex" >
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Add Pharmacy Item</span>
-                                                    </a>
-                                                </li>
+                <!-- Header -->
+                <div class="nk-block-head">
+                    <div class="nk-block-head-between flex-wrap gap g-2">
+                        <div class="nk-block-head-content">
+                            <h2 class="nk-block-title">Insurance Companies</h2>
+                            <nav>
+                                <ol class="breadcrumb breadcrumb-arrow mb-0">
+                                    @if(Auth::user()->role === 'admin')
+                                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                    @elseif(Auth::user()->role === 'owner')
+                                        <li class="breadcrumb-item"><a href="{{ route('owner.dashboard') }}">Dashboard</a></li>
+                                    @elseif(Auth::user()->role === 'receptionist')
+                                        <li class="breadcrumb-item"><a href="{{ route('receptionist.dashboard') }}">Dashboard</a></li>
+                                    @endif
 
-                                                @elseif(Auth::user()->role === 'receptionist')
+                                    <li class="breadcrumb-item"><a href="{{ route('insurance_companies.create') }}">Add Company</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Manage Insurance Companies</li>
+                                </ol>
+                            </nav>
+                        </div>
 
-                                                @endif
-                                            </ul>
-                                        </div>
-                                    </div><!-- .nk-block-head-between -->
-                                </div><!-- .nk-block-head -->
-
-
-
-
-
-
-
-
-
-
-
-
-                                <div class="nk-block">
-                                    <div class="card">
-                                        <table class="datatable-init table" data-nk-container="table-responsive">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th class="tb-col">
-                                                        <span class="overline-title">Pharmacy Item</span>
-                                                    </th>
-                                                    <th class="tb-col">
-                                                        <span class="overline-title">Category</span>
-                                                    </th>
-                                                    <th class="tb-col">
-                                                        <span class="overline-title">Bland</span>
-                                                    </th>
-                                                    <th class="tb-col tb-col-xl">
-                                                        <span class="overline-title">Form</span>
-                                                    </th>
-                                                    <th class="tb-col tb-col-md">
-                                                        <span class="overline-title">Unit</span>
-                                                    </th>
-                                                    <th class="tb-col ">
-                                                        <span class="overline-title">Price (TZS)</span>
-                                                    </th>
-                                                    <th class="tb-col">
-                                                        <span class="overline-title">Status</span>
-                                                    </th>
-                                                    <th class="tb-col tb-col-end" data-sortable="false">
-                                                        <span class="overline-title">Action</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @forelse ($pharmacyItems as $pharmacy)
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-primary-soft">
-                                                                <span class="smaller">
-                                                                    {{ strtoupper(substr($pharmacy->code, 0, 2) ) }}
-                                                                </span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}" class="title">
-                                                                    {{ $pharmacy->name }}
-                                                                </a>
-                                                                <span class="small text">{{ $pharmacy->code }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">{{ $pharmacy->category }}</td>
-                                                    <td class="tb-col">{{ $pharmacy->brand_name }}</td>
-                                                    <td class="tb-col tb-col-xl">{{ $pharmacy->form }}</td>
-                                                    <td class="tb-col tb-col-md">{{ $pharmacy->unit }}</td>
-                                                    <td class="tb-col ">{{ $pharmacy->price }}</td>
-                                                    <td class="tb-col">
-                                                        @if ($pharmacy->status === 'Active')
-                                                            <span class="badge text-bg-success-soft">{{ $pharmacy->status }}</span>
-                                                        @else
-                                                            <span class="badge text-bg-danger-soft">{{ $pharmacy->status }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                            <li>
-                                                                                <a href="{{ route('pharmacy.edit', $pharmacy->id) }}">
-                                                                                    <em class="icon ni ni-edit"></em><span>Edit</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <form action="{{ route('pharmacy.destroy', $pharmacy->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                                                                    @csrf
-                                                                                    @method('DELETE')
-                                                                                    <button type="submit" class="dropdown-item">
-                                                                                        <em class="icon ni ni-trash"></em><span>Delete</span>
-                                                                                    </button>
-                                                                                </form>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}">
-                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                @empty
-                                                <tr>
-                                                    <td colspan="6" class="text-center text-muted">No services found.</td>
-                                                </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                    </div><!-- .card -->
-                                </div><!-- .nk-block -->
-
-                            </div>
+                        <div class="nk-block-head-content">
+                            <ul class="d-flex">
+                                @if(in_array(Auth::user()->role, ['admin', 'owner']))
+                                <li>
+                                    <a href="{{ route('insurance_companies.create') }}" class="btn btn-primary">
+                                        <em class="icon ni ni-plus"></em>
+                                        <span>Add Insurance Company</span>
+                                    </a>
+                                </li>
+                                @endif
+                            </ul>
                         </div>
                     </div>
                 </div>
+                <!-- /Header -->
 
+                <!-- Flash Messages -->
+                @if (session('success'))
+                    <div class="mt-3 alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                <!-- /Flash Messages -->
+
+                <div class="nk-block">
+                    <div class="card">
+                        <table class="datatable-init table" data-nk-container="table-responsive">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Contact Person</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Date Created</th>
+                                    <th class="tb-col-end text-end">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @forelse ($insuranceCompanies as $company)
+                                    <tr>
+                                        <td>
+                                            <div class="media-group">
+                                                <div class="media media-md media-middle media-circle text-bg-primary-soft">
+                                                    <span class="smaller">
+                                                        {{ strtoupper(substr($company->name, 0, 2)) }}
+                                                    </span>
+                                                </div>
+                                                <div class="media-text">
+                                                    <a href="{{ route('insurance_companies.show', $company->id) }}" class="title">
+                                                        {{ $company->name }}
+                                                    </a>
+                                                    <span class="small text-muted">
+                                                        {{ $company->branch->name ?? 'N/A' }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ $company->contact_person ?? '-' }}</td>
+                                        <td>{{ $company->phone ?? '-' }}</td>
+                                        <td>{{ $company->email ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $company->status == 'active' ? 'success' : 'danger' }}">
+                                                {{ ucfirst($company->status) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $company->created_at->format('Y-m-d') }}</td>
+
+                                        <td class="text-end">
+                                            <div class="dropdown">
+                                                <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-more-v"></em>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                    <div class="dropdown-content py-1">
+                                                        <ul class="link-list link-list-hover-bg-primary link-list-md">
+                                                            <li>
+                                                                <a href="{{ route('insurance_companies.edit', $company->id) }}">
+                                                                    <em class="icon ni ni-edit"></em>
+                                                                    <span>Edit</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <form action="{{ route('insurance_companies.destroy', $company->id) }}"
+                                                                      method="POST"
+                                                                      onsubmit="return confirm('Are you sure you want to delete this insurance company?');">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="dropdown-item">
+                                                                        <em class="icon ni ni-trash"></em>
+                                                                        <span>Delete</span>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('insurance_companies.show', $company->id) }}">
+                                                                    <em class="icon ni ni-eye"></em>
+                                                                    <span>View Details</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">No insurance companies found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div><!-- .card -->
+                </div><!-- .nk-block -->
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
