@@ -52,4 +52,18 @@ class LabTest extends Model
     {
         return $this->hasMany(LabRequestTest::class);
     }
+
+    public function prices()
+    {
+        return $this->morphMany(Price::class, 'priceable');
+    }
+
+    public function getPriceForInsurance($insuranceId = null)
+    {
+        return $this->prices()
+            ->where('insurance_company_id', $insuranceId)
+            ->value('price')
+            ?? $this->prices()->whereNull('insurance_company_id')->value('price');
+    }
+
 }
