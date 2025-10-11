@@ -103,7 +103,7 @@
                                     <!-- Price -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                                            <label for="price" class="form-label">Price (Cash) <span class="text-danger">*</span></label>
                                             <input type="number" step="0.01" 
                                                 class="form-control @error('price') is-invalid @enderror" 
                                                 id="price" 
@@ -145,6 +145,25 @@
                                             @error('status')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <h5 class="mt-4 mb-3">Insurance-Based Pricing</h5>
+                                        <div class="row g-3">
+                                            @foreach($insurance_companies as $insurance)
+                                                <div class="col-md-4">
+                                                    <label for="price_{{ $insurance->id }}" class="form-label">
+                                                        {{ $insurance->name }} Price
+                                                    </label>
+                                                    <input type="number" step="0.01" min="0"
+                                                        id="price_{{ $insurance->id }}"
+                                                        name="prices[{{ $insurance->id }}]"
+                                                        class="form-control"
+                                                        value="{{ old('prices.' . $insurance->id, $pharmacyItem->prices->firstWhere('insurance_company_id', $insurance->id)->price ?? '') }}"
+                                                        placeholder="Enter price for {{ $insurance->name }}">
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
 

@@ -60,16 +60,6 @@
                                 </div><!-- .nk-block-head -->
 
 
-
-
-
-
-
-
-
-
-
-
                                 <div class="nk-block">
                                     <div class="card">
                                         <table class="datatable-init table" data-nk-container="table-responsive">
@@ -140,6 +130,11 @@
                                                                 <div class="dropdown-content py-1">
                                                                     <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                                             <li>
+                                                                                <a href="{{ route('admin.lab.show', $lab->id) }}">
+                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
                                                                                 <a href="{{ route('admin.lab.edit', $lab->id) }}">
                                                                                     <em class="icon ni ni-edit"></em><span>Edit</span>
                                                                                 </a>
@@ -153,11 +148,6 @@
                                                                                     </button>
                                                                                 </form>
                                                                             </li>
-                                                                            <li>
-                                                                                <a href="{{ route('admin.lab.show', $lab->id) }}">
-                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
-                                                                                </a>
-                                                                            </li>
                                                                         </ul>
                                                                 </div>
                                                             </div>
@@ -166,7 +156,7 @@
                                                 </tr>
                                                 @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center text-muted">No services found.</td>
+                                                    <td colspan="6" class="text-center text-muted">No laboratory test found.</td>
                                                 </tr>
                                                 @endforelse
                                             </tbody>

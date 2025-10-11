@@ -65,7 +65,7 @@
 
                                     <!-- Fee -->
                                     <div class="col-lg-6">
-                                        <label for="fee" class="form-label">Service Fee <span class="text-danger">*</span></label>
+                                        <label for="fee" class="form-label">Service Fee (Cash) <span class="text-danger">*</span></label>
                                         <input type="number" step="0.01" class="form-control @error('fee') is-invalid @enderror" id="fee" name="fee" value="{{ old('fee') }}" placeholder="e.g. 50.00">
                                         @error('fee')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -83,6 +83,26 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="col-lg-12">
+                                        <h5 class="mt-4 mb-3">Insurance-Based Pricing</h5>
+                                        <div class="row g-3">
+                                            @foreach($insurance_companies as $insurance)
+                                                <div class="col-md-4">
+                                                    <label for="price_{{ $insurance->id }}" class="form-label">
+                                                        {{ $insurance->name }} Price
+                                                    </label>
+                                                    <input type="number" step="0.01" min="0"
+                                                        id="price_{{ $insurance->id }}"
+                                                        name="prices[{{ $insurance->id }}]"
+                                                        class="form-control"
+                                                        placeholder="Enter price for {{ $insurance->name }}">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+
 
                                     <input type="hidden" name="hospital_id" value="{{ auth()->user()->hospital_id }}">
                                     <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">

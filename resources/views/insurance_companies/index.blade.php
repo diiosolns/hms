@@ -117,6 +117,12 @@
                                                     <div class="dropdown-content py-1">
                                                         <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                             <li>
+                                                                <a href="{{ route('insurance_companies.show', $company->id) }}">
+                                                                    <em class="icon ni ni-eye"></em>
+                                                                    <span>View Details</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
                                                                 <a href="{{ route('insurance_companies.edit', $company->id) }}">
                                                                     <em class="icon ni ni-edit"></em>
                                                                     <span>Edit</span>
@@ -133,12 +139,6 @@
                                                                         <span>Delete</span>
                                                                     </button>
                                                                 </form>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route('insurance_companies.show', $company->id) }}">
-                                                                    <em class="icon ni ni-eye"></em>
-                                                                    <span>View Details</span>
-                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>

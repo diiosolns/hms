@@ -58,53 +58,57 @@
                                         </div>
                                     </div><!-- .nk-block-head-between -->
                                 </div><!-- .nk-block-head -->
-                                <div class="nk-block">
+
+                                    <div class="nk-block">
                                     <div class="card">
-                                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns"><div class="dataTable-top"><div class="dataTable-dropdown"><label><select class="dataTable-selector"><option value="5">5</option><option value="10" selected="">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option></select> Per page</label></div><div class="dataTable-search"><input class="dataTable-input" placeholder="Search..." type="text"></div></div><div class="dataTable-container table-responsive">
-                                            <table class="datatable-init table dataTable-table" data-nk-container="table-responsive">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th class="tb-col" data-sortable="" style="width: 36.425%;"><a href="#" class="dataTable-sorter">
-                                                            <span class="overline-title">Service Detais</span>
-                                                        </a></th><th class="tb-col " data-sortable="" style="width: 0%;"><a href="#" class="dataTable-sorter">
-                                                            <span class="overline-title">Category</span>
-                                                        </a></th><th class="tb-col " data-sortable="" style="width: 0%;"><a href="#" class="dataTable-sorter">
-                                                            <span class="overline-title">Fee</span>
-                                                        </a></th><th class="tb-col" data-sortable="" style="width: 0%;"><a href="#" class="dataTable-sorter">
-                                                            <span class="overline-title">Status</span>
-                                                        </a></th><th class="tb-col tb-col-end" data-sortable="false" style="width: 13.1535%;">
-                                                            <span class="overline-title">Action</span>
-                                                        </th></tr>
-                                                </thead>
-                                                <tbody>
-                                                    @forelse ($services as $service)
-                                                    <tr>
-                                                        <td class="tb-col">
-                                                            <div class="media-group">
-                                                                <div class="media media-md media-middle media-circle text-bg-primary-soft">
-                                                                    <span class="smaller">
-                                                                        {{ strtoupper(substr($service->code, 0, 2) ) }}
-                                                                    </span>
-                                                                </div>
-                                                                <div class="media-text">
-                                                                    <a href="{{ route('admin.services.show', $service->id) }}" class="title">
-                                                                        {{ $service->name }}
-                                                                    </a>
-                                                                    <span class="small text">{{ $service->code }}</span>
-                                                                </div>
+                                        <table class="datatable-init table" data-nk-container="table-responsive">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Service Detail</span>
+                                                    </th>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Category</span>
+                                                    </th>
+                                                    <th class="tb-col">
+                                                        <span class="overline-title">Fee (TZS)</span>
+                                                    </th>
+                                                    <th class="tb-col ">
+                                                        <span class="overline-title">Status</span>
+                                                    </th>
+                                                    <th class="tb-col tb-col-end" data-sortable="false">
+                                                        <span class="overline-title">Action</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($services as $service)
+                                                <tr>
+                                                    <td class="tb-col">
+                                                        <div class="media-group">
+                                                            <div class="media media-md media-middle media-circle text-bg-primary-soft">
+                                                                <span class="smaller">
+                                                                    {{ strtoupper(substr($service->code, 0, 2) ) }}
+                                                                </span>
                                                             </div>
-                                                        </td>
-                                                        
-                                                        <td class="tb-col">{{ $service->category }}</td>
-                                                        <td class="tb-col">{{ number_format($service->fee, 2) }}</td>
-                                                        <td class="tb-col">
-                                                            @if ($service->status === 'Active')
-                                                                <span class="badge text-bg-success-soft">{{ $service->status }}</span>
-                                                            @else
-                                                                <span class="badge text-bg-danger-soft">{{ $service->status }}</span>
-                                                            @endif
-                                                        </td>
-                                                        <td class="tb-col tb-col-end">
+                                                            <div class="media-text">
+                                                                <a href="{{ route('admin.services.show', $service->id) }}" class="title">
+                                                                    {{ $service->name }}
+                                                                </a>
+                                                                <span class="small text">{{ $service->code }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="tb-col">{{ $service->category }}</td>
+                                                    <td class="tb-col">{{ number_format($service->fee, 2) }}</td>
+                                                    <td class="tb-col">
+                                                        @if ($service->status === 'Active')
+                                                            <span class="badge text-bg-success-soft">{{ $service->status }}</span>
+                                                        @else
+                                                            <span class="badge text-bg-danger-soft">{{ $service->status }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="tb-col tb-col-end">
                                                             <div class="dropdown">
                                                                 <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
                                                                     <em class="icon ni ni-more-v"></em>
@@ -112,6 +116,11 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <div class="dropdown-content py-1">
                                                                         <ul class="link-list link-list-hover-bg-primary link-list-md">
+                                                                            <li>
+                                                                                <a href="{{ route('admin.services.show', $service->id) }}">
+                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
+                                                                                </a>
+                                                                            </li>
                                                                             <li>
                                                                                 <a href="{{ route('admin.services.edit', $service->id) }}">
                                                                                     <em class="icon ni ni-edit"></em><span>Edit</span>
@@ -126,39 +135,19 @@
                                                                                     </button>
                                                                                 </form>
                                                                             </li>
-                                                                            <li>
-                                                                                <a href="{{ route('admin.services.show', $service->id) }}">
-                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
-                                                                                </a>
-                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                    </tr>
-                                                    @empty
-                                                    <tr>
-                                                        <td colspan="6" class="text-center text-muted">No services found.</td>
-                                                    </tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
-
-
-
-
-
-
-                                        </div>
-                                        <div class="dataTable-bottom">
-                                            <div class="dataTable-info">Showing 1 to 10 of 24 entries</div>
-                                            <nav class="dataTable-pagination">
-                                                <ul class="dataTable-pagination-list"><li class="active"><a href="#" data-page="1">1</a></li><li class=""><a href="#" data-page="2">2</a></li><li class=""><a href="#" data-page="3">3</a></li><li class="pager"><a href="#" data-page="2"><em class="icon ni ni-chevron-right"></em></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="6" class="text-center text-muted">No services found.</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
                                     </div><!-- .card -->
                                 </div><!-- .nk-block -->
                             </div>

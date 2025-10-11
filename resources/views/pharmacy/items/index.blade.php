@@ -151,6 +151,11 @@
                                                                 <div class="dropdown-content py-1">
                                                                     <ul class="link-list link-list-hover-bg-primary link-list-md">
                                                                             <li>
+                                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}">
+                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
                                                                                 <a href="{{ route('pharmacy.edit', $pharmacy->id) }}">
                                                                                     <em class="icon ni ni-edit"></em><span>Edit</span>
                                                                                 </a>
@@ -164,11 +169,6 @@
                                                                                     </button>
                                                                                 </form>
                                                                             </li>
-                                                                            <li>
-                                                                                <a href="{{ route('pharmacy.show', $pharmacy->id) }}">
-                                                                                    <em class="icon ni ni-eye"></em><span>View Details</span>
-                                                                                </a>
-                                                                            </li>
                                                                         </ul>
                                                                 </div>
                                                             </div>
@@ -177,7 +177,7 @@
                                                 </tr>
                                                 @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center text-muted">No services found.</td>
+                                                    <td colspan="6" class="text-center text-muted">No pharmacy item found.</td>
                                                 </tr>
                                                 @endforelse
                                             </tbody>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\PharmacyItem;
 use App\Models\Hospital;
 use App\Models\Branch;
+use App\Models\InsuranceCompany;
 
 class PharmacyItemController extends Controller
 {
@@ -21,7 +22,7 @@ class PharmacyItemController extends Controller
 
         $pharmacyItems = PharmacyItem::where('hospital_id', $loggedUser->hospital_id)
             ->where('branch_id', $loggedUser->branch_id)
-            ->paginate(10); // paginated for better UI
+            ->get(); 
 
         return view('pharmacy.items.index', compact('pharmacyItems'));
     }
@@ -31,7 +32,13 @@ class PharmacyItemController extends Controller
      */
     public function create()
     {
-        return view('pharmacy.items.create');
+        $user = Auth::user();
+        //Get insurance companies
+        $insurance_companies = InsuranceCompany::where('hospital_id', $user->hospital_id)
+                           ->where('branch_id', $user->branch_id)
+                           ->get();
+
+        return view('pharmacy.items.create', compact('insurance_companies'));
     }
 
     /**
@@ -49,11 +56,11 @@ class PharmacyItemController extends Controller
             'unit' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
             'reorder_level' => 'nullable|integer|min:0',
-            'status' => 'required|boolean',
+            'status' => 'required|string|max:255',
             'expiry_date' => 'nullable|date',
         ]);
 
-        PharmacyItem::create([
+        $pharmacyItem = PharmacyItem::create([
             'hospital_id' => Auth::user()->hospital_id,
             'branch_id' => Auth::user()->branch_id,
             'code' => $validated['code'],
@@ -69,7 +76,20 @@ class PharmacyItemController extends Controller
             'expiry_date' => $validated['expiry_date'] ?? null,
         ]);
 
-        return redirect()->route('pharmacy.items.index')
+        foreach ($request->prices as $insuranceId => $price) {
+            if (!empty($price)) {
+                $pharmacyItem->prices()->create([
+                    'hospital_id' => $request->hospital_id,
+                    'branch_id' => $request->branch_id,
+                    'priceable_type' => PharmacyItem::class, 
+                    'priceable_id' => $pharmacyItem->id,
+                    'insurance_company_id' => $insuranceId,
+                    'price' => $price,
+                ]);
+            }
+        }
+
+        return redirect()->route('pharmacy.index')
                          ->with('success', 'Pharmacy item created successfully!');
     }
 
@@ -78,15 +98,20 @@ class PharmacyItemController extends Controller
      */
     public function edit($id)
     {
-        $loggedUser = Auth::user();
+        $user = Auth::user();
         $pharmacyItem = PharmacyItem::findOrFail($id);
 
+        //Get insurance companies
+        $insurance_companies = InsuranceCompany::where('hospital_id', $user->hospital_id)
+                           ->where('branch_id', $user->branch_id)
+                           ->get();
+
         // Ensure item belongs to logged-in user's hospital and branch
-        if ($pharmacyItem->hospital_id != $loggedUser->hospital_id || $pharmacyItem->branch_id != $loggedUser->branch_id) {
+        if ($pharmacyItem->hospital_id != $user->hospital_id || $pharmacyItem->branch_id != $user->branch_id) {
             abort(403, 'Unauthorized action.');
         }
 
-        return view('pharmacy.items.edit', compact('pharmacyItem'));
+        return view('pharmacy.items.edit', compact('pharmacyItem', 'insurance_companies'));
     }
 
     /**
@@ -112,13 +137,31 @@ class PharmacyItemController extends Controller
             'unit' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
             'reorder_level' => 'nullable|integer|min:0',
-            'status' => 'required|boolean',
+            'status' => 'required|string|max:255',
             'expiry_date' => 'nullable|date',
         ]);
 
         $pharmacyItem->update($validated);
 
-        return redirect()->route('pharmacy.items.index')
+        // Update or create each price
+        foreach ($request->prices as $insuranceId => $price) {
+            if (!empty($price)) {
+                $pharmacyItem->prices()->updateOrCreate(
+                    [
+                        'hospital_id' => $request->hospital_id,
+                        'branch_id' => $request->branch_id,
+                        'priceable_type' => PharmacyItem::class,
+                        'priceable_id' => $pharmacyItem->id,
+                        'insurance_company_id' => $insuranceId,
+                    ],
+                    [
+                        'price' => $price,
+                    ]
+                );
+            }
+        }
+
+        return redirect()->route('pharmacy.index')
                          ->with('success', 'Pharmacy item updated successfully!');
     }
 
@@ -136,7 +179,7 @@ class PharmacyItemController extends Controller
 
         $pharmacyItem->delete();
 
-        return redirect()->route('pharmacy.items.index')
+        return redirect()->route('pharmacy.index')
                          ->with('success', 'Pharmacy item deleted successfully!');
     }
 
@@ -152,6 +195,6 @@ class PharmacyItemController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('pharmacy.items.show', compact('pharmacyItem'));
+        return view('pharmacy.show', compact('pharmacyItem'));
     }
 }

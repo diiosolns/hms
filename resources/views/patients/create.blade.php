@@ -115,29 +115,6 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- Payment Method -->
-                                                        <div class="col-lg-6">
-                                                            <div class="form-group">
-                                                                <label for="pay_method" class="form-label">How to Pay <span style="color: red;">*</span> </label>
-                                                                <div class="form-control-wrap">
-                                                                    <select class="form-control @error('pay_method') is-invalid @enderror" 
-                                                                            id="pay_method" 
-                                                                            name="pay_method">
-                                                                        <option value="Cash">Choose how to pay</option>
-                                                                        <option value="Cash" {{ old('pay_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
-                                                                        <option value="NHIF" {{ old('pay_method') == 'NHIF' ? 'selected' : '' }}>NHIF</option>
-                                                                        <option value="AAR" {{ old('pay_method') == 'AAR' ? 'selected' : '' }}>AAR</option>
-                                                                        <option value="Strategis" {{ old('pay_method') == 'Strategis' ? 'selected' : '' }}>Strategis</option>
-                                                                        <option value="Britam" {{ old('pay_method') == 'Britam' ? 'selected' : '' }}>Britam</option>
-                                                                        <option value="Heritage" {{ old('pay_method') == 'Heritage' ? 'selected' : '' }}>Heritage</option>
-                                                                    </select>
-                                                                    @error('pay_method')
-                                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
                                                         <!-- Gender -->
                                                         <div class="col-lg-6">
                                                             <div class="form-group">
@@ -151,6 +128,47 @@
                                                                         <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
                                                                     </select>
                                                                     @error('gender')
+                                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Service -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Service <span style="color: red;">*</span></label>
+                                                                <div class="form-control-wrap">
+                                                                    <select class="js-select @error('service_id') is-invalid @enderror" name="service_id" id="service_id" data-search="true" data-sort="false">
+                                                                        <option value="1">Select Service </option>
+                                                                        @foreach($services as $service)
+                                                                        <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            @error('service_id')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <!-- Payment Method -->
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <label for="pay_method" class="form-label">Payment Type <span style="color: red;">*</span> </label>
+                                                                <div class="form-control-wrap">
+                                                                    <select class="form-control @error('pay_method') is-invalid @enderror" 
+                                                                            id="pay_method" 
+                                                                            name="pay_method">
+                                                                        <option value="Cash">Choose payment type</option>
+                                                                        <option value="Cash" {{ old('pay_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
+                                                                        <option value="NHIF" {{ old('pay_method') == 'NHIF' ? 'selected' : '' }}>NHIF</option>
+                                                                        <option value="AAR" {{ old('pay_method') == 'AAR' ? 'selected' : '' }}>AAR</option>
+                                                                        <option value="Strategis" {{ old('pay_method') == 'Strategis' ? 'selected' : '' }}>Strategis</option>
+                                                                        <option value="Britam" {{ old('pay_method') == 'Britam' ? 'selected' : '' }}>Britam</option>
+                                                                        <option value="Heritage" {{ old('pay_method') == 'Heritage' ? 'selected' : '' }}>Heritage</option>
+                                                                    </select>
+                                                                    @error('pay_method')
                                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                                     @enderror
                                                                 </div>
@@ -244,24 +262,6 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                        </div>
-
-                                                        <!-- Service -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Service</label>
-                                                                <div class="form-control-wrap">
-                                                                    <select class="js-select @error('service_id') is-invalid @enderror" name="service_id" id="service_id" data-search="true" data-sort="false">
-                                                                        <option value="1">Select Service (Optional)</option>
-                                                                        @foreach($services as $service)
-                                                                        <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            @error('service_id')
-                                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                            @enderror
                                                         </div>
 
                                                         <!-- Avoid Nurse Switch -->

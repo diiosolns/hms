@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Hospital;
 use App\Models\Branch;
+use App\Models\InsuranceCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +38,12 @@ class ServiceController extends Controller
         $hospitals = Hospital::where('id', $user->hospital_id)->get();
         $branches = Branch::where('id', $user->branch_id)->get();
 
-        return view('admin.services.create', compact('hospitals', 'branches'));
+        //Get insurance companies
+        $insurance_companies = InsuranceCompany::where('hospital_id', $user->hospital_id)
+                           ->where('branch_id', $user->branch_id)
+                           ->get();
+
+        return view('admin.services.create', compact('hospitals', 'branches','insurance_companies'));
     }
 
     /**
@@ -55,7 +61,20 @@ class ServiceController extends Controller
             'status' => 'required|in:Active,Inactive',
         ]);
 
-        Service::create($validated);
+        $service = Service::create($validated);
+
+        foreach ($request->prices as $insuranceId => $price) {
+            if (!empty($price)) {
+                $service->prices()->create([
+                    'hospital_id' => $request->hospital_id,
+                    'branch_id' => $request->branch_id,
+                    'priceable_type' => Service::class, 
+                    'priceable_id' => $service->id,
+                    'insurance_company_id' => $insuranceId,
+                    'price' => $price,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.services.index')
                          ->with('success', 'Service created successfully');
@@ -66,14 +85,20 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $loggedUser = auth()->user();
+        $user = auth()->user();
 
         $service = Service::findOrFail($id);
+        $service->load('prices');
         
-        $hospitals = Hospital::where('id', $loggedUser->hospital_id)->get();
-        $branches = Branch::where('id', $loggedUser->branch_id)->get();
+        $hospitals = Hospital::where('id', $user->hospital_id)->get();
+        $branches = Branch::where('id', $user->branch_id)->get();
 
-        return view('admin.services.edit', compact('service', 'hospitals', 'branches'));
+        //Get insurance companies
+        $insurance_companies = InsuranceCompany::where('hospital_id', $user->hospital_id)
+                           ->where('branch_id', $user->branch_id)
+                           ->get();
+
+        return view('admin.services.edit', compact('service', 'hospitals', 'branches', 'insurance_companies'));
     }
 
     /**
@@ -94,6 +119,24 @@ class ServiceController extends Controller
         ]);
 
         $service->update($validated);
+
+        // Update or create each price
+        foreach ($request->prices as $insuranceId => $price) {
+            if (!empty($price)) {
+                $service->prices()->updateOrCreate(
+                    [
+                        'hospital_id' => $request->hospital_id,
+                        'branch_id' => $request->branch_id,
+                        'priceable_type' => Service::class,
+                        'priceable_id' => $service->id,
+                        'insurance_company_id' => $insuranceId,
+                    ],
+                    [
+                        'price' => $price,
+                    ]
+                );
+            }
+        }
 
         return redirect()->route('admin.services.index')
                          ->with('success', 'Service updated successfully');
