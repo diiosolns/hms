@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
@@ -154,4 +155,58 @@ class ReportController extends Controller
 
         return view('owner.reports.patients', compact('patients', 'hospitals'));
     }
+
+
+    public function downloadBillingReport($id)
+    {
+        $user = Auth::user();
+        
+        // Find patient by id or fail with 404
+        $patient = Patient::with([
+            'branch', 
+            'nurseTriageAssessments', 
+            'medicalRecords', 
+            'LabRequests',
+            'prescriptions',
+            'doctor',
+            'appointments',
+            'invoices',
+            'pendingInvoices',
+            'labRequestTests'
+        ])->findOrFail($id);
+
+        // Load the view and pass patient
+       $pdf = Pdf::loadView('reports.patient_billing', compact('patient'));
+
+        // Download the PDF
+        return $pdf->download('Patient_Billing_Report.pdf');
+    }
+
+    public function downloadTreatmentReport($id)
+    {
+        $user = Auth::user();
+        
+        // Find patient by id or fail with 404
+        $patient = Patient::with([
+            'branch', 
+            'nurseTriageAssessments', 
+            'medicalRecords', 
+            'LabRequests',
+            'prescriptions',
+            'doctor',
+            'appointments',
+            'invoices',
+            'pendingInvoices',
+            'labRequestTests'
+        ])->findOrFail($id);
+
+        // Load the view and pass patient
+        $pdf = Pdf::loadView('reports.patient_treatment', compact('patient'));
+
+        // Download the PDF
+        return $pdf->download('Patient_Treatment_Report.pdf');
+    }
+
+
+
 }

@@ -346,3 +346,16 @@ Route::middleware(['auth'])->prefix('assets')->name('assets.')->group(function (
     Route::put('{asset}/maintenances/{maintenance}', [AssetMaintenanceController::class, 'update'])->name('maintenances.update');
     Route::delete('{asset}/maintenances/{maintenance}', [AssetMaintenanceController::class, 'destroy'])->name('maintenances.destroy');
 });
+
+
+
+// Global Reporting Routes
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'reportsDashboard'])->name('dashboard');
+        Route::get('/billing-report/{id}/download', [ReportController::class, 'downloadBillingReport'])->name('patient.billing');
+        Route::get('/treatment-report/{id}/download', [ReportController::class, 'downloadTreatmentReport'])->name('patient.treatments');
+    });
+});
+        

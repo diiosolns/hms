@@ -966,7 +966,45 @@
 
 
                             <!-- OUTSIDE TABS -->
-                            <!-- CLOSE BUTTON GROUP     -->
+                            <!-- REPORTS BUTTON GROUP     -->
+                                    @if(in_array(Auth::user()->role, ['receptionist', 'owner', 'admin']))
+                                    <div class="card mt-4">
+                                        <div class="card-body">
+                                            <div class="card-title mb-2">
+                                                <h4 class="bio-block-title">Download Partient Reports</h4>
+                                            </div>
+                                            <div class="list-group-dotted " style="padding-left: 20px !important;">
+                                                <div class="row mt-2">
+                                                    <div class="mb-2 col-md-9">
+                                                        View and download detailed billing summaries for this patient, including charges, payments, and outstanding balances.
+                                                    </div>
+                                                    <div class="mb-2 col-md-3 text-light">
+                                                        <a href="{{ route('reports.patient.billing', $patient->id) }}" class="btn btn-outline-primary">
+                                                            Billing Report
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="list-group-dotted " style="padding-left: 20px !important;">
+                                                <div class="row mt-2">
+                                                    <div class="mb-2 col-md-9">
+                                                        Download detailed records of this patient treatments, diagnoses, and prescribed medications.
+                                                    </div>
+                                                    <div class="mb-2 col-md-3 text-light">
+                                                        <a href="{{ route('reports.patient.treatments', $patient->id) }}" class="btn btn-outline-primary">
+                                                            Treatment Report
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <!-- END CLOSE BUTTON GROUP -->
+
+                                    <!-- CLOSE BUTTON GROUP     -->
                                     @if(in_array(Auth::user()->role, ['receptionist', 'pharmacist', 'owner', 'admin']))
                                     <div class="card mt-4">
                                         <div class="card-body">
